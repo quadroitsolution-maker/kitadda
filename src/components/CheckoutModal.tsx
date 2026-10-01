@@ -6,18 +6,12 @@ import confetti from "canvas-confetti";
 import { 
   X, 
   ShieldCheck, 
-  Zap, 
-  Truck, 
   CreditCard, 
   Banknote, 
   CheckCircle2, 
-  ArrowRight,
   MessageCircle,
-  Phone,
   MapPin,
   User,
-  ShoppingBag,
-  Sparkles,
   Lock
 } from "lucide-react";
 
@@ -84,7 +78,7 @@ export const CheckoutModal: React.FC = () => {
       particleCount: 80,
       spread: 70,
       origin: { y: 0.6 },
-      colors: ["#22c55e", "#10b981", "#ffffff", "#f59e0b"],
+      colors: ["#C5A059", "#DFB76C", "#0B132B", "#ffffff"],
     });
   };
 
@@ -92,7 +86,6 @@ export const CheckoutModal: React.FC = () => {
     e.preventDefault();
     setErrorMsg("");
 
-    // Validate phone (10 digits)
     const cleanedPhone = phone.replace(/\D/g, "");
     if (cleanedPhone.length < 10) {
       setErrorMsg("Please enter a valid 10-digit mobile number for dispatch tracking.");
@@ -121,7 +114,6 @@ export const CheckoutModal: React.FC = () => {
         pincode,
       };
 
-      // If user selected Cash on Delivery
       if (paymentMethod === "cod") {
         const verifyRes = await fetch("/api/checkout/verify", {
           method: "POST",
@@ -142,8 +134,8 @@ export const CheckoutModal: React.FC = () => {
         return;
       }
 
-      // Step 1: Create Order on Backend
-      const res = await fetch("/api/checkout/create-order", {
+      // Online Razorpay Flow
+      const createOrderRes = await fetch("/api/checkout/create-order", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -152,107 +144,126 @@ export const CheckoutModal: React.FC = () => {
         }),
       });
 
-      const orderData = await res.json();
+      const orderData = await createOrderRes.json();
 
-      if (!res.ok) {
-        throw new Error(orderData.error || "Failed to initialize payment gateway");
+      if (!createOrderRes.ok || !orderData.order_id) {
+        throw new Error(orderData.error || "Failed to create payment session. Please try again.");
       }
 
-      // Step 2: Open Razorpay Checkout Modal
-      if (typeof window !== "undefined" && (window as any).Razorpay) {
-        const options = {
-          key: orderData.key_id,
-          amount: orderData.amount,
-          currency: orderData.currency || "INR",
-          name: "Kit Adda",
-          description: `Kit Adda Official Drop (${items.length} items)`,
-          image: "https://images.unsplash.com/photo-1577223625816-7546f13df25d?auto=format&fit=crop&w=200&q=80",
-          order_id: orderData.order_id,
-          prefill: {
-            name: fullName,
-            contact: `+91${cleanedPhone}`,
-          },
-          theme: {
-            color: "#22c55e",
-          },
-          handler: async function (response: any) {
-            // Verify payment
+      const options = {
+        key: orderData.key_id || process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || "rzp_test_placeholder",
+        amount: orderData.amount,
+        currency: "INR",
+        name: "Kit Adda Official",
+        description: `Football Kits Order (${items.length} items)`,
+        order_id: orderData.order_id,
+        prefill: {
+          name: fullName.trim(),
+          contact: cleanedPhone,
+        },
+        theme: {
+          color: "#C5A059",
+        },
+        handler: async function (response: {
+          razorpay_payment_id: string;
+          razorpay_order_id: string;
+          razorpay_signature: string;
+        }) {
+          try {
             const verifyRes = await fetch("/api/checkout/verify", {
               method: "POST",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify({
-                razorpay_order_id: response.razorpay_order_id,
-                razorpay_payment_id: response.razorpay_payment_id,
-                razorpay_signature: response.razorpay_signature,
+                ...response,
                 items,
                 shipping_address: shippingAddress,
-                payment_method: "razorpay",
+                internal_order_id: orderData.internal_order_id,
               }),
             });
 
             const verifyData = await verifyRes.json();
-            setConfirmedOrderId(response.razorpay_order_id || response.razorpay_payment_id);
-            setOrderConfirmed(true);
-            clearCart();
-            triggerCelebration();
+            if (verifyRes.ok) {
+              setConfirmedOrderId(verifyData.order_id || response.razorpay_order_id);
+              setOrderConfirmed(true);
+              clearCart();
+              triggerCelebration();
+            } else {
+              setErrorMsg(verifyData.error || "Payment verification failed. Please contact support.");
+            }
+          } catch (err) {
+            console.error("Verification error:", err);
+            setErrorMsg("Network issue verifying payment. Please WhatsApp @kit.adda with your Payment ID.");
+          } finally {
+            setLoading(false);
+          }
+        },
+        modal: {
+          ondismiss: function () {
+            setLoading(false);
           },
-          modal: {
-            ondismiss: function () {
-              setLoading(false);
-            },
-          },
-        };
+        },
+      };
 
-        const razorpayInstance = new (window as any).Razorpay(options);
-        razorpayInstance.open();
-        setLoading(false);
+      type RazorpayWindow = Window & {
+        Razorpay?: new (opts: typeof options) => { open: () => void };
+      };
+      const rzWindow = window as unknown as RazorpayWindow;
+
+      if (typeof rzWindow.Razorpay !== "undefined") {
+        const rzpInstance = new rzWindow.Razorpay(options);
+        rzpInstance.open();
       } else {
-        // Fallback for demo environments or when Razorpay script is blocked
-        const verifyRes = await fetch("/api/checkout/verify", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            razorpay_order_id: orderData.order_id,
-            razorpay_payment_id: `pay_demo_${Date.now()}`,
-            items,
-            shipping_address: shippingAddress,
-            payment_method: "razorpay",
-          }),
-        });
-        const verifyData = await verifyRes.json();
-        setConfirmedOrderId(orderData.order_id);
-        setOrderConfirmed(true);
-        clearCart();
-        triggerCelebration();
-        setLoading(false);
+        // Fallback test mode simulation if script is blocked
+        setTimeout(async () => {
+          const fakeOrderId = `KA_${Date.now()}`;
+          await fetch("/api/checkout/verify", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              items,
+              shipping_address: shippingAddress,
+              razorpay_payment_id: `pay_demo_${Date.now()}`,
+              razorpay_order_id: orderData.order_id,
+              razorpay_signature: "demo_sig",
+            }),
+          });
+          setConfirmedOrderId(fakeOrderId);
+          setOrderConfirmed(true);
+          clearCart();
+          triggerCelebration();
+          setLoading(false);
+        }, 1200);
       }
-    } catch (err: any) {
-      console.error(err);
-      setErrorMsg(err.message || "Something went wrong. Please try again.");
+    } catch (err) {
+      console.error("Checkout submit error:", err);
+      const message = err instanceof Error ? err.message : "Something went wrong. Please try again.";
+      setErrorMsg(message);
       setLoading(false);
     }
   };
 
   const handleClose = () => {
     setIsCheckoutOpen(false);
-    setOrderConfirmed(false);
+    if (orderConfirmed) {
+      setOrderConfirmed(false);
+    }
   };
 
   return (
     <div className="fixed inset-0 z-50 overflow-y-auto bg-black/85 backdrop-blur-md flex items-center justify-center p-3 sm:p-6 animate-in fade-in duration-200">
-      <div className="relative w-full max-w-xl bg-[#0e0e12] border border-neutral-800 rounded-2xl shadow-2xl text-white overflow-hidden my-8">
-        {/* Header Bar */}
-        <div className="p-4 sm:p-5 border-b border-neutral-800 flex items-center justify-between bg-[#121215]">
+      <div className="relative w-full max-w-xl bg-[#0A0D14] border border-[#1C2438] rounded-none shadow-2xl text-white overflow-hidden my-8">
+        {/* Header Bar - Sharp Boxy Minimal */}
+        <div className="p-4 sm:p-5 border-b border-[#1C2438] flex items-center justify-between bg-[#0E131F]">
           <div className="flex items-center gap-2">
-            <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
+            <span className="w-2 h-2 rounded-none bg-[#C5A059]" />
             <span className="text-sm sm:text-base font-black uppercase tracking-wider font-jersey">
-              {orderConfirmed ? "Order Confirmed!" : "Breeze 1-Click Checkout"}
+              {orderConfirmed ? "Order Confirmed!" : "Fast 1-Click Checkout"}
             </span>
           </div>
           <button
             type="button"
             onClick={handleClose}
-            className="p-1 rounded-lg text-neutral-400 hover:text-white hover:bg-neutral-800"
+            className="p-1 text-neutral-400 hover:text-white hover:bg-[#162035] rounded-none"
           >
             <X className="w-5 h-5" />
           </button>
@@ -261,28 +272,27 @@ export const CheckoutModal: React.FC = () => {
         {/* If Order Confirmed: Show High-Converting Success Screen */}
         {orderConfirmed ? (
           <div className="p-6 sm:p-8 text-center space-y-6">
-            <div className="w-16 h-16 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 flex items-center justify-center mx-auto">
-              <CheckCircle2 className="w-10 h-10" />
+            <div className="w-16 h-16 rounded-none bg-[#0B132B] border border-[#C5A059]/40 text-[#DFB76C] flex items-center justify-center mx-auto">
+              <CheckCircle2 className="w-8 h-8" />
             </div>
 
             <div>
-              <div className="inline-flex items-center gap-1.5 text-xs bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 px-3 py-1 rounded-full font-bold uppercase mb-2">
-                <Sparkles className="w-3.5 h-3.5" />
+              <div className="inline-flex items-center text-xs bg-[#0B132B] text-[#DFB76C] border border-[#C5A059]/40 px-3 py-1 rounded-none font-bold uppercase tracking-wider mb-2">
                 <span>WELCOME TO THE ADDA SQUAD</span>
               </div>
               <h3 className="text-2xl sm:text-3xl font-black uppercase text-white font-jersey">
                 Thank You For Your Order!
               </h3>
               <p className="text-xs sm:text-sm text-neutral-300 mt-2 max-w-md mx-auto">
-                Your kits are being printed and prepared at our matchday hub. We've dispatched tracking info to <strong className="text-white">+91 {phone}</strong>.
+                Your kits are being printed and prepared at our matchday hub. We have dispatched tracking info to <strong className="text-white">+91 {phone}</strong>.
               </p>
             </div>
 
-            {/* Order Reference Box */}
-            <div className="bg-[#141419] border border-neutral-800 rounded-xl p-4 text-left space-y-2">
+            {/* Order Reference Box - Sharp Minimal */}
+            <div className="bg-[#0E131F] border border-[#1C2438] rounded-none p-4 text-left space-y-2">
               <div className="flex justify-between text-xs">
                 <span className="text-neutral-400">Order Reference:</span>
-                <span className="text-emerald-400 font-mono font-bold">{confirmedOrderId}</span>
+                <span className="text-[#DFB76C] font-mono font-bold">{confirmedOrderId}</span>
               </div>
               <div className="flex justify-between text-xs">
                 <span className="text-neutral-400">Delivery Address:</span>
@@ -302,16 +312,16 @@ export const CheckoutModal: React.FC = () => {
                 href={`https://wa.me/919999999999?text=Hi%20Kit%20Adda%20team,%20I%20just%20placed%20order%20${confirmedOrderId}.%20Can't%20wait%20for%20my%20jersey!`}
                 target="_blank"
                 rel="noreferrer"
-                className="w-full bg-[#25D366] hover:bg-[#20ba59] text-black font-extrabold uppercase text-xs sm:text-sm py-3.5 rounded-xl flex items-center justify-center gap-2 transition"
+                className="w-full bg-[#0B132B] hover:bg-[#162035] border border-[#1C2438] hover:border-[#25D366]/60 text-white font-bold uppercase text-xs sm:text-sm py-3.5 rounded-none flex items-center justify-center gap-2 transition"
               >
-                <MessageCircle className="w-4 h-4 fill-black" />
+                <MessageCircle className="w-4 h-4 text-[#25D366]" />
                 <span>Connect with Kit Adda Crew on WhatsApp</span>
               </a>
 
               <button
                 type="button"
                 onClick={handleClose}
-                className="w-full bg-neutral-800 hover:bg-neutral-700 text-white font-bold uppercase text-xs py-3 rounded-xl transition"
+                className="w-full bg-[#0E131F] hover:bg-[#162035] text-white border border-[#1C2438] font-bold uppercase text-xs py-3 rounded-none transition"
               >
                 Continue Browsing Vault
               </button>
@@ -321,7 +331,7 @@ export const CheckoutModal: React.FC = () => {
           /* Checkout Input Form */
           <form onSubmit={handleCheckoutSubmit} className="p-5 sm:p-6 space-y-5">
             {errorMsg && (
-              <div className="p-3 rounded-xl bg-red-500/10 border border-red-500/40 text-red-300 text-xs font-semibold">
+              <div className="p-3 rounded-none bg-red-500/10 border border-red-500/40 text-red-300 text-xs font-semibold">
                 {errorMsg}
               </div>
             )}
@@ -329,7 +339,7 @@ export const CheckoutModal: React.FC = () => {
             {/* Express Delivery Address Form */}
             <div className="space-y-3">
               <div className="flex items-center gap-2 text-xs font-black uppercase tracking-wider text-neutral-300">
-                <MapPin className="w-3.5 h-3.5 text-emerald-400" />
+                <MapPin className="w-3.5 h-3.5 text-[#DFB76C]" />
                 <span>Delivery Details (Pan-India Express)</span>
               </div>
 
@@ -346,7 +356,7 @@ export const CheckoutModal: React.FC = () => {
                       placeholder="e.g. Abhinav Sharma"
                       value={fullName}
                       onChange={(e) => setFullName(e.target.value)}
-                      className="w-full bg-[#141419] border border-neutral-700/80 focus:border-emerald-500 rounded-xl pl-9 pr-3 py-2.5 text-xs font-semibold text-white placeholder-neutral-600 focus:outline-none"
+                      className="w-full bg-[#0E131F] border border-[#1C2438] focus:border-[#C5A059] rounded-none pl-9 pr-3 py-2.5 text-xs font-semibold text-white placeholder-neutral-600 focus:outline-none"
                     />
                   </div>
                 </div>
@@ -365,7 +375,7 @@ export const CheckoutModal: React.FC = () => {
                       placeholder="9876543210"
                       value={phone}
                       onChange={(e) => setPhone(e.target.value.replace(/\D/g, "").slice(0, 10))}
-                      className="w-full bg-[#141419] border border-neutral-700/80 focus:border-emerald-500 rounded-xl pl-11 pr-3 py-2.5 text-xs font-semibold text-white placeholder-neutral-600 focus:outline-none font-mono"
+                      className="w-full bg-[#0E131F] border border-[#1C2438] focus:border-[#C5A059] rounded-none pl-11 pr-3 py-2.5 text-xs font-semibold text-white placeholder-neutral-600 focus:outline-none font-mono"
                     />
                   </div>
                 </div>
@@ -381,7 +391,7 @@ export const CheckoutModal: React.FC = () => {
                   placeholder="e.g. Flat 402, Green Valley Apts, Bandra West"
                   value={addressLine}
                   onChange={(e) => setAddressLine(e.target.value)}
-                  className="w-full bg-[#141419] border border-neutral-700/80 focus:border-emerald-500 rounded-xl px-3 py-2.5 text-xs font-semibold text-white placeholder-neutral-600 focus:outline-none"
+                  className="w-full bg-[#0E131F] border border-[#1C2438] focus:border-[#C5A059] rounded-none px-3 py-2.5 text-xs font-semibold text-white placeholder-neutral-600 focus:outline-none"
                 />
               </div>
 
@@ -396,7 +406,7 @@ export const CheckoutModal: React.FC = () => {
                     placeholder="400050"
                     value={pincode}
                     onChange={(e) => handlePincodeChange(e.target.value)}
-                    className="w-full bg-[#141419] border border-neutral-700/80 focus:border-emerald-500 rounded-xl px-3 py-2.5 text-xs font-semibold text-white placeholder-neutral-600 focus:outline-none font-mono"
+                    className="w-full bg-[#0E131F] border border-[#1C2438] focus:border-[#C5A059] rounded-none px-3 py-2.5 text-xs font-semibold text-white placeholder-neutral-600 focus:outline-none font-mono"
                   />
                 </div>
 
@@ -410,7 +420,7 @@ export const CheckoutModal: React.FC = () => {
                     placeholder="Mumbai"
                     value={city}
                     onChange={(e) => setCity(e.target.value)}
-                    className="w-full bg-[#141419] border border-neutral-700/80 focus:border-emerald-500 rounded-xl px-3 py-2.5 text-xs font-semibold text-white placeholder-neutral-600 focus:outline-none"
+                    className="w-full bg-[#0E131F] border border-[#1C2438] focus:border-[#C5A059] rounded-none px-3 py-2.5 text-xs font-semibold text-white placeholder-neutral-600 focus:outline-none"
                   />
                 </div>
 
@@ -421,10 +431,10 @@ export const CheckoutModal: React.FC = () => {
                   <select
                     value={state}
                     onChange={(e) => setState(e.target.value)}
-                    className="w-full bg-[#141419] border border-neutral-700/80 focus:border-emerald-500 rounded-xl px-2 py-2.5 text-xs font-semibold text-white focus:outline-none"
+                    className="w-full bg-[#0E131F] border border-[#1C2438] focus:border-[#C5A059] rounded-none px-2 py-2.5 text-xs font-semibold text-white focus:outline-none"
                   >
                     {INDIAN_STATES.map((st) => (
-                      <option key={st} value={st} className="bg-neutral-900 text-white">
+                      <option key={st} value={st} className="bg-[#0A0D14] text-white">
                         {st}
                       </option>
                     ))}
@@ -434,7 +444,7 @@ export const CheckoutModal: React.FC = () => {
             </div>
 
             {/* Payment Method Selector */}
-            <div className="space-y-2 pt-2 border-t border-neutral-800">
+            <div className="space-y-2 pt-2 border-t border-[#1C2438]">
               <label className="block text-xs font-black uppercase tracking-wider text-neutral-300">
                 Payment Option
               </label>
@@ -444,23 +454,23 @@ export const CheckoutModal: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setPaymentMethod("razorpay")}
-                  className={`p-3 rounded-xl border text-left flex flex-col justify-between transition ${
+                  className={`p-3 rounded-none border text-left flex flex-col justify-between transition ${
                     paymentMethod === "razorpay"
-                      ? "bg-emerald-500/10 border-emerald-500 text-white shadow-md shadow-emerald-500/10"
-                      : "bg-[#141419] border-neutral-800 text-neutral-400 hover:text-white"
+                      ? "bg-[#0B132B] border-[#C5A059] text-white"
+                      : "bg-[#0E131F] border-[#1C2438] text-neutral-400 hover:text-white"
                   }`}
                 >
                   <div className="flex items-center justify-between w-full mb-1">
                     <span className="text-xs font-black uppercase flex items-center gap-1.5">
-                      <CreditCard className="w-3.5 h-3.5 text-emerald-400" />
+                      <CreditCard className="w-3.5 h-3.5 text-[#DFB76C]" />
                       Razorpay (UPI / Cards)
                     </span>
                     {paymentMethod === "razorpay" && (
-                      <span className="w-2 h-2 rounded-full bg-emerald-400" />
+                      <span className="w-2 h-2 rounded-none bg-[#C5A059]" />
                     )}
                   </div>
-                  <span className="text-[10px] text-emerald-400 font-semibold">
-                    Instant 1-Click UPI & GPay
+                  <span className="text-[10px] text-[#DFB76C] font-semibold">
+                    Instant 1-Click UPI &amp; GPay
                   </span>
                 </button>
 
@@ -468,19 +478,19 @@ export const CheckoutModal: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setPaymentMethod("cod")}
-                  className={`p-3 rounded-xl border text-left flex flex-col justify-between transition ${
+                  className={`p-3 rounded-none border text-left flex flex-col justify-between transition ${
                     paymentMethod === "cod"
-                      ? "bg-emerald-500/10 border-emerald-500 text-white shadow-md shadow-emerald-500/10"
-                      : "bg-[#141419] border-neutral-800 text-neutral-400 hover:text-white"
+                      ? "bg-[#0B132B] border-[#C5A059] text-white"
+                      : "bg-[#0E131F] border-[#1C2438] text-neutral-400 hover:text-white"
                   }`}
                 >
                   <div className="flex items-center justify-between w-full mb-1">
                     <span className="text-xs font-black uppercase flex items-center gap-1.5">
-                      <Banknote className="w-3.5 h-3.5 text-amber-400" />
+                      <Banknote className="w-3.5 h-3.5 text-neutral-300" />
                       Cash On Delivery
                     </span>
                     {paymentMethod === "cod" && (
-                      <span className="w-2 h-2 rounded-full bg-amber-400" />
+                      <span className="w-2 h-2 rounded-none bg-[#C5A059]" />
                     )}
                   </div>
                   <span className="text-[10px] text-neutral-400 font-semibold">
@@ -491,34 +501,34 @@ export const CheckoutModal: React.FC = () => {
             </div>
 
             {/* Summary Breakdown */}
-            <div className="p-3.5 rounded-xl bg-[#141419] border border-neutral-800 text-xs space-y-1.5">
+            <div className="p-3.5 rounded-none bg-[#0E131F] border border-[#1C2438] text-xs space-y-1.5">
               <div className="flex justify-between text-neutral-400">
                 <span>Items Subtotal ({items.length} kits)</span>
                 <span className="text-white font-bold">₹{subtotal.toLocaleString("en-IN")}</span>
               </div>
               <div className="flex justify-between text-neutral-400">
                 <span>Shipping Fee</span>
-                <span className="text-emerald-400 font-bold">
+                <span className="text-[#DFB76C] font-bold">
                   {shippingFee === 0 ? "FREE" : `₹${shippingFee}`}
                 </span>
               </div>
-              <div className="flex justify-between text-sm font-black text-white pt-2 border-t border-neutral-800 font-jersey">
+              <div className="flex justify-between text-sm font-black text-white pt-2 border-t border-[#1C2438] font-jersey">
                 <span>Total Payable</span>
-                <span className="text-emerald-400 text-base">₹{grandTotal.toLocaleString("en-IN")}</span>
+                <span className="text-[#DFB76C] text-base">₹{grandTotal.toLocaleString("en-IN")}</span>
               </div>
             </div>
 
-            {/* Submit Action Button */}
+            {/* Submit Action Button - Champagne Gold Sharp */}
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-emerald-500 hover:bg-emerald-400 disabled:opacity-50 text-black font-black uppercase text-sm tracking-wider py-4 rounded-xl flex items-center justify-center gap-2 transition transform active:scale-95 shadow-xl shadow-emerald-500/20"
+              className="w-full bg-[#C5A059] hover:bg-[#DFB76C] disabled:opacity-50 text-[#0A0D14] font-black uppercase text-sm tracking-wider py-4 rounded-none flex items-center justify-center gap-2 transition transform active:scale-95"
             >
               {loading ? (
-                <div className="w-5 h-5 border-2 border-black border-t-transparent rounded-full animate-spin" />
+                <div className="w-5 h-5 border-2 border-[#0A0D14] border-t-transparent rounded-full animate-spin" />
               ) : (
                 <>
-                  <Lock className="w-4 h-4 fill-black" />
+                  <Lock className="w-4 h-4 fill-[#0A0D14]" />
                   <span>
                     {paymentMethod === "razorpay"
                       ? `Pay ₹${grandTotal.toLocaleString("en-IN")} via Razorpay`
@@ -529,7 +539,7 @@ export const CheckoutModal: React.FC = () => {
             </button>
 
             <div className="flex items-center justify-center gap-2 text-[10px] text-neutral-500">
-              <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+              <ShieldCheck className="w-3.5 h-3.5 text-[#DFB76C]" />
               <span>Razorpay 256-Bit SSL Encrypted • OTP Verified Checkout</span>
             </div>
           </form>

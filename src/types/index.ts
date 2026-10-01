@@ -4,7 +4,7 @@ export interface Product {
   description: string;
   price: number;
   compare_at_price: number;
-  category: "club" | "retro" | "international" | "jackets" | "accessories";
+  category: "player-version" | "fan-version" | "world-cup" | "accessories" | "club" | "retro" | "international" | "jackets";
   image_url: string;
   gallery: string[];
   stock_status: "in_stock" | "low_stock" | "out_of_stock";

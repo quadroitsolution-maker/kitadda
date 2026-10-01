@@ -18,7 +18,7 @@ export async function POST(req: NextRequest) {
     }
 
     const subtotal = items.reduce(
-      (acc: number, item: any) => acc + item.unit_price * item.quantity,
+      (acc: number, item: { unit_price: number; quantity: number }) => acc + item.unit_price * item.quantity,
       0
     );
 
@@ -79,10 +79,11 @@ export async function POST(req: NextRequest) {
       key_id: "rzp_test_kitadda_demo",
       is_demo: true,
     });
-  } catch (error: any) {
+  } catch (error) {
     console.error("Checkout order route error:", error);
+    const message = error instanceof Error ? error.message : "Failed to create order";
     return NextResponse.json(
-      { error: error.message || "Failed to create order" },
+      { error: message },
       { status: 500 }
     );
   }

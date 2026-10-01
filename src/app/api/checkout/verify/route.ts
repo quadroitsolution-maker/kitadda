@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import crypto from "crypto";
 import { getServiceSupabase } from "@/lib/supabase";
+import { CartItem } from "@/types";
 
 export async function POST(req: NextRequest) {
   try {
@@ -25,7 +26,7 @@ export async function POST(req: NextRequest) {
 
       if (generatedSignature !== razorpay_signature) {
         return NextResponse.json(
-          { error: "Payment verification failed: Invalid signature" },
+          { error: "Invalid payment signature" },
           { status: 400 }
         );
       }
@@ -35,7 +36,7 @@ export async function POST(req: NextRequest) {
     try {
       const supabase = getServiceSupabase();
       const subtotal = items.reduce(
-        (acc: number, item: any) => acc + item.unit_price * item.quantity,
+        (acc: number, item: { unit_price: number; quantity: number }) => acc + item.unit_price * item.quantity,
         0
       );
       const totalAmount = subtotal + (subtotal >= 1499 ? 0 : 99);
@@ -56,7 +57,7 @@ export async function POST(req: NextRequest) {
         .single();
 
       if (!orderError && orderData && items.length > 0) {
-        const orderItems = items.map((item: any) => ({
+        const orderItems = items.map((item: CartItem) => ({
           order_id: orderData.id,
           product_id: item.product.id,
           quantity: item.quantity,
@@ -82,10 +83,11 @@ export async function POST(req: NextRequest) {
       message: "Order placed successfully",
       order_id: razorpay_order_id || `COD_${Date.now()}`,
     });
-  } catch (error: any) {
+  } catch (error) {
     console.error("Verification error:", error);
+    const message = error instanceof Error ? error.message : "Failed to verify order";
     return NextResponse.json(
-      { error: error.message || "Failed to verify order" },
+      { error: message },
       { status: 500 }
     );
   }

@@ -42,7 +42,7 @@ export default async function ProductPage({ params }: PageProps) {
   }
 
   return (
-    <div className="min-h-screen bg-[#09090b] flex flex-col text-neutral-100">
+    <div className="min-h-screen bg-[#0A0D14] flex flex-col text-neutral-100 selection:bg-[#C5A059] selection:text-[#0A0D14]">
       <Header />
       <main className="flex-1">
         <ProductDetailsView product={product} />

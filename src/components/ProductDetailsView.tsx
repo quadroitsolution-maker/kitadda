@@ -7,7 +7,6 @@ import { Product } from "@/types";
 import { useCart } from "@/context/CartContext";
 import { CustomizationForm } from "@/components/CustomizationForm";
 import {
-  Star,
   ShieldCheck,
   Truck,
   RotateCcw,
@@ -16,9 +15,6 @@ import {
   Zap,
   Check,
   Ruler,
-  Share2,
-  Heart,
-  Flame,
 } from "lucide-react";
 
 interface ProductDetailsViewProps {
@@ -57,7 +53,6 @@ export const ProductDetailsView: React.FC<ProductDetailsViewProps> = ({ product 
   );
 
   const finalUnitPrice = customization.totalPrice;
-  const finalSubtotal = finalUnitPrice * quantity;
 
   const handleAddToCart = () => {
     addToCart({
@@ -83,11 +78,11 @@ export const ProductDetailsView: React.FC<ProductDetailsViewProps> = ({ product 
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
       {/* Breadcrumbs */}
       <nav className="flex items-center space-x-2 text-xs text-neutral-400 mb-6">
-        <Link href="/" className="hover:text-emerald-400 transition">
+        <Link href="/" className="hover:text-[#DFB76C] transition">
           Home
         </Link>
         <span>/</span>
-        <Link href="/#latest-drops" className="hover:text-emerald-400 transition capitalize">
+        <Link href="/#latest-drops" className="hover:text-[#DFB76C] transition capitalize">
           {product.category}
         </Link>
         <span>/</span>
@@ -97,10 +92,10 @@ export const ProductDetailsView: React.FC<ProductDetailsViewProps> = ({ product 
       </nav>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
-        {/* Left Column: Image Gallery (5 cols) */}
+        {/* Left Column: Image Gallery (6 cols) */}
         <div className="lg:col-span-6 space-y-4">
-          {/* Main Hero Image */}
-          <div className="relative aspect-[3/4] w-full rounded-2xl overflow-hidden bg-[#121215] border border-neutral-800">
+          {/* Main Hero Image - Sharp Frame */}
+          <div className="relative aspect-[3/4] w-full rounded-none overflow-hidden bg-[#0E131F] border border-[#1C2438]">
             <Image
               src={selectedImage}
               alt={product.title}
@@ -109,17 +104,17 @@ export const ProductDetailsView: React.FC<ProductDetailsViewProps> = ({ product 
               className="object-cover object-center transition-all duration-300"
             />
             {product.badge && (
-              <span className="absolute top-4 left-4 bg-emerald-500 text-black text-xs font-black uppercase px-3 py-1 rounded shadow tracking-wider">
+              <span className="absolute top-4 left-4 bg-[#0B132B] text-[#DFB76C] text-xs font-bold uppercase px-3 py-1 rounded-none border border-[#C5A059]/50 tracking-wider">
                 {product.badge}
               </span>
             )}
-            <div className="absolute bottom-4 right-4 bg-black/70 backdrop-blur-md border border-neutral-700/60 rounded-full px-3 py-1 text-xs font-bold text-neutral-200 flex items-center gap-1.5">
-              <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+            <div className="absolute bottom-4 right-4 bg-[#0B132B]/90 border border-[#1C2438] rounded-none px-3 py-1 text-xs font-bold text-neutral-300 flex items-center gap-1.5">
+              <ShieldCheck className="w-3.5 h-3.5 text-[#DFB76C]" />
               <span>100% Authentic Quality</span>
             </div>
           </div>
 
-          {/* Thumbnails row */}
+          {/* Thumbnails row - Sharp */}
           {product.gallery.length > 1 && (
             <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-none">
               {product.gallery.map((img, idx) => (
@@ -127,10 +122,10 @@ export const ProductDetailsView: React.FC<ProductDetailsViewProps> = ({ product 
                   key={idx}
                   type="button"
                   onClick={() => setSelectedImage(img)}
-                  className={`relative w-20 h-24 rounded-xl overflow-hidden shrink-0 border-2 transition ${
+                  className={`relative w-20 h-24 rounded-none overflow-hidden shrink-0 border-2 transition ${
                     selectedImage === img
-                      ? "border-emerald-500 scale-95"
-                      : "border-neutral-800 hover:border-neutral-600"
+                      ? "border-[#C5A059]"
+                      : "border-[#1C2438] hover:border-neutral-600"
                   }`}
                 >
                   <Image
@@ -145,32 +140,29 @@ export const ProductDetailsView: React.FC<ProductDetailsViewProps> = ({ product 
           )}
         </div>
 
-        {/* Right Column: Details, Customizer & Buy Action (7 cols) */}
+        {/* Right Column: Details, Customizer & Buy Action (6 cols) */}
         <div className="lg:col-span-6 space-y-6">
           <div>
-            <div className="flex items-center gap-2 text-emerald-400 text-xs font-bold uppercase tracking-wider mb-2">
-              <Flame className="w-3.5 h-3.5" />
-              <span>{product.team} • {product.season} Drop</span>
+            <div className="text-[#DFB76C] text-xs font-bold uppercase tracking-wider mb-2">
+              {product.team} • {product.season} Drop
             </div>
 
             <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black text-white uppercase tracking-tight font-jersey">
               {product.title}
             </h1>
 
-            {/* Social Proof Rating */}
+            {/* Minimal Social Proof Rating (No star icon spam) */}
             <div className="flex items-center gap-3 mt-3">
-              <div className="flex items-center text-amber-400">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />
-                ))}
-              </div>
-              <span className="text-xs font-bold text-neutral-300">
-                4.9/5 (420+ Verified Fans @kit.adda)
+              <span className="text-xs font-black text-[#DFB76C] bg-[#0B132B] border border-[#C5A059]/40 px-2 py-0.5 rounded-none font-mono">
+                4.9 / 5.0
+              </span>
+              <span className="text-xs text-neutral-400 font-medium">
+                420+ Verified Football Fans @kit.adda
               </span>
             </div>
 
-            {/* Price Box with Dynamic Calculation */}
-            <div className="mt-4 p-4 rounded-xl bg-[#121215] border border-neutral-800 flex items-center justify-between">
+            {/* Price Box with Dynamic Calculation - Sharp Minimal */}
+            <div className="mt-4 p-4 rounded-none bg-[#0E131F] border border-[#1C2438] flex items-center justify-between">
               <div>
                 <div className="flex items-baseline gap-3">
                   <span className="text-3xl font-black text-white font-jersey">
@@ -182,7 +174,7 @@ export const ProductDetailsView: React.FC<ProductDetailsViewProps> = ({ product 
                     </span>
                   )}
                   {discountPct > 0 && (
-                    <span className="bg-red-500/20 text-red-400 border border-red-500/40 text-xs font-black px-2 py-0.5 rounded">
+                    <span className="bg-[#1C2438] text-white border border-[#2B3854] text-xs font-bold px-2 py-0.5 rounded-none">
                       SAVE {discountPct}%
                     </span>
                   )}
@@ -194,7 +186,7 @@ export const ProductDetailsView: React.FC<ProductDetailsViewProps> = ({ product 
 
               {customization.addPatches && (
                 <div className="text-right">
-                  <span className="text-[10px] text-emerald-400 font-bold block uppercase">
+                  <span className="text-[10px] text-[#DFB76C] font-bold block uppercase">
                     Includes Patches
                   </span>
                   <span className="text-xs text-neutral-400 font-medium">
@@ -226,13 +218,13 @@ export const ProductDetailsView: React.FC<ProductDetailsViewProps> = ({ product 
                   key={ver}
                   type="button"
                   onClick={() => setSelectedVersion(ver)}
-                  className={`p-3 rounded-xl border text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 transition ${
+                  className={`p-3 rounded-none border text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 transition ${
                     selectedVersion === ver
-                      ? "bg-emerald-500/10 border-emerald-500 text-emerald-300 shadow-md shadow-emerald-500/10"
-                      : "bg-[#121215] border-neutral-800 text-neutral-400 hover:text-white hover:border-neutral-700"
+                      ? "bg-[#0B132B] border-[#C5A059] text-[#DFB76C]"
+                      : "bg-[#0E131F] border-[#1C2438] text-neutral-400 hover:text-white hover:border-neutral-700"
                   }`}
                 >
-                  {selectedVersion === ver && <Check className="w-3.5 h-3.5" />}
+                  {selectedVersion === ver && <Check className="w-3.5 h-3.5 text-[#DFB76C]" />}
                   <span>{ver}</span>
                 </button>
               ))}
@@ -248,7 +240,7 @@ export const ProductDetailsView: React.FC<ProductDetailsViewProps> = ({ product 
               <button
                 type="button"
                 onClick={() => setOpenAccordion("size-guide")}
-                className="text-[11px] text-emerald-400 hover:underline flex items-center gap-1 font-semibold"
+                className="text-[11px] text-[#DFB76C] hover:underline flex items-center gap-1 font-semibold"
               >
                 <Ruler className="w-3 h-3" />
                 <span>View Size Guide</span>
@@ -260,18 +252,18 @@ export const ProductDetailsView: React.FC<ProductDetailsViewProps> = ({ product 
                   key={sz}
                   type="button"
                   onClick={() => setSelectedSize(sz)}
-                  className={`py-3 rounded-xl font-jersey text-base tracking-wider transition ${
+                  className={`py-3 rounded-none font-jersey text-base tracking-wider transition ${
                     selectedSize === sz
-                      ? "bg-white text-black font-black shadow-lg"
-                      : "bg-[#121215] border border-neutral-800 text-neutral-300 hover:border-neutral-600 hover:text-white"
+                      ? "bg-[#C5A059] text-[#0A0D14] font-black"
+                      : "bg-[#0E131F] border border-[#1C2438] text-neutral-300 hover:border-neutral-600 hover:text-white"
                   }`}
                 >
                   {sz}
                 </button>
               ))}
             </div>
-            <div className="flex items-center gap-1.5 text-[11px] text-amber-400 mt-2 font-medium">
-              <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
+            <div className="flex items-center gap-1.5 text-[11px] text-[#DFB76C] mt-2 font-medium">
+              <span className="w-1.5 h-1.5 rounded-none bg-[#C5A059]" />
               <span>Only 4 units left in size {selectedSize} • High demand</span>
             </div>
           </div>
@@ -283,11 +275,11 @@ export const ProductDetailsView: React.FC<ProductDetailsViewProps> = ({ product 
             onCustomizationChange={setCustomization}
           />
 
-          {/* Quantity & CTA Buttons */}
+          {/* Quantity & CTA Buttons - Sharp Minimal */}
           <div className="space-y-3 pt-2">
             <div className="flex gap-3">
               {/* Quantity Stepper */}
-              <div className="flex items-center bg-[#121215] border border-neutral-800 rounded-xl px-3 py-1">
+              <div className="flex items-center bg-[#0E131F] border border-[#1C2438] rounded-none px-3 py-1">
                 <button
                   type="button"
                   onClick={() => setQuantity((q) => Math.max(1, q - 1))}
@@ -311,104 +303,104 @@ export const ProductDetailsView: React.FC<ProductDetailsViewProps> = ({ product 
               <button
                 type="button"
                 onClick={handleAddToCart}
-                className="flex-1 bg-neutral-800 hover:bg-neutral-700 text-white border border-neutral-700 font-black uppercase text-xs sm:text-sm tracking-wider py-4 rounded-xl flex items-center justify-center gap-2 transition active:scale-95"
+                className="flex-1 bg-[#0B132B] hover:bg-[#162035] text-white border border-[#1C2438] hover:border-[#C5A059]/50 font-bold uppercase text-xs sm:text-sm tracking-wider py-4 rounded-none flex items-center justify-center gap-2 transition active:scale-95"
               >
                 <ShoppingBag className="w-4 h-4" />
                 <span>Add To Cart</span>
               </button>
             </div>
 
-            {/* Instant Buy Now Button (Breeze 1-Click Checkout) */}
+            {/* Instant Buy Now Button - Champagne Gold Accent */}
             <button
               type="button"
               onClick={handleBuyNow}
-              className="w-full bg-emerald-500 hover:bg-emerald-400 text-black font-black uppercase text-sm sm:text-base tracking-wider py-4 rounded-xl flex items-center justify-center gap-2 transition transform active:scale-95 shadow-xl shadow-emerald-500/20"
+              className="w-full bg-[#C5A059] hover:bg-[#DFB76C] text-[#0A0D14] font-black uppercase text-sm sm:text-base tracking-wider py-4 rounded-none flex items-center justify-center gap-2 transition transform active:scale-95"
             >
-              <Zap className="w-4 h-4 fill-black" />
+              <Zap className="w-4 h-4 fill-[#0A0D14]" />
               <span>Buy Now • Fast 1-Click Checkout</span>
             </button>
           </div>
 
           {/* Value Badges */}
-          <div className="grid grid-cols-3 gap-2 pt-4 border-t border-neutral-800/80 text-center">
-            <div className="p-2.5 rounded-lg bg-[#121215] border border-neutral-800">
-              <Truck className="w-4 h-4 text-emerald-400 mx-auto mb-1" />
+          <div className="grid grid-cols-3 gap-2 pt-4 border-t border-[#1C2438] text-center">
+            <div className="p-2.5 rounded-none bg-[#0E131F] border border-[#1C2438]">
+              <Truck className="w-4 h-4 text-[#DFB76C] mx-auto mb-1" />
               <div className="text-[10px] font-bold text-white uppercase">Express Shipping</div>
               <div className="text-[9px] text-neutral-400">3-5 Days All-India</div>
             </div>
-            <div className="p-2.5 rounded-lg bg-[#121215] border border-neutral-800">
-              <RotateCcw className="w-4 h-4 text-emerald-400 mx-auto mb-1" />
+            <div className="p-2.5 rounded-none bg-[#0E131F] border border-[#1C2438]">
+              <RotateCcw className="w-4 h-4 text-[#DFB76C] mx-auto mb-1" />
               <div className="text-[10px] font-bold text-white uppercase">7 Days Exchange</div>
               <div className="text-[9px] text-neutral-400">Size guarantee</div>
             </div>
-            <div className="p-2.5 rounded-lg bg-[#121215] border border-neutral-800">
-              <ShieldCheck className="w-4 h-4 text-emerald-400 mx-auto mb-1" />
+            <div className="p-2.5 rounded-none bg-[#0E131F] border border-[#1C2438]">
+              <ShieldCheck className="w-4 h-4 text-[#DFB76C] mx-auto mb-1" />
               <div className="text-[10px] font-bold text-white uppercase">Master Grade</div>
               <div className="text-[9px] text-neutral-400">Official embroidery</div>
             </div>
           </div>
 
           {/* Accordions for Size Guide, Shipping & Returns */}
-          <div className="space-y-3 pt-4 border-t border-neutral-800/80">
+          <div className="space-y-3 pt-4 border-t border-[#1C2438]">
             {/* Accordion 1: Size Guide */}
-            <div className="border border-neutral-800 rounded-xl overflow-hidden bg-[#121215]">
+            <div className="border border-[#1C2438] rounded-none overflow-hidden bg-[#0E131F]">
               <button
                 type="button"
                 onClick={() => toggleAccordion("size-guide")}
-                className="w-full p-4 text-left font-black uppercase text-xs tracking-wider flex items-center justify-between text-white hover:text-emerald-400 transition"
+                className="w-full p-4 text-left font-black uppercase text-xs tracking-wider flex items-center justify-between text-white hover:text-[#DFB76C] transition"
               >
                 <div className="flex items-center gap-2">
-                  <Ruler className="w-4 h-4 text-emerald-400" />
-                  <span>Official Size Guide (Inches & CM)</span>
+                  <Ruler className="w-4 h-4 text-[#DFB76C]" />
+                  <span>Official Size Guide (Inches &amp; CM)</span>
                 </div>
                 <ChevronDown
                   className={`w-4 h-4 transition-transform duration-200 ${
-                    openAccordion === "size-guide" ? "rotate-180 text-emerald-400" : "text-neutral-400"
+                    openAccordion === "size-guide" ? "rotate-180 text-[#DFB76C]" : "text-neutral-400"
                   }`}
                 />
               </button>
               {openAccordion === "size-guide" && (
-                <div className="p-4 pt-0 border-t border-neutral-800/60 text-xs text-neutral-300">
+                <div className="p-4 pt-0 border-t border-[#1C2438] text-xs text-neutral-300">
                   <div className="overflow-x-auto">
                     <table className="w-full text-left text-neutral-300">
                       <thead>
-                        <tr className="border-b border-neutral-800 text-[10px] uppercase text-neutral-400 font-bold">
+                        <tr className="border-b border-[#1C2438] text-[10px] uppercase text-neutral-400 font-bold">
                           <th className="py-2">Size</th>
                           <th className="py-2">Chest (Inches)</th>
                           <th className="py-2">Length (Inches)</th>
                           <th className="py-2">Recommended Height</th>
                         </tr>
                       </thead>
-                      <tbody className="divide-y divide-neutral-800/60 font-medium">
+                      <tbody className="divide-y divide-[#1C2438] font-medium">
                         <tr>
                           <td className="py-2 font-bold text-white">S</td>
-                          <td className="py-2">38"</td>
-                          <td className="py-2">27"</td>
-                          <td className="py-2">5'4" - 5'7"</td>
+                          <td className="py-2">38&quot;</td>
+                          <td className="py-2">27&quot;</td>
+                          <td className="py-2">5&apos;4&quot; - 5&apos;7&quot;</td>
                         </tr>
                         <tr>
                           <td className="py-2 font-bold text-white">M</td>
-                          <td className="py-2">40"</td>
-                          <td className="py-2">28"</td>
-                          <td className="py-2">5'7" - 5'10"</td>
+                          <td className="py-2">40&quot;</td>
+                          <td className="py-2">28&quot;</td>
+                          <td className="py-2">5&apos;7&quot; - 5&apos;10&quot;</td>
                         </tr>
                         <tr>
                           <td className="py-2 font-bold text-white">L</td>
-                          <td className="py-2">42"</td>
-                          <td className="py-2">29"</td>
-                          <td className="py-2">5'10" - 6'1"</td>
+                          <td className="py-2">42&quot;</td>
+                          <td className="py-2">29&quot;</td>
+                          <td className="py-2">5&apos;10&quot; - 6&apos;1&quot;</td>
                         </tr>
                         <tr>
                           <td className="py-2 font-bold text-white">XL</td>
-                          <td className="py-2">44"</td>
-                          <td className="py-2">30"</td>
-                          <td className="py-2">6'0" - 6'3"</td>
+                          <td className="py-2">44&quot;</td>
+                          <td className="py-2">30&quot;</td>
+                          <td className="py-2">6&apos;0&quot; - 6&apos;3&quot;</td>
                         </tr>
                         <tr>
                           <td className="py-2 font-bold text-white">XXL</td>
-                          <td className="py-2">46"</td>
-                          <td className="py-2">31"</td>
-                          <td className="py-2">6'2"+</td>
+                          <td className="py-2">46&quot;</td>
+                          <td className="py-2">31&quot;</td>
+                          <td className="py-2">6&apos;2&quot;+</td>
                         </tr>
                       </tbody>
                     </table>
@@ -421,29 +413,29 @@ export const ProductDetailsView: React.FC<ProductDetailsViewProps> = ({ product 
             </div>
 
             {/* Accordion 2: Shipping Policy */}
-            <div className="border border-neutral-800 rounded-xl overflow-hidden bg-[#121215]">
+            <div className="border border-[#1C2438] rounded-none overflow-hidden bg-[#0E131F]">
               <button
                 type="button"
                 onClick={() => toggleAccordion("shipping-policy")}
-                className="w-full p-4 text-left font-black uppercase text-xs tracking-wider flex items-center justify-between text-white hover:text-emerald-400 transition"
+                className="w-full p-4 text-left font-black uppercase text-xs tracking-wider flex items-center justify-between text-white hover:text-[#DFB76C] transition"
               >
                 <div className="flex items-center gap-2">
-                  <Truck className="w-4 h-4 text-emerald-400" />
-                  <span>Shipping & Delivery Policy</span>
+                  <Truck className="w-4 h-4 text-[#DFB76C]" />
+                  <span>Shipping &amp; Delivery Policy</span>
                 </div>
                 <ChevronDown
                   className={`w-4 h-4 transition-transform duration-200 ${
-                    openAccordion === "shipping-policy" ? "rotate-180 text-emerald-400" : "text-neutral-400"
+                    openAccordion === "shipping-policy" ? "rotate-180 text-[#DFB76C]" : "text-neutral-400"
                   }`}
                 />
               </button>
               {openAccordion === "shipping-policy" && (
-                <div className="p-4 pt-0 border-t border-neutral-800/60 text-xs text-neutral-300 space-y-2">
+                <div className="p-4 pt-0 border-t border-[#1C2438] text-xs text-neutral-300 space-y-2">
                   <p>
                     • <strong className="text-white">Dispatch Time:</strong> Orders without customization are dispatched within 24-48 hours. Custom printed jerseys take an additional 24 hours for heat-press setting.
                   </p>
                   <p>
-                    • <strong className="text-white">Delivery Partner:</strong> Shipped via Bluedart, Delhivery, or Xpressbees with live SMS & WhatsApp tracking link sent directly to your phone.
+                    • <strong className="text-white">Delivery Partner:</strong> Shipped via Bluedart, Delhivery, or Xpressbees with live SMS &amp; WhatsApp tracking link sent directly to your phone.
                   </p>
                   <p>
                     • <strong className="text-white">Timeline:</strong> Metros (Mumbai, Delhi, Bangalore, Kolkata) arrive in 2-3 business days. Rest of India in 3-5 days.
@@ -452,25 +444,25 @@ export const ProductDetailsView: React.FC<ProductDetailsViewProps> = ({ product 
               )}
             </div>
 
-            {/* Accordion 3: Return & Replacement Policy */}
-            <div className="border border-neutral-800 rounded-xl overflow-hidden bg-[#121215]">
+            {/* Accordion 3: Return Policy */}
+            <div className="border border-[#1C2438] rounded-none overflow-hidden bg-[#0E131F]">
               <button
                 type="button"
                 onClick={() => toggleAccordion("return-policy")}
-                className="w-full p-4 text-left font-black uppercase text-xs tracking-wider flex items-center justify-between text-white hover:text-emerald-400 transition"
+                className="w-full p-4 text-left font-black uppercase text-xs tracking-wider flex items-center justify-between text-white hover:text-[#DFB76C] transition"
               >
                 <div className="flex items-center gap-2">
-                  <RotateCcw className="w-4 h-4 text-emerald-400" />
-                  <span>Return & Replacement Policy</span>
+                  <RotateCcw className="w-4 h-4 text-[#DFB76C]" />
+                  <span>Return &amp; Replacement Policy</span>
                 </div>
                 <ChevronDown
                   className={`w-4 h-4 transition-transform duration-200 ${
-                    openAccordion === "return-policy" ? "rotate-180 text-emerald-400" : "text-neutral-400"
+                    openAccordion === "return-policy" ? "rotate-180 text-[#DFB76C]" : "text-neutral-400"
                   }`}
                 />
               </button>
               {openAccordion === "return-policy" && (
-                <div className="p-4 pt-0 border-t border-neutral-800/60 text-xs text-neutral-300 space-y-2">
+                <div className="p-4 pt-0 border-t border-[#1C2438] text-xs text-neutral-300 space-y-2">
                   <p>
                     • <strong className="text-white">7-Day Replacement:</strong> We offer a 7-day hassle-free replacement for sizing issues on uncustomized kits in original unworn condition with tags.
                   </p>

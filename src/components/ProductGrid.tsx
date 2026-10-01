@@ -7,12 +7,8 @@ import { Product } from "@/types";
 import { useCart } from "@/context/CartContext";
 import { 
   ShoppingBag, 
-  Sparkles, 
-  SlidersHorizontal, 
   Check, 
-  Eye, 
-  ArrowRight,
-  Flame
+  Eye
 } from "lucide-react";
 
 interface ProductGridProps {
@@ -30,10 +26,10 @@ export const ProductGrid: React.FC<ProductGridProps> = ({
 
   const filters = [
     { id: "all", label: "All Drops" },
-    { id: "club", label: "Club Kits" },
-    { id: "international", label: "International" },
-    { id: "retro", label: "Retro Vault" },
-    { id: "jackets", label: "Jackets" },
+    { id: "player-version", label: "Player Version" },
+    { id: "fan-version", label: "Fan Version" },
+    { id: "world-cup", label: "World Cup" },
+    { id: "accessories", label: "Grip Socks" },
   ];
 
   const filteredProducts = activeFilter === "all"
@@ -44,7 +40,6 @@ export const ProductGrid: React.FC<ProductGridProps> = ({
     e.preventDefault();
     e.stopPropagation();
 
-    // If product has customization, opening the customizer is ideal; otherwise quick add standard size L
     if (onOpenQuickCustomize) {
       onOpenQuickCustomize(product);
       return;
@@ -71,17 +66,16 @@ export const ProductGrid: React.FC<ProductGridProps> = ({
       {/* Header & Filter Tabs */}
       <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
         <div>
-          <div className="flex items-center gap-2 text-emerald-400 text-xs font-black uppercase tracking-widest mb-1.5">
-            <Flame className="w-4 h-4 text-emerald-400" />
-            <span>Official Drops • 100% Master Grade</span>
+          <div className="text-[#DFB76C] text-xs font-bold uppercase tracking-widest mb-1.5">
+            Official Drops • 100% Master Grade
           </div>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white uppercase tracking-tight font-jersey">
             Latest Drops
           </h2>
         </div>
 
-        {/* Filter Pills */}
-        <div className="flex items-center gap-2 overflow-x-auto pb-2 sm:pb-0 scrollbar-none">
+        {/* Filter Pills - Sharp Boxy Minimal */}
+        <div className="flex items-center gap-1.5 overflow-x-auto pb-2 sm:pb-0 scrollbar-none">
           {filters.map((filter) => {
             const isActive = activeFilter === filter.id;
             return (
@@ -89,10 +83,10 @@ export const ProductGrid: React.FC<ProductGridProps> = ({
                 key={filter.id}
                 type="button"
                 onClick={() => setActiveFilter(filter.id)}
-                className={`px-4 py-2 rounded-xl text-xs font-black uppercase tracking-wider whitespace-nowrap transition-all ${
+                className={`px-4 py-2 rounded-none text-xs font-bold uppercase tracking-wider whitespace-nowrap transition-all border ${
                   isActive
-                    ? "bg-emerald-500 text-black shadow-md shadow-emerald-500/20"
-                    : "bg-[#141418] text-neutral-400 hover:text-white hover:bg-neutral-800 border border-neutral-800"
+                    ? "bg-[#C5A059] text-[#0A0D14] border-[#C5A059]"
+                    : "bg-[#0E131F] text-neutral-400 hover:text-white hover:bg-[#162035] border-[#1C2438]"
                 }`}
               >
                 {filter.label}
@@ -102,7 +96,7 @@ export const ProductGrid: React.FC<ProductGridProps> = ({
         </div>
       </div>
 
-      {/* 4-Column Responsive Grid */}
+      {/* 4-Column Responsive Grid with Sharp Cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
         {filteredProducts.map((product) => {
           const discountPct = Math.round(
@@ -112,11 +106,11 @@ export const ProductGrid: React.FC<ProductGridProps> = ({
           return (
             <div
               key={product.id}
-              className="group relative bg-[#121215] border border-neutral-800/80 hover:border-neutral-700 rounded-2xl overflow-hidden flex flex-col justify-between transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl hover:shadow-black/60"
+              className="group relative bg-[#0E131F] border border-[#1C2438] hover:border-[#C5A059]/70 rounded-none overflow-hidden flex flex-col justify-between transition-all duration-200"
             >
               <Link href={`/products/${product.id}`} className="block flex-1">
                 {/* Product Image Container */}
-                <div className="relative aspect-[3/4] w-full overflow-hidden bg-neutral-900">
+                <div className="relative aspect-[3/4] w-full overflow-hidden bg-[#0A0D14]">
                   <Image
                     src={product.image_url}
                     alt={product.title}
@@ -125,18 +119,15 @@ export const ProductGrid: React.FC<ProductGridProps> = ({
                     className="object-cover object-center group-hover:scale-105 transition-transform duration-500"
                   />
 
-                  {/* Gradient bottom shadow */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#121215] via-transparent to-transparent opacity-80" />
-
                   {/* Top Badges */}
                   <div className="absolute top-2.5 left-2.5 flex flex-col gap-1.5 z-10">
                     {product.badge && (
-                      <span className="bg-emerald-500/90 text-black text-[10px] font-black uppercase px-2 py-0.5 rounded shadow tracking-wider">
+                      <span className="bg-[#0B132B] text-[#DFB76C] border border-[#C5A059]/50 text-[10px] font-bold uppercase px-2 py-0.5 rounded-none tracking-wider">
                         {product.badge}
                       </span>
                     )}
                     {discountPct > 0 && (
-                      <span className="bg-red-500/90 text-white text-[10px] font-black uppercase px-1.5 py-0.5 rounded shadow tracking-wider">
+                      <span className="bg-[#1C2438] text-white border border-[#2B3854] text-[10px] font-bold uppercase px-1.5 py-0.5 rounded-none tracking-wider">
                         {discountPct}% OFF
                       </span>
                     )}
@@ -144,16 +135,16 @@ export const ProductGrid: React.FC<ProductGridProps> = ({
 
                   {/* Stock Status indicator */}
                   {product.stock_status === "low_stock" && (
-                    <div className="absolute bottom-2.5 left-2.5 bg-amber-500/20 text-amber-300 border border-amber-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full backdrop-blur-md">
+                    <div className="absolute bottom-2.5 left-2.5 bg-[#0B132B]/90 text-[#DFB76C] border border-[#C5A059]/40 text-[10px] font-bold px-2 py-0.5 rounded-none">
                       Low Stock
                     </div>
                   )}
 
                   {/* Quick View overlay button */}
-                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/40 backdrop-blur-[2px]">
-                    <span className="bg-white text-black font-extrabold text-xs px-4 py-2 rounded-xl flex items-center gap-1.5 uppercase tracking-wider transform translate-y-2 group-hover:translate-y-0 transition-transform shadow-lg">
+                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/50">
+                    <span className="bg-[#0B132B] text-[#DFB76C] border border-[#C5A059]/60 font-bold text-xs px-4 py-2 rounded-none flex items-center gap-1.5 uppercase tracking-wider">
                       <Eye className="w-3.5 h-3.5" />
-                      Customize & View
+                      View & Customize
                     </span>
                   </div>
                 </div>
@@ -161,16 +152,16 @@ export const ProductGrid: React.FC<ProductGridProps> = ({
                 {/* Product Meta */}
                 <div className="p-3.5 sm:p-4 flex-1 flex flex-col justify-between">
                   <div>
-                    <div className="text-[11px] uppercase tracking-wider text-emerald-400 font-bold mb-1">
+                    <div className="text-[11px] uppercase tracking-wider text-[#DFB76C] font-bold mb-1">
                       {product.team} • {product.season}
                     </div>
-                    <h3 className="text-xs sm:text-sm font-bold text-white line-clamp-2 leading-snug group-hover:text-emerald-400 transition-colors">
+                    <h3 className="text-xs sm:text-sm font-bold text-white line-clamp-2 leading-snug group-hover:text-[#DFB76C] transition-colors">
                       {product.title}
                     </h3>
                   </div>
 
                   {/* Pricing Details */}
-                  <div className="mt-3 pt-2.5 border-t border-neutral-800/80 flex items-baseline gap-2">
+                  <div className="mt-3 pt-2.5 border-t border-[#1C2438] flex items-baseline gap-2">
                     <span className="text-base sm:text-lg font-black text-white font-jersey">
                       ₹{product.price.toLocaleString("en-IN")}
                     </span>
@@ -188,10 +179,10 @@ export const ProductGrid: React.FC<ProductGridProps> = ({
                 <button
                   type="button"
                   onClick={(e) => handleQuickAdd(e, product)}
-                  className={`w-full py-2.5 px-3 rounded-xl font-black text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition-all transform active:scale-95 ${
+                  className={`w-full py-2.5 px-3 rounded-none font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition-all ${
                     recentlyAddedId === product.id
-                      ? "bg-emerald-500 text-black"
-                      : "bg-neutral-800 hover:bg-emerald-500 text-neutral-200 hover:text-black border border-neutral-700/80 hover:border-emerald-500"
+                      ? "bg-[#C5A059] text-[#0A0D14]"
+                      : "bg-[#0B132B] hover:bg-[#C5A059] text-neutral-200 hover:text-[#0A0D14] border border-[#1C2438] hover:border-[#C5A059]"
                   }`}
                 >
                   {recentlyAddedId === product.id ? (

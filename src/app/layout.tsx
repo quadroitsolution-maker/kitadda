@@ -41,7 +41,7 @@ export default function RootLayout({
           strategy="lazyOnload"
         />
       </head>
-      <body className="min-h-full flex flex-col bg-[#09090b] text-neutral-100 selection:bg-emerald-500 selection:text-black">
+      <body className="min-h-full flex flex-col bg-[#0A0D14] text-neutral-100 selection:bg-[#C5A059] selection:text-[#0A0D14]">
         <CartProvider>
           {children}
         </CartProvider>

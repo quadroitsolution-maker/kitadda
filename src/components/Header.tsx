@@ -8,8 +8,6 @@ import {
   Menu, 
   X, 
   Search, 
-  ShieldCheck, 
-  Flame, 
   ChevronDown, 
   ArrowRight
 } from "lucide-react";
@@ -38,43 +36,41 @@ export const Header: React.FC = () => {
   const [showSearchModal, setShowSearchModal] = useState(false);
 
   const categories = [
-    { name: "Latest Drops", href: "#latest-drops", badge: "NEW" },
-    { name: "Retro Kits", href: "#retro-vault", badge: "HOT" },
-    { name: "International", href: "#category-international" },
-    { name: "Accessories", href: "#category-accessories" },
-    { name: "Clearance Sale", href: "#clearance", highlight: true },
+    { name: "Player Version", href: "/#latest-drops", badge: "MATCH" },
+    { name: "Fan Version", href: "/#latest-drops", badge: "24/25" },
+    { name: "World Cup", href: "/#latest-drops" },
+    { name: "Grip Socks", href: "/#latest-drops" },
   ];
 
   return (
     <>
-      {/* Top Hype Ticker Banner */}
-      <div className="bg-gradient-to-r from-emerald-600 via-neutral-900 to-emerald-600 text-white text-xs font-semibold py-1.5 px-4 overflow-hidden border-b border-emerald-500/20">
+      {/* Top Ticker Banner - Solid Navy Minimal */}
+      <div className="bg-[#0B132B] text-[#E8D09B] text-xs font-semibold py-2 px-4 overflow-hidden border-b border-[#1C2438]">
         <div className="animate-marquee whitespace-nowrap flex items-center gap-8 justify-around">
-          <span className="flex items-center gap-1.5">
-            <Flame className="w-3.5 h-3.5 text-emerald-400" />
-            WELCOME TO THE ADDA: 100% MASTER GRADE KITS
+          <span className="flex items-center gap-1.5 tracking-wider">
+            AUTHENTIC MASTER GRADE FOOTBALL JERSEYS • INDIA
           </span>
-          <span className="text-neutral-400">•</span>
-          <span className="flex items-center gap-1.5">
-            ⚡ FREE EXPRESS ALL-INDIA SHIPPING ON ₹1499+
+          <span className="text-[#3A4A72]">•</span>
+          <span className="flex items-center gap-1.5 tracking-wider">
+            FREE EXPRESS SHIPPING ON ORDERS ₹1499+
           </span>
-          <span className="text-neutral-400">•</span>
-          <span className="flex items-center gap-1.5">
-            📦 CASH ON DELIVERY AVAILABLE
+          <span className="text-[#3A4A72]">•</span>
+          <span className="flex items-center gap-1.5 tracking-wider">
+            CASH ON DELIVERY & INSTANT UPI AVAILABLE
           </span>
-          <span className="text-neutral-400">•</span>
-          <span className="flex items-center gap-1.5 text-emerald-300">
-            📸 INSTAGRAM OFFICIAL: @KIT.ADDA
+          <span className="text-[#3A4A72]">•</span>
+          <span className="flex items-center gap-1.5 text-[#DFB76C] tracking-wider">
+            INSTAGRAM OFFICIAL: @KIT.ADDA
           </span>
-          <span className="text-neutral-400">•</span>
-          <span className="flex items-center gap-1.5">
-            🔥 PLAYER NAME & NUMBER PRINTING AVAILABLE
+          <span className="text-[#3A4A72]">•</span>
+          <span className="flex items-center gap-1.5 tracking-wider">
+            OFFICIAL PLAYER NAME & NUMBER PRINTING
           </span>
         </div>
       </div>
 
-      {/* Main Header */}
-      <header className="sticky top-0 z-40 bg-[#09090b]/95 backdrop-blur-md border-b border-neutral-800/80">
+      {/* Main Header - Deep Charcoal with Navy/Champagne Accent */}
+      <header className="sticky top-0 z-40 bg-[#0A0D14]/95 backdrop-blur-md border-b border-[#1C2438]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16 sm:h-20">
             {/* Mobile Hamburger Button */}
@@ -82,7 +78,7 @@ export const Header: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setMobileMenuOpen(true)}
-                className="p-2 rounded-lg text-neutral-300 hover:text-white hover:bg-neutral-800 focus:outline-none"
+                className="p-2 text-neutral-300 hover:text-[#DFB76C] hover:bg-[#0E131F] rounded-none focus:outline-none"
                 aria-label="Open navigation menu"
               >
                 <Menu className="w-6 h-6" />
@@ -93,10 +89,10 @@ export const Header: React.FC = () => {
             <div className="flex items-center gap-3">
               <Link href="/" className="flex flex-col group">
                 <div className="flex items-center gap-2">
-                  <span className="text-2xl sm:text-3xl font-black tracking-tighter uppercase text-white font-jersey group-hover:text-emerald-400 transition-colors">
-                    KIT<span className="text-emerald-500">ADDA</span>
+                  <span className="text-2xl sm:text-3xl font-black tracking-tighter uppercase text-white font-jersey group-hover:text-[#DFB76C] transition-colors">
+                    KIT<span className="text-[#C5A059]">ADDA</span>
                   </span>
-                  <span className="hidden sm:inline-block bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">
+                  <span className="hidden sm:inline-block bg-[#0B132B] text-[#DFB76C] border border-[#C5A059]/40 text-[10px] font-bold px-2 py-0.5 rounded-none uppercase tracking-wider">
                     @kit.adda
                   </span>
                 </div>
@@ -110,10 +106,10 @@ export const Header: React.FC = () => {
             <nav className="hidden lg:flex items-center space-x-1">
               <Link
                 href="/#latest-drops"
-                className="px-3.5 py-2 text-sm font-bold text-neutral-200 hover:text-emerald-400 hover:bg-neutral-900/60 rounded-md transition-all uppercase tracking-wide flex items-center gap-1.5"
+                className="px-3.5 py-2 text-xs font-bold text-neutral-200 hover:text-[#DFB76C] hover:bg-[#0E131F] rounded-none transition-all uppercase tracking-wider flex items-center gap-1.5"
               >
                 <span>Latest Drops</span>
-                <span className="bg-red-500/20 text-red-400 border border-red-500/30 text-[9px] px-1.5 py-0.5 rounded font-bold">
+                <span className="bg-[#0B132B] text-[#DFB76C] border border-[#C5A059]/40 text-[9px] px-1.5 py-0.5 rounded-none font-bold">
                   NEW
                 </span>
               </Link>
@@ -126,79 +122,85 @@ export const Header: React.FC = () => {
               >
                 <button
                   type="button"
-                  className="px-3.5 py-2 text-sm font-bold text-neutral-200 hover:text-emerald-400 hover:bg-neutral-900/60 rounded-md transition-all uppercase tracking-wide flex items-center gap-1"
+                  className="px-3.5 py-2 text-xs font-bold text-neutral-200 hover:text-[#DFB76C] hover:bg-[#0E131F] rounded-none transition-all uppercase tracking-wider flex items-center gap-1"
                 >
                   <span>Categories</span>
                   <ChevronDown className="w-4 h-4 text-neutral-400" />
                 </button>
 
                 {megaMenuOpen && (
-                  <div className="absolute top-full left-0 w-80 bg-[#121215] border border-neutral-800 rounded-xl shadow-2xl p-4 py-3 grid gap-2 z-50 animate-in fade-in slide-in-from-top-2 duration-150">
+                  <div className="absolute top-full left-0 w-80 bg-[#0E131F] border border-[#1C2438] rounded-none shadow-2xl p-4 py-3 grid gap-2 z-50">
                     <Link
-                      href="/#category-club"
+                      href="/#latest-drops"
                       onClick={() => setMegaMenuOpen(false)}
-                      className="p-2.5 rounded-lg hover:bg-neutral-800/80 transition flex items-center justify-between group"
+                      className="p-2.5 rounded-none hover:bg-[#162035] transition flex items-center justify-between group"
                     >
                       <div>
-                        <div className="text-sm font-bold text-white group-hover:text-emerald-400">Club Kits</div>
-                        <div className="text-xs text-neutral-400">Real Madrid, Arsenal, Barca, Man City</div>
+                        <div className="text-sm font-bold text-white group-hover:text-[#DFB76C]">Player Version</div>
+                        <div className="text-xs text-neutral-400">Current Season Match-Spec Jerseys</div>
                       </div>
-                      <ArrowRight className="w-4 h-4 text-neutral-500 group-hover:text-emerald-400 transition" />
+                      <ArrowRight className="w-4 h-4 text-neutral-500 group-hover:text-[#DFB76C] transition" />
                     </Link>
                     <Link
-                      href="/#category-retro"
+                      href="/#latest-drops"
                       onClick={() => setMegaMenuOpen(false)}
-                      className="p-2.5 rounded-lg hover:bg-neutral-800/80 transition flex items-center justify-between group"
+                      className="p-2.5 rounded-none hover:bg-[#162035] transition flex items-center justify-between group"
                     >
                       <div>
-                        <div className="text-sm font-bold text-white group-hover:text-emerald-400">Retro Vault</div>
-                        <div className="text-xs text-neutral-400">07/08 Moscow, 06/07 Milan, 98 Ronaldo</div>
+                        <div className="text-sm font-bold text-white group-hover:text-[#DFB76C]">Fan Version</div>
+                        <div className="text-xs text-neutral-400">Current Season Stadium Fit Jerseys</div>
                       </div>
-                      <ArrowRight className="w-4 h-4 text-neutral-500 group-hover:text-emerald-400 transition" />
+                      <ArrowRight className="w-4 h-4 text-neutral-500 group-hover:text-[#DFB76C] transition" />
                     </Link>
                     <Link
-                      href="/#category-international"
+                      href="/#latest-drops"
                       onClick={() => setMegaMenuOpen(false)}
-                      className="p-2.5 rounded-lg hover:bg-neutral-800/80 transition flex items-center justify-between group"
+                      className="p-2.5 rounded-none hover:bg-[#162035] transition flex items-center justify-between group"
                     >
                       <div>
-                        <div className="text-sm font-bold text-white group-hover:text-emerald-400">International</div>
-                        <div className="text-xs text-neutral-400">Argentina 3-Stars, Portugal, France, Brazil</div>
+                        <div className="text-sm font-bold text-white group-hover:text-[#DFB76C]">World Cup</div>
+                        <div className="text-xs text-neutral-400">National Team Tournament Editions</div>
                       </div>
-                      <ArrowRight className="w-4 h-4 text-neutral-500 group-hover:text-emerald-400 transition" />
+                      <ArrowRight className="w-4 h-4 text-neutral-500 group-hover:text-[#DFB76C] transition" />
                     </Link>
                     <Link
-                      href="/#category-jackets"
+                      href="/#latest-drops"
                       onClick={() => setMegaMenuOpen(false)}
-                      className="p-2.5 rounded-lg hover:bg-neutral-800/80 transition flex items-center justify-between group"
+                      className="p-2.5 rounded-none hover:bg-[#162035] transition flex items-center justify-between group"
                     >
                       <div>
-                        <div className="text-sm font-bold text-white group-hover:text-emerald-400">Anthem Jackets</div>
-                        <div className="text-xs text-neutral-400">Windbreakers & Hoodies</div>
+                        <div className="text-sm font-bold text-white group-hover:text-[#DFB76C]">Grip Socks</div>
+                        <div className="text-xs text-neutral-400">Anti-Slip Football Grip Socks</div>
                       </div>
-                      <ArrowRight className="w-4 h-4 text-neutral-500 group-hover:text-emerald-400 transition" />
+                      <ArrowRight className="w-4 h-4 text-neutral-500 group-hover:text-[#DFB76C] transition" />
                     </Link>
                   </div>
                 )}
               </div>
 
               <Link
-                href="/#retro-vault"
-                className="px-3.5 py-2 text-sm font-bold text-neutral-200 hover:text-emerald-400 hover:bg-neutral-900/60 rounded-md transition-all uppercase tracking-wide"
+                href="/#latest-drops"
+                className="px-3.5 py-2 text-xs font-bold text-neutral-200 hover:text-[#DFB76C] hover:bg-[#0E131F] rounded-none transition-all uppercase tracking-wider"
               >
-                Retro Kits
+                Player Version
               </Link>
               <Link
-                href="/#international"
-                className="px-3.5 py-2 text-sm font-bold text-neutral-200 hover:text-emerald-400 hover:bg-neutral-900/60 rounded-md transition-all uppercase tracking-wide"
+                href="/#latest-drops"
+                className="px-3.5 py-2 text-xs font-bold text-neutral-200 hover:text-[#DFB76C] hover:bg-[#0E131F] rounded-none transition-all uppercase tracking-wider"
               >
-                International
+                Fan Version
               </Link>
               <Link
-                href="/#clearance"
-                className="px-3.5 py-2 text-sm font-extrabold text-amber-400 hover:text-amber-300 hover:bg-amber-400/10 rounded-md transition-all uppercase tracking-wide"
+                href="/#latest-drops"
+                className="px-3.5 py-2 text-xs font-bold text-neutral-200 hover:text-[#DFB76C] hover:bg-[#0E131F] rounded-none transition-all uppercase tracking-wider"
               >
-                Clearance Sale
+                World Cup
+              </Link>
+              <Link
+                href="/#latest-drops"
+                className="px-3.5 py-2 text-xs font-bold text-[#DFB76C] hover:text-[#E8D09B] hover:bg-[#0B132B] rounded-none transition-all uppercase tracking-wider"
+              >
+                Grip Socks
               </Link>
             </nav>
 
@@ -207,7 +209,7 @@ export const Header: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setShowSearchModal(true)}
-                className="p-2 text-neutral-300 hover:text-white hover:bg-neutral-800 rounded-lg transition"
+                className="p-2 text-neutral-300 hover:text-[#DFB76C] hover:bg-[#0E131F] rounded-none transition"
                 aria-label="Search football kits"
               >
                 <Search className="w-5 h-5" />
@@ -217,22 +219,22 @@ export const Header: React.FC = () => {
                 href="https://instagram.com"
                 target="_blank"
                 rel="noreferrer"
-                className="hidden sm:flex items-center gap-1.5 text-xs text-neutral-400 hover:text-pink-400 bg-neutral-900 border border-neutral-800 px-3 py-1.5 rounded-lg transition"
+                className="hidden sm:flex items-center gap-1.5 text-xs text-neutral-300 hover:text-[#DFB76C] bg-[#0E131F] border border-[#1C2438] px-3 py-1.5 rounded-none transition"
               >
                 <InstagramIcon className="w-3.5 h-3.5" />
                 <span className="font-semibold">@kit.adda</span>
               </a>
 
-              {/* Cart Drawer Trigger */}
+              {/* Cart Drawer Trigger - Champagne Gold */}
               <button
                 type="button"
                 onClick={() => setIsCartOpen(true)}
-                className="relative bg-emerald-500 hover:bg-emerald-400 text-black font-extrabold px-3.5 sm:px-4 py-2 rounded-lg flex items-center gap-2 transition-all transform active:scale-95 shadow-lg shadow-emerald-500/20"
+                className="relative bg-[#C5A059] hover:bg-[#DFB76C] text-[#0A0D14] font-black px-3.5 sm:px-4 py-2 rounded-none flex items-center gap-2 transition-all transform active:scale-95"
               >
                 <ShoppingBag className="w-4 h-4 stroke-[2.5]" />
                 <span className="text-xs sm:text-sm uppercase tracking-wider font-black">Cart</span>
                 {cartCount > 0 && (
-                  <span className="bg-black text-emerald-400 text-xs font-black px-1.5 py-0.5 rounded-full min-w-[20px] text-center border border-emerald-400/30">
+                  <span className="bg-[#0A0D14] text-[#DFB76C] text-xs font-black px-1.5 py-0.5 rounded-none min-w-[20px] text-center border border-[#C5A059]/50">
                     {cartCount}
                   </span>
                 )}
@@ -249,12 +251,12 @@ export const Header: React.FC = () => {
             className="fixed inset-0 bg-black/80 backdrop-blur-sm"
             onClick={() => setMobileMenuOpen(false)}
           />
-          <div className="relative w-4/5 max-w-sm bg-[#0d0d10] border-r border-neutral-800 h-full p-6 flex flex-col justify-between overflow-y-auto">
+          <div className="relative w-4/5 max-w-sm bg-[#0A0D14] border-r border-[#1C2438] h-full p-6 flex flex-col justify-between overflow-y-auto">
             <div>
-              <div className="flex items-center justify-between pb-6 border-b border-neutral-800">
+              <div className="flex items-center justify-between pb-6 border-b border-[#1C2438]">
                 <div className="flex flex-col">
                   <span className="text-2xl font-black uppercase text-white font-jersey">
-                    KIT<span className="text-emerald-500">ADDA</span>
+                    KIT<span className="text-[#C5A059]">ADDA</span>
                   </span>
                   <span className="text-[10px] text-neutral-400 uppercase tracking-widest">
                     @kit.adda • Football Hub
@@ -269,17 +271,17 @@ export const Header: React.FC = () => {
                 </button>
               </div>
 
-              <div className="mt-6 flex flex-col space-y-3">
+              <div className="mt-6 flex flex-col space-y-2">
                 {categories.map((cat) => (
                   <Link
                     key={cat.name}
                     href={cat.href}
                     onClick={() => setMobileMenuOpen(false)}
-                    className="flex items-center justify-between p-3 rounded-lg text-neutral-200 hover:text-white hover:bg-neutral-800/60 font-bold uppercase tracking-wide text-sm transition"
+                    className="flex items-center justify-between p-3 rounded-none text-neutral-200 hover:text-[#DFB76C] hover:bg-[#0E131F] font-bold uppercase tracking-wide text-xs transition"
                   >
                     <span>{cat.name}</span>
                     {cat.badge && (
-                      <span className="bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 text-[10px] px-2 py-0.5 rounded font-black">
+                      <span className="bg-[#0B132B] text-[#DFB76C] border border-[#C5A059]/40 text-[10px] px-2 py-0.5 rounded-none font-black">
                         {cat.badge}
                       </span>
                     )}
@@ -288,15 +290,15 @@ export const Header: React.FC = () => {
               </div>
             </div>
 
-            <div className="pt-6 border-t border-neutral-800 space-y-3">
+            <div className="pt-6 border-t border-[#1C2438] space-y-3">
               <a
                 href="https://instagram.com"
                 target="_blank"
                 rel="noreferrer"
-                className="flex items-center justify-center gap-2 w-full py-2.5 bg-neutral-900 border border-neutral-800 rounded-lg text-xs font-bold text-neutral-300 hover:text-white"
+                className="flex items-center justify-center gap-2 w-full py-2.5 bg-[#0B132B] border border-[#1C2438] rounded-none text-xs font-bold text-[#DFB76C] hover:bg-[#162035]"
               >
-                <InstagramIcon className="w-4 h-4 text-pink-400" />
-                <span>Follow us on Instagram @kit.adda</span>
+                <InstagramIcon className="w-4 h-4 text-[#DFB76C]" />
+                <span>Follow on Instagram @kit.adda</span>
               </a>
               <div className="text-[11px] text-center text-neutral-400">
                 100% Master Grade Quality Guaranteed
@@ -308,10 +310,10 @@ export const Header: React.FC = () => {
 
       {/* Quick Search Modal */}
       {showSearchModal && (
-        <div className="fixed inset-0 z-50 flex items-start justify-center pt-20 px-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-150">
-          <div className="relative w-full max-w-xl bg-[#121215] border border-neutral-800 rounded-2xl shadow-2xl p-6">
-            <div className="flex items-center justify-between pb-4 border-b border-neutral-800">
-              <div className="flex items-center gap-2 text-emerald-400 font-bold text-sm uppercase">
+        <div className="fixed inset-0 z-50 flex items-start justify-center pt-20 px-4 bg-black/85 backdrop-blur-sm animate-in fade-in duration-150">
+          <div className="relative w-full max-w-xl bg-[#0E131F] border border-[#1C2438] rounded-none shadow-2xl p-6">
+            <div className="flex items-center justify-between pb-4 border-b border-[#1C2438]">
+              <div className="flex items-center gap-2 text-[#DFB76C] font-bold text-xs uppercase tracking-wider">
                 <Search className="w-4 h-4" />
                 <span>Search Kit Adda Vault</span>
               </div>
@@ -330,7 +332,7 @@ export const Header: React.FC = () => {
                 placeholder="Search jerseys (e.g. Madrid, Arsenal, Messi, Ronaldo, Retro)..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full bg-[#09090b] border border-neutral-700 rounded-xl px-4 py-3 text-white placeholder-neutral-500 focus:outline-none focus:border-emerald-500"
+                className="w-full bg-[#0A0D14] border border-[#1C2438] rounded-none px-4 py-3 text-white placeholder-neutral-500 focus:outline-none focus:border-[#C5A059] text-sm"
               />
             </div>
             <div className="mt-4 flex flex-wrap gap-2">
@@ -342,7 +344,7 @@ export const Header: React.FC = () => {
                   onClick={() => {
                     setSearchQuery(term);
                   }}
-                  className="text-xs bg-neutral-900 border border-neutral-800 hover:border-emerald-500/50 text-neutral-300 px-2.5 py-1 rounded-full transition"
+                  className="text-xs bg-[#0B132B] border border-[#1C2438] hover:border-[#C5A059]/60 text-neutral-300 px-3 py-1 rounded-none transition"
                 >
                   {term}
                 </button>
