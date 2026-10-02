@@ -163,30 +163,30 @@ export const PRODUCTS: Product[] = [
 export const CATEGORIES = [
   {
     id: "player-version",
-    name: "Player Version",
+    name: "PLAYER JERSEYS",
     subtitle: "Current Season Match Spec",
-    image: "https://images.unsplash.com/photo-1522778119026-d647f0596c20?auto=format&fit=crop&w=400&q=80",
+    image: "https://images.unsplash.com/photo-1522778119026-d647f0596c20?auto=format&fit=crop&w=600&q=85",
     count: "Match Fit",
   },
   {
     id: "fan-version",
-    name: "Fan Version",
+    name: "FAN JERSEYS",
     subtitle: "Current Season Stadium Fit",
-    image: "https://images.unsplash.com/photo-1577223625816-7546f13df25d?auto=format&fit=crop&w=400&q=80",
+    image: "https://images.unsplash.com/photo-1577223625816-7546f13df25d?auto=format&fit=crop&w=600&q=85",
     count: "Stadium Fit",
   },
   {
     id: "accessories",
-    name: "Grip Socks",
+    name: "ACCESSORIES",
     subtitle: "Anti-Slip Pro Grip Gear",
-    image: "https://images.unsplash.com/photo-1586350977771-b3b0abd50c82?auto=format&fit=crop&w=400&q=80",
+    image: "https://images.unsplash.com/photo-1579952363873-27f3bade9f55?auto=format&fit=crop&w=600&q=85",
     count: "Accessories",
   },
   {
     id: "world-cup",
-    name: "World Cup",
+    name: "WORLD CUP",
     subtitle: "National Team Editions",
-    image: "https://images.unsplash.com/photo-1543326727-cf6c39e8f84c?auto=format&fit=crop&w=400&q=80",
+    image: "https://images.unsplash.com/photo-1543326727-cf6c39e8f84c?auto=format&fit=crop&w=600&q=85",
     count: "Tournament",
   },
 ];
