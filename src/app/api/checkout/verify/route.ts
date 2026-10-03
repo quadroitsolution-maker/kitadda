@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import crypto from "crypto";
 import { getServiceSupabase } from "@/lib/supabase";
+import { createOrder } from "@/lib/db";
 import { CartItem } from "@/types";
 
 export async function POST(req: NextRequest) {
@@ -76,6 +77,29 @@ export async function POST(req: NextRequest) {
       }
     } catch (dbErr) {
       console.warn("Supabase record write skipped or failed (demo mode active)", dbErr);
+    }
+
+    // Persist order in local working backend database & decrement inventory
+    try {
+      const subtotal = items.reduce(
+        (acc: number, item: { unit_price: number; quantity: number }) => acc + item.unit_price * item.quantity,
+        0
+      );
+      const totalAmount = subtotal + (subtotal >= 1499 ? 0 : 99);
+
+      await createOrder({
+        total_amount: totalAmount,
+        payment_status: payment_method === "cod" ? "pending" : "paid",
+        payment_method: payment_method || "razorpay",
+        razorpay_order_id: razorpay_order_id || null,
+        razorpay_payment_id: razorpay_payment_id || null,
+        razorpay_signature: razorpay_signature || null,
+        shipping_address,
+        status: "processing",
+        items,
+      });
+    } catch (localDbErr) {
+      console.error("Local database order creation error:", localDbErr);
     }
 
     return NextResponse.json({

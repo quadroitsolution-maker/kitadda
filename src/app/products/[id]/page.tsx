@@ -2,6 +2,7 @@ import React from "react";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
 import { PRODUCTS } from "@/data/products";
+import { getProductById } from "@/lib/db";
 import { Header } from "@/components/Header";
 import { ProductDetailsView } from "@/components/ProductDetailsView";
 import { CartDrawer } from "@/components/CartDrawer";
@@ -14,7 +15,7 @@ interface PageProps {
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { id } = await params;
-  const product = PRODUCTS.find((p) => p.id === id);
+  const product = (await getProductById(id)) || PRODUCTS.find((p) => p.id === id);
 
   if (!product) {
     return {
@@ -35,7 +36,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export default async function ProductPage({ params }: PageProps) {
   const { id } = await params;
-  const product = PRODUCTS.find((p) => p.id === id);
+  const product = (await getProductById(id)) || PRODUCTS.find((p) => p.id === id);
 
   if (!product) {
     notFound();

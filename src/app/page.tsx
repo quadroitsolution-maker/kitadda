@@ -36,6 +36,18 @@ const InstagramIcon: React.FC<{ className?: string }> = ({ className = "w-4 h-4"
 
 export default function HomePage() {
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
+  const [products, setProducts] = useState(PRODUCTS);
+
+  React.useEffect(() => {
+    fetch("/api/products")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success && data.products && data.products.length > 0) {
+          setProducts(data.products);
+        }
+      })
+      .catch((err) => console.warn("Live products fetch fallback to static:", err));
+  }, []);
 
   const handleCategorySelect = (catId: string) => {
     setSelectedCategory(catId);
@@ -62,7 +74,7 @@ export default function HomePage() {
 
         {/* 4. Latest Drops 4-Column Product Grid */}
         <ProductGrid
-          products={PRODUCTS}
+          products={products}
           selectedCategory={selectedCategory}
           onSelectCategory={setSelectedCategory}
         />

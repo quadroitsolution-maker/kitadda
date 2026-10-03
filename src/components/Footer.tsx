@@ -159,6 +159,11 @@ export const Footer: React.FC = () => {
                 Contact: support@kitadda.com
               </Link>
             </li>
+            <li>
+              <Link href="/admin" className="hover:text-[#DFB76C] transition text-[#DFB76C]/90 font-bold">
+                ⚡ Store Manager (Admin)
+              </Link>
+            </li>
           </ul>
         </div>
 
