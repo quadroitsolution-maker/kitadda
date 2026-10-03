@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Image from "next/image";
 import { useCart } from "@/context/CartContext";
 import confetti from "canvas-confetti";
 import { 
@@ -8,7 +9,6 @@ import {
   ShieldCheck, 
   CreditCard, 
   Banknote, 
-  CheckCircle2, 
   MessageCircle,
   MapPin,
   User,
@@ -156,6 +156,7 @@ export const CheckoutModal: React.FC = () => {
         currency: "INR",
         name: "Kit Adda Official",
         description: `Football Kits Order (${items.length} items)`,
+        image: "/logo.jpg",
         order_id: orderData.order_id,
         prefill: {
           name: fullName.trim(),
@@ -254,8 +255,16 @@ export const CheckoutModal: React.FC = () => {
       <div className="relative w-full max-w-xl bg-[#0A0D14] border border-[#1C2438] rounded-none shadow-2xl text-white overflow-hidden my-8">
         {/* Header Bar - Sharp Boxy Minimal */}
         <div className="p-4 sm:p-5 border-b border-[#1C2438] flex items-center justify-between bg-[#0E131F]">
-          <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-none bg-[#C5A059]" />
+          <div className="flex items-center gap-2.5">
+            <div className="relative w-6 h-6 rounded-full overflow-hidden border border-[#C5A059]/40 shrink-0">
+              <Image
+                src="/logo.jpg"
+                alt="Kit Adda"
+                fill
+                sizes="24px"
+                className="object-cover object-center"
+              />
+            </div>
             <span className="text-sm sm:text-base font-black uppercase tracking-wider font-jersey">
               {orderConfirmed ? "Order Confirmed!" : "Fast 1-Click Checkout"}
             </span>
@@ -272,8 +281,14 @@ export const CheckoutModal: React.FC = () => {
         {/* If Order Confirmed: Show High-Converting Success Screen */}
         {orderConfirmed ? (
           <div className="p-6 sm:p-8 text-center space-y-6">
-            <div className="w-16 h-16 rounded-none bg-[#0B132B] border border-[#C5A059]/40 text-[#DFB76C] flex items-center justify-center mx-auto">
-              <CheckCircle2 className="w-8 h-8" />
+            <div className="relative w-20 h-20 rounded-full overflow-hidden border-2 border-[#C5A059] mx-auto shadow-lg shadow-[#C5A059]/20">
+              <Image
+                src="/logo.jpg"
+                alt="Kit Adda"
+                fill
+                sizes="80px"
+                className="object-cover object-center"
+              />
             </div>
 
             <div>

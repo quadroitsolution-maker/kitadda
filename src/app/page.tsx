@@ -61,7 +61,11 @@ export default function HomePage() {
         />
 
         {/* 4. Latest Drops 4-Column Product Grid */}
-        <ProductGrid products={PRODUCTS} />
+        <ProductGrid
+          products={PRODUCTS}
+          selectedCategory={selectedCategory}
+          onSelectCategory={setSelectedCategory}
+        />
 
         {/* 5. Trust & Quality Banner - Deep Charcoal & Navy */}
         <section className="py-14 bg-[#0B0E17] border-y border-[#1C2438]">

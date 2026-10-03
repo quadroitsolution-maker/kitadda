@@ -16,12 +16,18 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Kit Adda | India's Ultimate Football Hub (@kit.adda)",
-  description: "Exclusive master-grade football jerseys, retro kits, international gear, and player version kits. Welcome to the Adda. Wear Your Passion.",
-  keywords: ["football jerseys", "kit adda", "retro football kits", "india football store", "messi jersey", "ronaldo jersey", "bellingham kit"],
+  description: "Exclusive master-grade football jerseys, retro kits, international gear, and player version kits. Welcome to the Adda. Wear The Game.",
+  keywords: ["football jerseys", "kit adda", "retro football kits", "india football store", "messi jersey", "ronaldo jersey", "bellingham kit", "wear the game"],
+  icons: {
+    icon: "/logo.jpg",
+    shortcut: "/logo.jpg",
+    apple: "/logo.jpg",
+  },
   openGraph: {
     title: "Kit Adda | India's Football Jersey Culture",
     description: "Welcome to the Adda. Official Fan & Player Version Football Kits with custom printing across India.",
     type: "website",
+    images: [{ url: "/logo.jpg" }],
   },
 };
 

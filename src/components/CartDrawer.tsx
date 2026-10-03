@@ -6,7 +6,6 @@ import { useCart } from "@/context/CartContext";
 import { 
   X, 
   Trash2, 
-  ShoppingBag, 
   ArrowRight, 
   ShieldCheck, 
   Truck, 
@@ -52,7 +51,15 @@ export const CartDrawer: React.FC = () => {
           {/* Drawer Header */}
           <div className="p-4 sm:p-5 border-b border-[#1C2438] flex items-center justify-between bg-[#0E131F]">
             <div className="flex items-center gap-2.5">
-              <ShoppingBag className="w-5 h-5 text-[#DFB76C]" />
+              <div className="relative w-7 h-7 rounded-full overflow-hidden border border-[#C5A059]/40 shrink-0">
+                <Image
+                  src="/logo.jpg"
+                  alt="Kit Adda"
+                  fill
+                  sizes="28px"
+                  className="object-cover object-center"
+                />
+              </div>
               <h2 className="text-base sm:text-lg font-black uppercase tracking-wider font-jersey">
                 Your Bag ({cartCount})
               </h2>
@@ -91,8 +98,14 @@ export const CartDrawer: React.FC = () => {
           <div className="flex-1 overflow-y-auto p-4 sm:p-5 space-y-4 divide-y divide-[#1C2438]">
             {items.length === 0 ? (
               <div className="h-full flex flex-col items-center justify-center text-center p-6 space-y-4">
-                <div className="w-16 h-16 rounded-none bg-[#0E131F] border border-[#1C2438] flex items-center justify-center text-[#DFB76C]">
-                  <ShoppingBag className="w-8 h-8" />
+                <div className="relative w-16 h-16 rounded-full overflow-hidden border border-[#C5A059]/40 shrink-0">
+                  <Image
+                    src="/logo.jpg"
+                    alt="Kit Adda"
+                    fill
+                    sizes="64px"
+                    className="object-cover object-center"
+                  />
                 </div>
                 <div>
                   <h3 className="text-base font-bold text-white uppercase font-jersey">

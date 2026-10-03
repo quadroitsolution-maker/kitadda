@@ -7,17 +7,31 @@ import { Product } from "@/types";
 
 interface ProductGridProps {
   products: Product[];
+  selectedCategory?: string;
+  onSelectCategory?: (categoryId: string) => void;
 }
 
-export const ProductGrid: React.FC<ProductGridProps> = ({ products }) => {
-  const [activeFilter, setActiveFilter] = useState<string>("all");
+export const ProductGrid: React.FC<ProductGridProps> = ({
+  products,
+  selectedCategory,
+  onSelectCategory,
+}) => {
+  const [internalFilter, setInternalFilter] = useState<string>("all");
+  const activeFilter = selectedCategory !== undefined ? selectedCategory : internalFilter;
+
+  const handleFilterChange = (id: string) => {
+    setInternalFilter(id);
+    if (onSelectCategory) {
+      onSelectCategory(id);
+    }
+  };
 
   const filters = [
-    { id: "all", label: "All" },
-    { id: "player-version", label: "Player Version" },
-    { id: "fan-version", label: "Fan Version" },
-    { id: "world-cup", label: "World Cup" },
-    { id: "accessories", label: "Grip Socks" },
+    { id: "all", label: "ALL" },
+    { id: "player-version", label: "PLAYER VERSION" },
+    { id: "fan-version", label: "FAN VERSION" },
+    { id: "world-cup", label: "WORLD CUP" },
+    { id: "accessories", label: "GRIP SOCKS" },
   ];
 
   const filteredProducts = activeFilter === "all"
@@ -26,27 +40,25 @@ export const ProductGrid: React.FC<ProductGridProps> = ({ products }) => {
 
   return (
     <section id="latest-drops" className="py-12 sm:py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      {/* Header & Filter Tabs */}
-      <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 sm:mb-10 gap-4">
-        <div>
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-white uppercase tracking-tight font-jersey">
-            Latest Drops
-          </h2>
-        </div>
+      {/* Header & Filter Tabs - Left-aligned & minimal */}
+      <div className="flex flex-col items-start gap-3.5 sm:gap-4 mb-8 sm:mb-10">
+        <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-white uppercase tracking-tight font-jersey">
+          Latest Drops
+        </h2>
 
-        {/* Filter Tabs - Minimal Sharp Buttons */}
-        <div className="flex items-center gap-1.5 overflow-x-auto pb-2 sm:pb-0 scrollbar-none">
+        {/* Filter Tabs - Left aligned directly below heading */}
+        <div className="flex items-center gap-1.5 sm:gap-2 overflow-x-auto w-full pb-1 scrollbar-none">
           {filters.map((filter) => {
             const isActive = activeFilter === filter.id;
             return (
               <button
                 key={filter.id}
                 type="button"
-                onClick={() => setActiveFilter(filter.id)}
-                className={`px-3.5 py-1.5 rounded-none text-xs font-bold uppercase tracking-wider whitespace-nowrap transition-all border ${
+                onClick={() => handleFilterChange(filter.id)}
+                className={`px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-none text-xs font-bold uppercase tracking-wider whitespace-nowrap transition-colors border ${
                   isActive
-                    ? "bg-[#C5A059] text-[#0A0D14] border-[#C5A059]"
-                    : "bg-[#0E131F] text-neutral-400 hover:text-white hover:bg-[#162035] border-[#1C2438]"
+                    ? "bg-[#C5A059] text-[#0A0D14] border-[#C5A059] font-black"
+                    : "bg-[#0B101D] text-neutral-300 hover:text-white hover:bg-[#12192B] border-[#1C253B] hover:border-[#C5A059]/40"
                 }`}
               >
                 {filter.label}

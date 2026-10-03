@@ -108,9 +108,17 @@ export const ProductDetailsView: React.FC<ProductDetailsViewProps> = ({ product 
                 {product.badge}
               </span>
             )}
-            <div className="absolute bottom-4 right-4 bg-[#0B132B]/90 border border-[#1C2438] rounded-none px-3 py-1 text-xs font-bold text-neutral-300 flex items-center gap-1.5">
-              <ShieldCheck className="w-3.5 h-3.5 text-[#DFB76C]" />
-              <span>100% Authentic Quality</span>
+            <div className="absolute bottom-4 right-4 bg-[#0B132B]/90 border border-[#1C2438] rounded-none px-3 py-1.5 text-xs font-bold text-neutral-300 flex items-center gap-2 backdrop-blur-sm">
+              <div className="relative w-4 h-4 rounded-full overflow-hidden border border-[#C5A059]/40 shrink-0">
+                <Image
+                  src="/logo.jpg"
+                  alt="Kit Adda Verified"
+                  fill
+                  sizes="16px"
+                  className="object-cover object-center"
+                />
+              </div>
+              <span>Kit Adda Master Grade</span>
             </div>
           </div>
 

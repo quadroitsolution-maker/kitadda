@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { useCart } from "@/context/CartContext";
 import { 
@@ -46,10 +47,20 @@ export const Header: React.FC = () => {
               </button>
             </div>
 
-            {/* Brand Logo - Pure & Minimal */}
+            {/* Brand Logo - Official Emblem + Name */}
             <div className="flex items-center">
-              <Link href="/" className="flex items-center">
-                <span className="text-2xl font-black tracking-tight uppercase text-white font-jersey hover:text-[#DFB76C] transition-colors">
+              <Link href="/" className="flex items-center gap-2.5 group">
+                <div className="relative w-9 h-9 sm:w-10 sm:h-10 shrink-0 overflow-hidden rounded-full border border-[#C5A059]/40 group-hover:border-[#C5A059] transition-colors">
+                  <Image
+                    src="/logo.jpg"
+                    alt="Kit Adda"
+                    fill
+                    sizes="40px"
+                    className="object-cover object-center"
+                    priority
+                  />
+                </div>
+                <span className="text-xl sm:text-2xl font-black tracking-tight uppercase text-white font-jersey group-hover:text-[#DFB76C] transition-colors">
                   KIT<span className="text-[#C5A059]">ADDA</span>
                 </span>
               </Link>
@@ -108,9 +119,20 @@ export const Header: React.FC = () => {
           <div className="relative w-4/5 max-w-xs bg-[#0A0D14] border-r border-[#1C2438] h-full p-6 flex flex-col justify-between overflow-y-auto">
             <div>
               <div className="flex items-center justify-between pb-5 border-b border-[#1C2438]">
-                <span className="text-xl font-black uppercase text-white font-jersey">
-                  KIT<span className="text-[#C5A059]">ADDA</span>
-                </span>
+                <div className="flex items-center gap-2.5">
+                  <div className="relative w-8 h-8 rounded-full overflow-hidden border border-[#C5A059]/40 shrink-0">
+                    <Image
+                      src="/logo.jpg"
+                      alt="Kit Adda"
+                      fill
+                      sizes="32px"
+                      className="object-cover object-center"
+                    />
+                  </div>
+                  <span className="text-xl font-black uppercase text-white font-jersey">
+                    KIT<span className="text-[#C5A059]">ADDA</span>
+                  </span>
+                </div>
                 <button
                   type="button"
                   onClick={() => setMobileMenuOpen(false)}
