@@ -103,27 +103,22 @@ export const Footer: React.FC = () => {
           <ul className="space-y-2.5">
             <li>
               <Link href="/#latest-drops" className="hover:text-[#DFB76C] transition">
-                Latest 2024/25 Season Drops
+                Current Season Player Jerseys
               </Link>
             </li>
             <li>
-              <Link href="/#retro-vault" className="hover:text-[#DFB76C] transition">
-                Retro Vault (CR7, Messi, Zidane)
+              <Link href="/#latest-drops" className="hover:text-[#DFB76C] transition">
+                Current Season Fan Jerseys
               </Link>
             </li>
             <li>
-              <Link href="/#category-international" className="hover:text-[#DFB76C] transition">
-                International Tournament Kits
+              <Link href="/#latest-drops" className="hover:text-[#DFB76C] transition">
+                Anti-Slip Pro Grip Socks
               </Link>
             </li>
             <li>
-              <Link href="/#category-jackets" className="hover:text-[#DFB76C] transition">
-                Anthem Jackets &amp; Tracksuits
-              </Link>
-            </li>
-            <li>
-              <Link href="/#clearance" className="hover:text-[#DFB76C] transition">
-                End of Season Sale
+              <Link href="/#latest-drops" className="hover:text-[#DFB76C] transition">
+                World Cup Tournament Kits
               </Link>
             </li>
           </ul>

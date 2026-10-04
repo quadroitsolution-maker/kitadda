@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useCart } from "@/context/CartContext";
@@ -13,16 +13,28 @@ import {
 
 export const Header: React.FC = () => {
   const { cartCount, setIsCartOpen } = useCart();
+  const [mounted, setMounted] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [showSearchModal, setShowSearchModal] = useState(false);
 
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   const categories = [
-    { name: "Player Version", href: "/#latest-drops" },
-    { name: "Fan Version", href: "/#latest-drops" },
-    { name: "World Cup", href: "/#latest-drops" },
-    { name: "Grip Socks", href: "/#latest-drops" },
+    { name: "Player Version", id: "player-version", href: "/#latest-drops" },
+    { name: "Fan Version", id: "fan-version", href: "/#latest-drops" },
+    { name: "Grip Socks", id: "accessories", href: "/#latest-drops" },
+    { name: "World Cup", id: "world-cup", href: "/#latest-drops" },
   ];
+
+  const handleCategoryNav = (catId: string) => {
+    if (typeof window !== "undefined") {
+      window.dispatchEvent(new CustomEvent("kitadda:selectCategory", { detail: catId }));
+    }
+    setMobileMenuOpen(false);
+  };
 
   return (
     <>
@@ -72,6 +84,7 @@ export const Header: React.FC = () => {
                 <Link
                   key={cat.name}
                   href={cat.href}
+                  onClick={() => handleCategoryNav(cat.id)}
                   className="text-xs font-bold text-neutral-300 hover:text-[#DFB76C] uppercase tracking-wider transition-colors"
                 >
                   {cat.name}
@@ -98,7 +111,7 @@ export const Header: React.FC = () => {
               >
                 <ShoppingBag className="w-4 h-4" />
                 <span>Cart</span>
-                {cartCount > 0 && (
+                {mounted && cartCount > 0 && (
                   <span className="text-[#DFB76C] font-mono">
                     ({cartCount})
                   </span>
@@ -147,7 +160,7 @@ export const Header: React.FC = () => {
                   <Link
                     key={cat.name}
                     href={cat.href}
-                    onClick={() => setMobileMenuOpen(false)}
+                    onClick={() => handleCategoryNav(cat.id)}
                     className="p-3 text-neutral-200 hover:text-[#DFB76C] hover:bg-[#0E131F] font-bold uppercase tracking-wider text-xs transition"
                   >
                     {cat.name}

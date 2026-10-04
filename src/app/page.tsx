@@ -49,6 +49,21 @@ export default function HomePage() {
       .catch((err) => console.warn("Live products fetch fallback to static:", err));
   }, []);
 
+  React.useEffect(() => {
+    const handleCategoryEvent = (e: Event) => {
+      const customEvent = e as CustomEvent<string>;
+      if (customEvent.detail) {
+        setSelectedCategory(customEvent.detail);
+        const dropsElement = document.getElementById("latest-drops");
+        if (dropsElement) {
+          dropsElement.scrollIntoView({ behavior: "smooth" });
+        }
+      }
+    };
+    window.addEventListener("kitadda:selectCategory", handleCategoryEvent);
+    return () => window.removeEventListener("kitadda:selectCategory", handleCategoryEvent);
+  }, []);
+
   const handleCategorySelect = (catId: string) => {
     setSelectedCategory(catId);
     const dropsElement = document.getElementById("latest-drops");

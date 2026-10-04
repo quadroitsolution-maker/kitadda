@@ -26,14 +26,15 @@ import {
   MessageCircle,
   DollarSign
 } from "lucide-react";
+import { ProductImageUploadSection } from "@/components/admin/ProductImageUploadSection";
 
 type AdminTab = "dashboard" | "products" | "inventory" | "orders" | "hostinger";
 
 const CATEGORY_LABELS: Record<ProductCategory, string> = {
-  "player-version": "Player Version",
-  "fan-version": "Fan Version",
+  "player-version": "Player Version (Current Season)",
+  "fan-version": "Fan Version (Current Season)",
+  "accessories": "Accessories (Grip Socks)",
   "world-cup": "World Cup",
-  "accessories": "Grip Socks & Accessories",
   "club": "Club Jerseys",
   "retro": "Retro Vault",
   "international": "International",
@@ -204,7 +205,7 @@ export default function AdminDashboardPage() {
       price: 1199,
       compare_at_price: 2199,
       category: "fan-version",
-      image_url: "https://images.unsplash.com/photo-1522778119026-d647f0596c20?auto=format&fit=crop&w=800&q=80",
+      image_url: "",
       galleryInput: "",
       stock_status: "in_stock",
       stock_quantity: 20,
@@ -248,6 +249,10 @@ export default function AdminDashboardPage() {
   // Submit Product Create or Update
   const handleProductSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!formData.image_url) {
+      showToast("Please upload or provide a main image for the product.", "error");
+      return;
+    }
     try {
       const gallery = formData.galleryInput
         ? formData.galleryInput.split(",").map((s) => s.trim()).filter(Boolean)
@@ -879,13 +884,10 @@ export default function AdminDashboardPage() {
                     className="bg-[#0A0D14] border border-[#1C2438] px-3 py-2 text-xs text-neutral-200 focus:outline-none focus:border-[#C5A059]"
                   >
                     <option value="all">All Categories</option>
-                    <option value="player-version">Player Version</option>
-                    <option value="fan-version">Fan Version</option>
+                    <option value="player-version">Player Version (Current Season)</option>
+                    <option value="fan-version">Fan Version (Current Season)</option>
+                    <option value="accessories">Accessories - Grip Socks</option>
                     <option value="world-cup">World Cup</option>
-                    <option value="accessories">Grip Socks</option>
-                    <option value="club">Club</option>
-                    <option value="retro">Retro Vault</option>
-                    <option value="jackets">Jackets</option>
                   </select>
 
                   <select
@@ -1448,13 +1450,10 @@ export default function AdminDashboardPage() {
                     onChange={(e) => setFormData({ ...formData, category: e.target.value as ProductCategory })}
                     className="w-full bg-[#0E131F] border border-[#1C2438] px-3 py-2 text-xs text-white focus:outline-none focus:border-[#C5A059]"
                   >
-                    <option value="fan-version">Fan Version</option>
-                    <option value="player-version">Player Version</option>
+                    <option value="player-version">Player Version (Current Season)</option>
+                    <option value="fan-version">Fan Version (Current Season)</option>
+                    <option value="accessories">Accessories - Grip Socks</option>
                     <option value="world-cup">World Cup</option>
-                    <option value="accessories">Grip Socks &amp; Accessories</option>
-                    <option value="club">Club Jerseys</option>
-                    <option value="retro">Retro Vault</option>
-                    <option value="jackets">Jackets &amp; Merch</option>
                   </select>
                 </div>
               </div>
@@ -1540,33 +1539,13 @@ export default function AdminDashboardPage() {
                 </div>
               </div>
 
-              {/* Images */}
-              <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-neutral-300 mb-1">
-                  Main Image URL *
-                </label>
-                <input
-                  type="url"
-                  required
-                  placeholder="https://..."
-                  value={formData.image_url}
-                  onChange={(e) => setFormData({ ...formData, image_url: e.target.value })}
-                  className="w-full bg-[#0E131F] border border-[#1C2438] px-3 py-2 text-xs text-white font-mono focus:outline-none focus:border-[#C5A059]"
-                />
-              </div>
-
-              <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-neutral-300 mb-1">
-                  Additional Gallery Image URLs (comma separated)
-                </label>
-                <input
-                  type="text"
-                  placeholder="https://..., https://..."
-                  value={formData.galleryInput}
-                  onChange={(e) => setFormData({ ...formData, galleryInput: e.target.value })}
-                  className="w-full bg-[#0E131F] border border-[#1C2438] px-3 py-2 text-xs text-white font-mono focus:outline-none focus:border-[#C5A059]"
-                />
-              </div>
+              {/* Image Upload and Gallery Section */}
+              <ProductImageUploadSection
+                mainImageUrl={formData.image_url}
+                onMainImageChange={(url) => setFormData({ ...formData, image_url: url })}
+                galleryUrlsString={formData.galleryInput}
+                onGalleryUrlsChange={(urls) => setFormData({ ...formData, galleryInput: urls })}
+              />
 
               {/* Footer CTA */}
               <div className="pt-4 border-t border-[#1C2438] flex items-center justify-end gap-3">

@@ -2,12 +2,12 @@
   {
     "id": "brazil-2026-copa-kit",
     "sku": "KA-186219",
-    "title": "Brazil 2026 Copa Kit",
+    "title": "Abu cock",
     "description": "",
     "price": 1299,
     "compare_at_price": 2199,
     "category": "world-cup",
-    "image_url": "https://images.unsplash.com/photo-1543326727-cf6c39e8f84c?auto=format&fit=crop&w=800&q=80",
+    "image_url": "/uploads/whatsapp-image-2026-06-25-at-2-1791124933209-ymu5u.jpeg",
     "gallery": [
       "https://images.unsplash.com/photo-1543326727-cf6c39e8f84c?auto=format&fit=crop&w=800&q=80"
     ],
@@ -27,11 +27,12 @@
       "XXL"
     ],
     "created_at": "2026-10-03T17:57:57.693Z",
-    "updated_at": "2026-10-03T17:57:57.693Z"
+    "updated_at": "2026-10-04T14:42:27.726Z",
+    "galleryInput": "https://images.unsplash.com/photo-1543326727-cf6c39e8f84c?auto=format&fit=crop&w=800&q=80"
   },
   {
     "id": "rm-home-2425",
-    "title": "Real Madrid 2024/25 Home Jersey",
+    "title": "mridul cock",
     "description": "Official 24/25 Los Blancos home shirt. Breathable fabric with houndstooth texture.",
     "price": 1199,
     "compare_at_price": 2199,
@@ -59,7 +60,8 @@
       "XXL"
     ],
     "created_at": "2026-10-03T17:55:42.685Z",
-    "updated_at": "2026-10-03T17:56:05.786Z"
+    "updated_at": "2026-10-04T14:28:49.347Z",
+    "galleryInput": "https://images.unsplash.com/photo-1577223625816-7546f13df25d?auto=format&fit=crop&w=800&q=80, https://images.unsplash.com/photo-1517466787929-bc90951d0974?auto=format&fit=crop&w=800&q=80, https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&w=800&q=80"
   },
   {
     "id": "arsenal-away-2425",

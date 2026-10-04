@@ -177,9 +177,9 @@ export const CATEGORIES = [
   },
   {
     id: "accessories",
-    name: "ACCESSORIES",
-    subtitle: "Anti-Slip Pro Grip Gear",
-    image: "https://images.unsplash.com/photo-1579952363873-27f3bade9f55?auto=format&fit=crop&w=600&q=85",
+    name: "GRIP SOCKS",
+    subtitle: "Anti-Slip Pro Grip Accessories",
+    image: "https://images.unsplash.com/photo-1586350977771-b3b0abd50c82?auto=format&fit=crop&w=600&q=85",
     count: "Accessories",
   },
   {
@@ -190,3 +190,4 @@ export const CATEGORIES = [
     count: "Tournament",
   },
 ];
+

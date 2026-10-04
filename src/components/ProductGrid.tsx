@@ -30,8 +30,8 @@ export const ProductGrid: React.FC<ProductGridProps> = ({
     { id: "all", label: "ALL" },
     { id: "player-version", label: "PLAYER VERSION" },
     { id: "fan-version", label: "FAN VERSION" },
-    { id: "world-cup", label: "WORLD CUP" },
     { id: "accessories", label: "GRIP SOCKS" },
+    { id: "world-cup", label: "WORLD CUP" },
   ];
 
   const filteredProducts = activeFilter === "all"
