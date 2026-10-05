@@ -1,5 +1,35 @@
 [
   {
+    "id": "arjan-cock",
+    "sku": "KA-776961",
+    "title": "Arjan Cock",
+    "description": "",
+    "price": 1199,
+    "compare_at_price": 2199,
+    "category": "fan-version",
+    "image_url": "/uploads/screenshot-2026-09-28-015910-1791177803039-tvksu.png",
+    "gallery": [
+      "/uploads/screenshot-2026-09-28-015910-1791177803039-tvksu.png"
+    ],
+    "stock_status": "in_stock",
+    "stock_quantity": 20,
+    "team": "Official Kit",
+    "league": "Club",
+    "season": "2024/25",
+    "badge": "NEW DROP",
+    "is_featured": false,
+    "version_type": "Fan Version",
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "created_at": "2026-10-05T05:23:27.921Z",
+    "updated_at": "2026-10-05T05:23:27.921Z"
+  },
+  {
     "id": "brazil-2026-copa-kit",
     "sku": "KA-186219",
     "title": "Barcelona Home kit 25/26",

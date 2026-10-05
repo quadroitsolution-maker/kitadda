@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -42,9 +42,15 @@ const SLIDES: Slide[] = [
 
 export const HeroCarousel: React.FC = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const touchStartX = useRef<number | null>(null);
+  const touchEndX = useRef<number | null>(null);
 
   const nextSlide = useCallback(() => {
     setCurrentSlide((prev) => (prev + 1) % SLIDES.length);
+  }, []);
+
+  const prevSlide = useCallback(() => {
+    setCurrentSlide((prev) => (prev - 1 + SLIDES.length) % SLIDES.length);
   }, []);
 
   useEffect(() => {
@@ -54,8 +60,40 @@ export const HeroCarousel: React.FC = () => {
     return () => clearInterval(timer);
   }, [nextSlide]);
 
+  // Touch Swipe Handlers for mobile phones
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+    touchEndX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    touchEndX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd = () => {
+    if (touchStartX.current === null || touchEndX.current === null) return;
+    const diff = touchStartX.current - touchEndX.current;
+    const swipeThreshold = 45; // min swipe distance in px
+
+    if (diff > swipeThreshold) {
+      // Swiped Left -> Next
+      nextSlide();
+    } else if (diff < -swipeThreshold) {
+      // Swiped Right -> Prev
+      prevSlide();
+    }
+
+    touchStartX.current = null;
+    touchEndX.current = null;
+  };
+
   return (
-    <div className="relative w-full h-[400px] sm:h-[480px] lg:h-[540px] overflow-hidden bg-[#0A0D14] select-none border-b border-[#1C2438]">
+    <div
+      className="relative w-full h-[380px] sm:h-[480px] lg:h-[540px] overflow-hidden bg-[#0A0D14] select-none border-b border-[#1C2438]"
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
+    >
       {SLIDES.map((slide, idx) => {
         const isActive = idx === currentSlide;
         return (
@@ -75,47 +113,57 @@ export const HeroCarousel: React.FC = () => {
                 priority={idx === 0}
                 className="object-cover object-center scale-105"
               />
-              <div className="absolute inset-0 bg-[#0A0D14]/75" />
+              <div className="absolute inset-0 bg-[#0A0D14]/80 sm:bg-[#0A0D14]/75" />
               <div className="absolute inset-0 bg-black/40" />
             </div>
 
-            {/* Slide Content Container - Minimal Text without Buttons */}
+            {/* Slide Content Container */}
             <div className="relative max-w-7xl mx-auto h-full flex flex-col justify-center px-4 sm:px-6 lg:px-8 z-20">
               <div className="max-w-xl space-y-2 sm:space-y-3">
-                {/* Minimal Tag */}
+                {/* Badge */}
                 <div className="inline-flex items-center px-2.5 py-0.5 rounded-none border border-[#C5A059]/40 bg-[#0B132B]/90 text-[#DFB76C] text-[10px] sm:text-[11px] font-bold tracking-widest uppercase">
                   <span>{slide.badge}</span>
                 </div>
 
                 {/* Main Headline */}
-                <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-white uppercase tracking-tight leading-none font-jersey">
+                <h1 className="text-2xl sm:text-5xl lg:text-6xl font-black text-white uppercase tracking-tight leading-tight sm:leading-none font-jersey drop-shadow-sm">
                   {slide.headline}
                 </h1>
 
-                {/* Short Minimal Description */}
-                <p className="text-xs sm:text-sm text-neutral-300 font-normal">
+                {/* Description */}
+                <p className="text-xs sm:text-sm text-neutral-300 font-normal max-w-sm sm:max-w-none">
                   {slide.description}
                 </p>
+
+                {/* Mobile tap prompt */}
+                <div className="pt-2 sm:hidden flex items-center gap-1.5 text-[11px] text-[#DFB76C] font-bold uppercase tracking-wider font-jersey">
+                  <span>Swipe or tap to explore</span>
+                  <span>→</span>
+                </div>
               </div>
             </div>
           </Link>
         );
       })}
 
-      {/* Slide Indicator Bars */}
-      <div className="absolute bottom-5 left-1/2 -translate-x-1/2 z-30 flex items-center gap-2 pointer-events-auto">
+      {/* Slide Indicator Bars - Enhanced 44px tap zone on mobile */}
+      <div className="absolute bottom-4 sm:bottom-5 left-1/2 -translate-x-1/2 z-30 flex items-center gap-1 pointer-events-auto">
         {SLIDES.map((_, idx) => (
           <button
             key={idx}
             type="button"
             onClick={() => setCurrentSlide(idx)}
             aria-label={`Go to slide ${idx + 1}`}
-            className={`transition-all duration-300 rounded-none h-1 ${
-              idx === currentSlide
-                ? "w-8 bg-[#C5A059]"
-                : "w-4 bg-white/20 hover:bg-white/50"
-            }`}
-          />
+            className="p-2 flex items-center justify-center focus:outline-none"
+          >
+            <div
+              className={`transition-all duration-300 rounded-none h-1 ${
+                idx === currentSlide
+                  ? "w-7 sm:w-8 bg-[#C5A059]"
+                  : "w-3 sm:w-4 bg-white/25 hover:bg-white/50"
+              }`}
+            />
+          </button>
         ))}
       </div>
     </div>

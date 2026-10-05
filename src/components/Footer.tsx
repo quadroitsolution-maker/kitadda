@@ -26,9 +26,9 @@ const InstagramIcon: React.FC<{ className?: string }> = ({ className = "w-4 h-4"
 
 export const Footer: React.FC = () => {
   return (
-    <footer className="bg-[#07090E] border-t border-[#1C2438] text-neutral-400 text-xs mt-20">
-      {/* Community Banner - Minimal Navy & Deep Charcoal */}
-      <div className="border-b border-[#1C2438] py-10 bg-[#0E131F]">
+    <footer className="bg-[#07090E] border-t border-[#1C2438] text-neutral-400 text-xs mt-16 sm:mt-20 pb-28 lg:pb-0">
+      {/* Community Banner */}
+      <div className="border-b border-[#1C2438] py-8 sm:py-10 bg-[#0E131F]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="flex items-center gap-4 text-center md:text-left">
             <div className="w-12 h-12 rounded-none bg-[#0B132B] border border-[#1C2438] flex items-center justify-center text-[#DFB76C] shrink-0">
@@ -43,12 +43,12 @@ export const Footer: React.FC = () => {
               </p>
             </div>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex flex-col sm:flex-row items-center gap-2.5 sm:gap-3 w-full sm:w-auto">
             <a
               href="https://instagram.com"
               target="_blank"
               rel="noreferrer"
-              className="inline-flex items-center gap-2 bg-[#0B132B] hover:bg-[#162035] text-[#DFB76C] border border-[#C5A059]/40 font-bold uppercase px-5 py-2.5 rounded-none transition text-xs"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-[#0B132B] hover:bg-[#162035] text-[#DFB76C] border border-[#C5A059]/40 font-bold uppercase px-5 py-3 sm:py-2.5 rounded-none transition text-xs active:scale-95"
             >
               <InstagramIcon className="w-4 h-4" />
               <span>Follow @kit.adda</span>
@@ -57,7 +57,7 @@ export const Footer: React.FC = () => {
               href="https://wa.me/919999999999"
               target="_blank"
               rel="noreferrer"
-              className="inline-flex items-center gap-2 bg-[#0E131F] border border-[#1C2438] hover:border-[#DFB76C]/60 text-white font-bold uppercase px-4 py-2.5 rounded-none transition text-xs"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-[#0E131F] border border-[#1C2438] hover:border-[#DFB76C]/60 text-white font-bold uppercase px-4 py-3 sm:py-2.5 rounded-none transition text-xs active:scale-95"
             >
               <MessageCircle className="w-4 h-4 text-[#DFB76C]" />
               <span>WhatsApp Us</span>

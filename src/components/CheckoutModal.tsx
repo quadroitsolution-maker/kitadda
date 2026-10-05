@@ -251,10 +251,10 @@ export const CheckoutModal: React.FC = () => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto bg-black/85 backdrop-blur-md flex items-center justify-center p-3 sm:p-6 animate-in fade-in duration-200">
-      <div className="relative w-full max-w-xl bg-[#0A0D14] border border-[#1C2438] rounded-none shadow-2xl text-white overflow-hidden my-8">
+    <div className="fixed inset-0 z-50 overflow-y-auto bg-black/85 backdrop-blur-md flex items-center justify-center p-2 sm:p-6 animate-in fade-in duration-200">
+      <div className="relative w-full max-w-xl bg-[#0A0D14] border border-[#1C2438] rounded-none shadow-2xl text-white overflow-hidden my-auto max-h-[96vh] flex flex-col">
         {/* Header Bar - Sharp Boxy Minimal */}
-        <div className="p-4 sm:p-5 border-b border-[#1C2438] flex items-center justify-between bg-[#0E131F]">
+        <div className="p-4 sm:p-5 border-b border-[#1C2438] flex items-center justify-between bg-[#0E131F] shrink-0">
           <div className="flex items-center gap-2.5">
             <div className="relative w-6 h-6 rounded-full overflow-hidden border border-[#C5A059]/40 shrink-0">
               <Image
@@ -272,7 +272,8 @@ export const CheckoutModal: React.FC = () => {
           <button
             type="button"
             onClick={handleClose}
-            className="p-1 text-neutral-400 hover:text-white hover:bg-[#162035] rounded-none"
+            className="w-10 h-10 flex items-center justify-center text-neutral-400 hover:text-white active:scale-95 transition"
+            aria-label="Close checkout"
           >
             <X className="w-5 h-5" />
           </button>
@@ -280,8 +281,8 @@ export const CheckoutModal: React.FC = () => {
 
         {/* If Order Confirmed: Show High-Converting Success Screen */}
         {orderConfirmed ? (
-          <div className="p-6 sm:p-8 text-center space-y-6">
-            <div className="relative w-20 h-20 rounded-full overflow-hidden border-2 border-[#C5A059] mx-auto shadow-lg shadow-[#C5A059]/20">
+          <div className="p-5 sm:p-8 text-center space-y-5 sm:space-y-6 overflow-y-auto">
+            <div className="relative w-16 h-16 sm:w-20 sm:h-20 rounded-full overflow-hidden border-2 border-[#C5A059] mx-auto shadow-lg shadow-[#C5A059]/20">
               <Image
                 src="/logo.jpg"
                 alt="Kit Adda"
@@ -295,7 +296,7 @@ export const CheckoutModal: React.FC = () => {
               <div className="inline-flex items-center text-xs bg-[#0B132B] text-[#DFB76C] border border-[#C5A059]/40 px-3 py-1 rounded-none font-bold uppercase tracking-wider mb-2">
                 <span>WELCOME TO THE ADDA SQUAD</span>
               </div>
-              <h3 className="text-2xl sm:text-3xl font-black uppercase text-white font-jersey">
+              <h3 className="text-xl sm:text-3xl font-black uppercase text-white font-jersey">
                 Thank You For Your Order!
               </h3>
               <p className="text-xs sm:text-sm text-neutral-300 mt-2 max-w-md mx-auto">
@@ -303,7 +304,7 @@ export const CheckoutModal: React.FC = () => {
               </p>
             </div>
 
-            {/* Order Reference Box - Sharp Minimal */}
+            {/* Order Reference Box */}
             <div className="bg-[#0E131F] border border-[#1C2438] rounded-none p-4 text-left space-y-2">
               <div className="flex justify-between text-xs">
                 <span className="text-neutral-400">Order Reference:</span>
@@ -311,7 +312,7 @@ export const CheckoutModal: React.FC = () => {
               </div>
               <div className="flex justify-between text-xs">
                 <span className="text-neutral-400">Delivery Address:</span>
-                <span className="text-white font-medium text-right max-w-[220px] truncate">
+                <span className="text-white font-medium text-right max-w-[200px] truncate">
                   {addressLine}, {city}, {pincode}
                 </span>
               </div>
@@ -322,12 +323,12 @@ export const CheckoutModal: React.FC = () => {
             </div>
 
             {/* Actions: WhatsApp & Continue */}
-            <div className="space-y-3">
+            <div className="space-y-3 pb-safe">
               <a
                 href={`https://wa.me/919999999999?text=Hi%20Kit%20Adda%20team,%20I%20just%20placed%20order%20${confirmedOrderId}.%20Can't%20wait%20for%20my%20jersey!`}
                 target="_blank"
                 rel="noreferrer"
-                className="w-full bg-[#0B132B] hover:bg-[#162035] border border-[#1C2438] hover:border-[#25D366]/60 text-white font-bold uppercase text-xs sm:text-sm py-3.5 rounded-none flex items-center justify-center gap-2 transition"
+                className="w-full bg-[#0B132B] hover:bg-[#162035] border border-[#1C2438] hover:border-[#25D366]/60 text-white font-bold uppercase text-xs sm:text-sm py-3.5 rounded-none flex items-center justify-center gap-2 transition active:scale-95"
               >
                 <MessageCircle className="w-4 h-4 text-[#25D366]" />
                 <span>Connect with Kit Adda Crew on WhatsApp</span>
@@ -336,7 +337,7 @@ export const CheckoutModal: React.FC = () => {
               <button
                 type="button"
                 onClick={handleClose}
-                className="w-full bg-[#0E131F] hover:bg-[#162035] text-white border border-[#1C2438] font-bold uppercase text-xs py-3 rounded-none transition"
+                className="w-full bg-[#0E131F] hover:bg-[#162035] text-white border border-[#1C2438] font-bold uppercase text-xs py-3 rounded-none transition active:scale-95"
               >
                 Continue Browsing Vault
               </button>
@@ -344,7 +345,7 @@ export const CheckoutModal: React.FC = () => {
           </div>
         ) : (
           /* Checkout Input Form */
-          <form onSubmit={handleCheckoutSubmit} className="p-5 sm:p-6 space-y-5">
+          <form onSubmit={handleCheckoutSubmit} className="p-4 sm:p-6 space-y-4 sm:space-y-5 overflow-y-auto">
             {errorMsg && (
               <div className="p-3 rounded-none bg-red-500/10 border border-red-500/40 text-red-300 text-xs font-semibold">
                 {errorMsg}
@@ -364,14 +365,15 @@ export const CheckoutModal: React.FC = () => {
                     Full Name *
                   </label>
                   <div className="relative">
-                    <User className="w-4 h-4 text-neutral-500 absolute left-3 top-3" />
+                    <User className="w-4 h-4 text-neutral-500 absolute left-3 top-3.5" />
                     <input
                       type="text"
                       required
+                      autoCapitalize="words"
                       placeholder="e.g. Abhinav Sharma"
                       value={fullName}
                       onChange={(e) => setFullName(e.target.value)}
-                      className="w-full bg-[#0E131F] border border-[#1C2438] focus:border-[#C5A059] rounded-none pl-9 pr-3 py-2.5 text-xs font-semibold text-white placeholder-neutral-600 focus:outline-none"
+                      className="w-full bg-[#0E131F] border border-[#1C2438] focus:border-[#C5A059] rounded-none pl-9 pr-3 py-3 sm:py-2.5 text-base sm:text-xs font-semibold text-white placeholder-neutral-600 focus:outline-none"
                     />
                   </div>
                 </div>
@@ -381,16 +383,17 @@ export const CheckoutModal: React.FC = () => {
                     WhatsApp / Mobile Number *
                   </label>
                   <div className="relative">
-                    <span className="absolute left-3 top-2.5 text-xs font-bold text-neutral-400">
+                    <span className="absolute left-3 top-3.5 text-xs font-bold text-neutral-400">
                       +91
                     </span>
                     <input
                       type="tel"
+                      inputMode="tel"
                       required
                       placeholder="9876543210"
                       value={phone}
                       onChange={(e) => setPhone(e.target.value.replace(/\D/g, "").slice(0, 10))}
-                      className="w-full bg-[#0E131F] border border-[#1C2438] focus:border-[#C5A059] rounded-none pl-11 pr-3 py-2.5 text-xs font-semibold text-white placeholder-neutral-600 focus:outline-none font-mono"
+                      className="w-full bg-[#0E131F] border border-[#1C2438] focus:border-[#C5A059] rounded-none pl-11 pr-3 py-3 sm:py-2.5 text-base sm:text-xs font-semibold text-white placeholder-neutral-600 focus:outline-none font-mono"
                     />
                   </div>
                 </div>
@@ -403,25 +406,28 @@ export const CheckoutModal: React.FC = () => {
                 <input
                   type="text"
                   required
+                  autoCapitalize="sentences"
                   placeholder="e.g. Flat 402, Green Valley Apts, Bandra West"
                   value={addressLine}
                   onChange={(e) => setAddressLine(e.target.value)}
-                  className="w-full bg-[#0E131F] border border-[#1C2438] focus:border-[#C5A059] rounded-none px-3 py-2.5 text-xs font-semibold text-white placeholder-neutral-600 focus:outline-none"
+                  className="w-full bg-[#0E131F] border border-[#1C2438] focus:border-[#C5A059] rounded-none px-3 py-3 sm:py-2.5 text-base sm:text-xs font-semibold text-white placeholder-neutral-600 focus:outline-none"
                 />
               </div>
 
-              <div className="grid grid-cols-3 gap-2.5">
+              <div className="grid grid-cols-3 gap-2 sm:gap-2.5">
                 <div>
                   <label className="block text-[11px] font-bold uppercase text-neutral-400 mb-1">
                     PIN Code *
                   </label>
                   <input
                     type="text"
+                    inputMode="numeric"
+                    pattern="[0-9]*"
                     required
                     placeholder="400050"
                     value={pincode}
                     onChange={(e) => handlePincodeChange(e.target.value)}
-                    className="w-full bg-[#0E131F] border border-[#1C2438] focus:border-[#C5A059] rounded-none px-3 py-2.5 text-xs font-semibold text-white placeholder-neutral-600 focus:outline-none font-mono"
+                    className="w-full bg-[#0E131F] border border-[#1C2438] focus:border-[#C5A059] rounded-none px-3 py-3 sm:py-2.5 text-base sm:text-xs font-semibold text-white placeholder-neutral-600 focus:outline-none font-mono"
                   />
                 </div>
 
@@ -432,10 +438,11 @@ export const CheckoutModal: React.FC = () => {
                   <input
                     type="text"
                     required
+                    autoCapitalize="words"
                     placeholder="Mumbai"
                     value={city}
                     onChange={(e) => setCity(e.target.value)}
-                    className="w-full bg-[#0E131F] border border-[#1C2438] focus:border-[#C5A059] rounded-none px-3 py-2.5 text-xs font-semibold text-white placeholder-neutral-600 focus:outline-none"
+                    className="w-full bg-[#0E131F] border border-[#1C2438] focus:border-[#C5A059] rounded-none px-3 py-3 sm:py-2.5 text-base sm:text-xs font-semibold text-white placeholder-neutral-600 focus:outline-none"
                   />
                 </div>
 
@@ -446,7 +453,7 @@ export const CheckoutModal: React.FC = () => {
                   <select
                     value={state}
                     onChange={(e) => setState(e.target.value)}
-                    className="w-full bg-[#0E131F] border border-[#1C2438] focus:border-[#C5A059] rounded-none px-2 py-2.5 text-xs font-semibold text-white focus:outline-none"
+                    className="w-full bg-[#0E131F] border border-[#1C2438] focus:border-[#C5A059] rounded-none px-2 py-3 sm:py-2.5 text-base sm:text-xs font-semibold text-white focus:outline-none"
                   >
                     {INDIAN_STATES.map((st) => (
                       <option key={st} value={st} className="bg-[#0A0D14] text-white">
@@ -464,27 +471,27 @@ export const CheckoutModal: React.FC = () => {
                 Payment Option
               </label>
 
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-2 gap-2.5 sm:gap-3">
                 {/* Razorpay Online */}
                 <button
                   type="button"
                   onClick={() => setPaymentMethod("razorpay")}
-                  className={`p-3 rounded-none border text-left flex flex-col justify-between transition ${
+                  className={`p-3 rounded-none border text-left flex flex-col justify-between transition active:scale-98 ${
                     paymentMethod === "razorpay"
                       ? "bg-[#0B132B] border-[#C5A059] text-white"
                       : "bg-[#0E131F] border-[#1C2438] text-neutral-400 hover:text-white"
                   }`}
                 >
                   <div className="flex items-center justify-between w-full mb-1">
-                    <span className="text-xs font-black uppercase flex items-center gap-1.5">
+                    <span className="text-[11px] sm:text-xs font-black uppercase flex items-center gap-1.5">
                       <CreditCard className="w-3.5 h-3.5 text-[#DFB76C]" />
-                      Razorpay (UPI / Cards)
+                      UPI / Cards
                     </span>
                     {paymentMethod === "razorpay" && (
                       <span className="w-2 h-2 rounded-none bg-[#C5A059]" />
                     )}
                   </div>
-                  <span className="text-[10px] text-[#DFB76C] font-semibold">
+                  <span className="text-[9px] sm:text-[10px] text-[#DFB76C] font-semibold">
                     Instant 1-Click UPI &amp; GPay
                   </span>
                 </button>
@@ -493,22 +500,22 @@ export const CheckoutModal: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setPaymentMethod("cod")}
-                  className={`p-3 rounded-none border text-left flex flex-col justify-between transition ${
+                  className={`p-3 rounded-none border text-left flex flex-col justify-between transition active:scale-98 ${
                     paymentMethod === "cod"
                       ? "bg-[#0B132B] border-[#C5A059] text-white"
                       : "bg-[#0E131F] border-[#1C2438] text-neutral-400 hover:text-white"
                   }`}
                 >
                   <div className="flex items-center justify-between w-full mb-1">
-                    <span className="text-xs font-black uppercase flex items-center gap-1.5">
+                    <span className="text-[11px] sm:text-xs font-black uppercase flex items-center gap-1.5">
                       <Banknote className="w-3.5 h-3.5 text-neutral-300" />
-                      Cash On Delivery
+                      Cash on Delivery
                     </span>
                     {paymentMethod === "cod" && (
                       <span className="w-2 h-2 rounded-none bg-[#C5A059]" />
                     )}
                   </div>
-                  <span className="text-[10px] text-neutral-400 font-semibold">
+                  <span className="text-[9px] sm:text-[10px] text-neutral-400 font-semibold">
                     Pay at doorstep
                   </span>
                 </button>
@@ -516,7 +523,7 @@ export const CheckoutModal: React.FC = () => {
             </div>
 
             {/* Summary Breakdown */}
-            <div className="p-3.5 rounded-none bg-[#0E131F] border border-[#1C2438] text-xs space-y-1.5">
+            <div className="p-3 sm:p-3.5 rounded-none bg-[#0E131F] border border-[#1C2438] text-xs space-y-1.5">
               <div className="flex justify-between text-neutral-400">
                 <span>Items Subtotal ({items.length} kits)</span>
                 <span className="text-white font-bold">₹{subtotal.toLocaleString("en-IN")}</span>
@@ -533,11 +540,11 @@ export const CheckoutModal: React.FC = () => {
               </div>
             </div>
 
-            {/* Submit Action Button - Champagne Gold Sharp */}
+            {/* Submit Action Button */}
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-[#C5A059] hover:bg-[#DFB76C] disabled:opacity-50 text-[#0A0D14] font-black uppercase text-sm tracking-wider py-4 rounded-none flex items-center justify-center gap-2 transition transform active:scale-95"
+              className="w-full bg-[#C5A059] hover:bg-[#DFB76C] disabled:opacity-50 text-[#0A0D14] font-black uppercase text-xs sm:text-sm tracking-wider py-4 rounded-none flex items-center justify-center gap-2 transition transform active:scale-95"
             >
               {loading ? (
                 <div className="w-5 h-5 border-2 border-[#0A0D14] border-t-transparent rounded-full animate-spin" />
@@ -553,7 +560,7 @@ export const CheckoutModal: React.FC = () => {
               )}
             </button>
 
-            <div className="flex items-center justify-center gap-2 text-[10px] text-neutral-500">
+            <div className="flex items-center justify-center gap-2 text-[10px] text-neutral-500 pb-safe">
               <ShieldCheck className="w-3.5 h-3.5 text-[#DFB76C]" />
               <span>Razorpay 256-Bit SSL Encrypted • OTP Verified Checkout</span>
             </div>

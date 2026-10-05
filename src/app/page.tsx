@@ -8,6 +8,7 @@ import { CategoryGrid } from "@/components/CategoryGrid";
 import { ProductGrid } from "@/components/ProductGrid";
 import { CartDrawer } from "@/components/CartDrawer";
 import { CheckoutModal } from "@/components/CheckoutModal";
+import { MobileBottomNav } from "@/components/MobileBottomNav";
 import { Footer } from "@/components/Footer";
 import { PRODUCTS } from "@/data/products";
 import { 
@@ -94,61 +95,61 @@ export default function HomePage() {
           onSelectCategory={setSelectedCategory}
         />
 
-        {/* 5. Trust & Quality Banner - Deep Charcoal & Navy */}
-        <section className="py-14 bg-[#0B0E17] border-y border-[#1C2438]">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-              <div className="flex items-start gap-4 p-5 rounded-none bg-[#0E131F] border border-[#1C2438]">
-                <div className="p-3 rounded-none bg-[#0B132B] border border-[#1C2438] text-[#DFB76C] shrink-0">
-                  <ShieldCheck className="w-5 h-5" />
+        {/* 5. Trust & Quality Banner */}
+        <section className="py-10 sm:py-14 bg-[#0B0E17] border-y border-[#1C2438]">
+          <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-6">
+              <div className="flex flex-col sm:flex-row items-start gap-2.5 sm:gap-4 p-3.5 sm:p-5 rounded-none bg-[#0E131F] border border-[#1C2438]">
+                <div className="p-2 sm:p-3 rounded-none bg-[#0B132B] border border-[#1C2438] text-[#DFB76C] shrink-0">
+                  <ShieldCheck className="w-4 h-4 sm:w-5 sm:h-5" />
                 </div>
                 <div>
-                  <h4 className="text-sm font-black uppercase text-white font-jersey">
+                  <h4 className="text-xs sm:text-sm font-black uppercase text-white font-jersey">
                     Match-Spec Quality
                   </h4>
-                  <p className="text-xs text-neutral-400 mt-0.5">
+                  <p className="text-[10px] sm:text-xs text-neutral-400 mt-0.5">
                     Authentic crest embroidery and dri-fit fabric.
                   </p>
                 </div>
               </div>
 
-              <div className="flex items-start gap-4 p-5 rounded-none bg-[#0E131F] border border-[#1C2438]">
-                <div className="p-3 rounded-none bg-[#0B132B] border border-[#1C2438] text-[#DFB76C] shrink-0">
-                  <Type className="w-5 h-5" />
+              <div className="flex flex-col sm:flex-row items-start gap-2.5 sm:gap-4 p-3.5 sm:p-5 rounded-none bg-[#0E131F] border border-[#1C2438]">
+                <div className="p-2 sm:p-3 rounded-none bg-[#0B132B] border border-[#1C2438] text-[#DFB76C] shrink-0">
+                  <Type className="w-4 h-4 sm:w-5 sm:h-5" />
                 </div>
                 <div>
-                  <h4 className="text-sm font-black uppercase text-white font-jersey">
+                  <h4 className="text-xs sm:text-sm font-black uppercase text-white font-jersey">
                     Custom Printing
                   </h4>
-                  <p className="text-xs text-neutral-400 mt-0.5">
+                  <p className="text-[10px] sm:text-xs text-neutral-400 mt-0.5">
                     Official heat-pressed player name &amp; number.
                   </p>
                 </div>
               </div>
 
-              <div className="flex items-start gap-4 p-5 rounded-none bg-[#0E131F] border border-[#1C2438]">
-                <div className="p-3 rounded-none bg-[#0B132B] border border-[#1C2438] text-[#DFB76C] shrink-0">
-                  <Truck className="w-5 h-5" />
+              <div className="flex flex-col sm:flex-row items-start gap-2.5 sm:gap-4 p-3.5 sm:p-5 rounded-none bg-[#0E131F] border border-[#1C2438]">
+                <div className="p-2 sm:p-3 rounded-none bg-[#0B132B] border border-[#1C2438] text-[#DFB76C] shrink-0">
+                  <Truck className="w-4 h-4 sm:w-5 sm:h-5" />
                 </div>
                 <div>
-                  <h4 className="text-sm font-black uppercase text-white font-jersey">
+                  <h4 className="text-xs sm:text-sm font-black uppercase text-white font-jersey">
                     Express Shipping
                   </h4>
-                  <p className="text-xs text-neutral-400 mt-0.5">
+                  <p className="text-[10px] sm:text-xs text-neutral-400 mt-0.5">
                     Fast dispatch. Free shipping on orders over ₹1499.
                   </p>
                 </div>
               </div>
 
-              <div className="flex items-start gap-4 p-5 rounded-none bg-[#0E131F] border border-[#1C2438]">
-                <div className="p-3 rounded-none bg-[#0B132B] border border-[#1C2438] text-[#DFB76C] shrink-0">
-                  <RotateCcw className="w-5 h-5" />
+              <div className="flex flex-col sm:flex-row items-start gap-2.5 sm:gap-4 p-3.5 sm:p-5 rounded-none bg-[#0E131F] border border-[#1C2438]">
+                <div className="p-2 sm:p-3 rounded-none bg-[#0B132B] border border-[#1C2438] text-[#DFB76C] shrink-0">
+                  <RotateCcw className="w-4 h-4 sm:w-5 sm:h-5" />
                 </div>
                 <div>
-                  <h4 className="text-sm font-black uppercase text-white font-jersey">
+                  <h4 className="text-xs sm:text-sm font-black uppercase text-white font-jersey">
                     7-Day Exchange
                   </h4>
-                  <p className="text-xs text-neutral-400 mt-0.5">
+                  <p className="text-[10px] sm:text-xs text-neutral-400 mt-0.5">
                     Hassle-free sizing exchange guarantee.
                   </p>
                 </div>
@@ -211,6 +212,7 @@ export default function HomePage() {
                   src={post.img}
                   alt={post.tag}
                   fill
+                  sizes="(max-width: 768px) 50vw, 25vw"
                   className="object-cover object-center group-hover:scale-105 transition-transform duration-500"
                 />
                 <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-4">
@@ -236,6 +238,9 @@ export default function HomePage() {
 
       {/* 9. Breeze 1-Click Checkout Modal with Razorpay */}
       <CheckoutModal />
+
+      {/* 10. Sticky Mobile Bottom Navigation Bar */}
+      <MobileBottomNav />
     </div>
   );
 }
