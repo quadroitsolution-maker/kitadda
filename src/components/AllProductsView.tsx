@@ -12,10 +12,9 @@ import {
   X,
   ChevronDown,
   ShoppingBag,
-  Sparkles,
-  ArrowUpDown,
   RotateCcw,
   Check,
+  Filter,
 } from "lucide-react";
 
 interface AllProductsViewProps {
@@ -67,11 +66,11 @@ export const AllProductsView: React.FC<AllProductsViewProps> = ({ initialProduct
   }, []);
 
   const categories = [
-    { id: "all", label: "ALL DROPS" },
-    { id: "player-version", label: "PLAYER VERSION" },
-    { id: "fan-version", label: "FAN VERSION" },
-    { id: "accessories", label: "GRIP SOCKS" },
-    { id: "world-cup", label: "WORLD CUP" },
+    { id: "all", label: "All Drops" },
+    { id: "player-version", label: "Player Version" },
+    { id: "fan-version", label: "Fan Version" },
+    { id: "accessories", label: "Grip Socks" },
+    { id: "world-cup", label: "World Cup" },
   ];
 
   // Extract unique leagues from current products
@@ -170,7 +169,7 @@ export const AllProductsView: React.FC<AllProductsViewProps> = ({ initialProduct
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-6 sm:py-10 pb-28 lg:pb-16">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10 pb-28 lg:pb-16 text-neutral-200 cursor-football">
       {/* 1. Breadcrumbs */}
       <nav className="flex items-center space-x-2 text-xs text-neutral-400 mb-4 sm:mb-6 overflow-x-auto scrollbar-none pb-1">
         <Link href="/" className="hover:text-[#DFB76C] transition shrink-0">
@@ -188,33 +187,32 @@ export const AllProductsView: React.FC<AllProductsViewProps> = ({ initialProduct
         )}
       </nav>
 
-      {/* 2. Collection Hero Banner */}
-      <div className="border-b border-[#1C2438] pb-6 sm:pb-8 mb-6 sm:mb-8">
+      {/* 2. Collection Hero Banner (No Star Emoji) */}
+      <div className="border-b border-[#1C2438] pb-6 sm:pb-8 mb-8 sm:mb-10">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
           <div>
-            <div className="inline-flex items-center gap-2 text-[#DFB76C] text-xs font-bold uppercase tracking-widest mb-1.5 font-mono">
-              <Sparkles className="w-3.5 h-3.5" />
-              <span>THE OFFICIAL VAULT</span>
+            <div className="text-xs font-bold uppercase tracking-widest text-[#DFB76C] mb-1 font-mono">
+              THE OFFICIAL VAULT
             </div>
-            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-white uppercase tracking-tight font-jersey">
+            <h1 className="text-3xl sm:text-5xl font-black text-white uppercase tracking-tight font-jersey">
               All Football Kits
             </h1>
-            <p className="text-xs sm:text-sm text-neutral-400 mt-1 sm:mt-2 max-w-2xl leading-relaxed">
-              Curated master-grade football jerseys, player and fan version drops, international grails, and anti-slip grip accessories with authentic printing.
+            <p className="text-xs sm:text-sm text-neutral-400 mt-2 max-w-2xl leading-relaxed">
+              Curated master-grade football jerseys, player and fan version drops, retro editions, and anti-slip grip accessories.
             </p>
           </div>
 
           <div className="flex items-center gap-3">
-            <span className="text-xs font-mono text-neutral-400 bg-[#0E131F] border border-[#1C2438] px-3 py-1.5 font-bold">
+            <span className="text-xs font-mono text-neutral-400 bg-[#0E131F] border border-[#1C2438] px-3.5 py-2 font-bold">
               {filteredProducts.length} {filteredProducts.length === 1 ? "KIT" : "KITS"} FOUND
             </span>
             {activeFilterCount > 0 && (
               <button
                 type="button"
                 onClick={resetFilters}
-                className="flex items-center gap-1.5 text-xs text-[#DFB76C] hover:text-white bg-[#0B132B] border border-[#C5A059]/40 px-3 py-1.5 font-bold uppercase tracking-wider transition active:scale-95"
+                className="flex items-center gap-1.5 text-xs text-[#DFB76C] hover:text-white bg-[#0B132B] border border-[#C5A059]/40 px-3.5 py-2 font-bold uppercase tracking-wider transition active:scale-95"
               >
-                <RotateCcw className="w-3 h-3" />
+                <RotateCcw className="w-3.5 h-3.5" />
                 <span>Reset ({activeFilterCount})</span>
               </button>
             )}
@@ -222,323 +220,386 @@ export const AllProductsView: React.FC<AllProductsViewProps> = ({ initialProduct
         </div>
       </div>
 
-      {/* 3. Search & Quick Filters Bar */}
-      <div className="space-y-4 mb-6 sm:mb-8">
-        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
-          {/* Keyword Search Input */}
-          <div className="relative flex-1">
-            <Search className="w-4 h-4 text-neutral-400 absolute left-3.5 top-3.5" />
-            <input
-              type="text"
-              placeholder="Search club, player, country or edition..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-[#0E131F] border border-[#1C2438] focus:border-[#C5A059] rounded-none pl-10 pr-9 py-2.5 sm:py-3 text-base sm:text-xs font-medium text-white placeholder-neutral-500 focus:outline-none"
-            />
-            {searchQuery && (
+      {/* 3. Main Grid Layout: Left Sidebar Filters + Right Product Catalog */}
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 lg:gap-10">
+        {/* ===================== LEFT SIDEBAR FILTERS (DESKTOP) ===================== */}
+        <aside className="hidden lg:block lg:col-span-1 space-y-6">
+          <div className="sticky top-24 space-y-6">
+            <div className="flex items-center justify-between pb-3 border-b border-[#1C2438]">
+              <div className="flex items-center gap-2">
+                <Filter className="w-4 h-4 text-[#DFB76C]" />
+                <span className="text-xs font-black uppercase tracking-wider text-white">
+                  Filters &amp; Refine
+                </span>
+              </div>
+              {activeFilterCount > 0 && (
+                <button
+                  type="button"
+                  onClick={resetFilters}
+                  className="text-[11px] text-[#DFB76C] hover:underline font-bold"
+                >
+                  Clear All
+                </button>
+              )}
+            </div>
+
+            {/* Keyword Search */}
+            <div className="space-y-2">
+              <label className="text-[11px] font-bold uppercase tracking-wider text-neutral-400">
+                Search Kits
+              </label>
+              <div className="relative">
+                <Search className="w-3.5 h-3.5 text-neutral-400 absolute left-3 top-3 pointer-events-none" />
+                <input
+                  type="text"
+                  placeholder="Club, player, edition..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full bg-[#0E131F] border border-[#1C2438] focus:border-[#C5A059] rounded-none pl-9 pr-8 py-2 text-xs font-medium text-white placeholder-neutral-500 focus:outline-none"
+                />
+                {searchQuery && (
+                  <button
+                    type="button"
+                    onClick={() => setSearchQuery("")}
+                    className="w-7 h-7 flex items-center justify-center absolute right-1 top-0.5 text-neutral-400 hover:text-white"
+                    aria-label="Clear search query"
+                  >
+                    <X className="w-3.5 h-3.5" />
+                  </button>
+                )}
+              </div>
+            </div>
+
+            {/* Categories Filter */}
+            <div className="space-y-2.5 pt-2 border-t border-[#1C2438]">
+              <div className="text-[11px] font-bold uppercase tracking-wider text-neutral-400">
+                Category
+              </div>
+              <div className="space-y-1">
+                {categories.map((cat) => {
+                  const isSelected = selectedCategory === cat.id;
+                  return (
+                    <button
+                      key={cat.id}
+                      type="button"
+                      onClick={() => handleCategoryChange(cat.id)}
+                      className={`w-full text-left px-3 py-2 text-xs font-semibold flex items-center justify-between transition border ${
+                        isSelected
+                          ? "bg-[#0B132B] border-[#C5A059] text-[#DFB76C] font-bold"
+                          : "bg-[#0E131F]/50 border-transparent text-neutral-300 hover:bg-[#0E131F] hover:text-white"
+                      }`}
+                    >
+                      <span>{cat.label}</span>
+                      {isSelected && <Check className="w-3.5 h-3.5 text-[#DFB76C]" />}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Leagues Filter */}
+            <div className="space-y-2.5 pt-2 border-t border-[#1C2438]">
+              <div className="text-[11px] font-bold uppercase tracking-wider text-neutral-400">
+                League &amp; Competition
+              </div>
+              <div className="space-y-1 max-h-56 overflow-y-auto pr-1">
+                {leagues.map((lg) => {
+                  const isSelected = selectedLeague === lg;
+                  return (
+                    <button
+                      key={lg}
+                      type="button"
+                      onClick={() => setSelectedLeague(lg)}
+                      className={`w-full text-left px-3 py-1.5 text-xs font-medium flex items-center justify-between transition border ${
+                        isSelected
+                          ? "bg-[#0B132B] border-[#C5A059] text-[#DFB76C] font-bold"
+                          : "bg-[#0E131F]/50 border-transparent text-neutral-300 hover:bg-[#0E131F] hover:text-white"
+                      }`}
+                    >
+                      <span className="truncate">{lg === "all" ? "All Leagues" : lg}</span>
+                      {isSelected && <Check className="w-3.5 h-3.5 text-[#DFB76C] shrink-0" />}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Price Filter */}
+            <div className="space-y-2.5 pt-2 border-t border-[#1C2438]">
+              <div className="text-[11px] font-bold uppercase tracking-wider text-neutral-400">
+                Price Range
+              </div>
+              <div className="space-y-1">
+                {[
+                  { id: "all", label: "All Prices" },
+                  { id: "under-1200", label: "Under ₹1,200" },
+                  { id: "1200-1400", label: "₹1,200 – ₹1,400" },
+                  { id: "above-1400", label: "Above ₹1,400" },
+                ].map((p) => {
+                  const isSelected = priceFilter === p.id;
+                  return (
+                    <button
+                      key={p.id}
+                      type="button"
+                      onClick={() => setPriceFilter(p.id as typeof priceFilter)}
+                      className={`w-full text-left px-3 py-1.5 text-xs font-medium flex items-center justify-between transition border ${
+                        isSelected
+                          ? "bg-[#0B132B] border-[#C5A059] text-[#DFB76C] font-bold"
+                          : "bg-[#0E131F]/50 border-transparent text-neutral-300 hover:bg-[#0E131F] hover:text-white"
+                      }`}
+                    >
+                      <span>{p.label}</span>
+                      {isSelected && <Check className="w-3.5 h-3.5 text-[#DFB76C]" />}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* In Stock Only */}
+            <div className="pt-2 border-t border-[#1C2438]">
+              <label className="flex items-center justify-between cursor-pointer select-none p-3 bg-[#0E131F] border border-[#1C2438] hover:border-[#C5A059]/40 transition">
+                <span className="text-xs font-bold uppercase text-white tracking-wider">
+                  In Stock Only
+                </span>
+                <input
+                  type="checkbox"
+                  checked={inStockOnly}
+                  onChange={(e) => setInStockOnly(e.target.checked)}
+                  className="w-4 h-4 accent-[#C5A059] rounded-none cursor-pointer"
+                />
+              </label>
+            </div>
+          </div>
+        </aside>
+
+        {/* ===================== RIGHT PRODUCTS CATALOG ===================== */}
+        <main className="lg:col-span-3 space-y-6">
+          {/* Top Control Bar (Mobile Filter Button + Search on Mobile + Sort Dropdown) */}
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 bg-[#0E131F] border border-[#1C2438] p-3">
+            {/* Mobile Filter Button & Mobile Search */}
+            <div className="flex items-center gap-2 flex-1">
               <button
                 type="button"
-                onClick={() => setSearchQuery("")}
-                className="w-8 h-8 flex items-center justify-center absolute right-1.5 top-1 text-neutral-400 hover:text-white"
-                aria-label="Clear search"
+                onClick={() => setMobileFilterOpen(true)}
+                className="lg:hidden flex-1 sm:flex-none h-10 px-4 bg-[#0B132B] border border-[#C5A059]/50 text-white font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 active:scale-95 transition"
               >
-                <X className="w-4 h-4" />
+                <SlidersHorizontal className="w-4 h-4 text-[#DFB76C]" />
+                <span>Filters</span>
+                {activeFilterCount > 0 && (
+                  <span className="bg-[#C5A059] text-[#0A0D14] text-[10px] font-black px-1.5 py-0.2 font-mono">
+                    {activeFilterCount}
+                  </span>
+                )}
               </button>
-            )}
-          </div>
 
-          {/* Desktop Sort Dropdown & Mobile Filter Button */}
-          <div className="flex items-center gap-2.5">
-            {/* Mobile Filter Trigger Button */}
-            <button
-              type="button"
-              onClick={() => setMobileFilterOpen(true)}
-              className="lg:hidden flex-1 sm:flex-none h-11 px-4 bg-[#0E131F] border border-[#1C2438] hover:border-[#C5A059]/50 text-white font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 active:scale-95 transition"
-            >
-              <SlidersHorizontal className="w-4 h-4 text-[#DFB76C]" />
-              <span>Filters</span>
-              {activeFilterCount > 0 && (
-                <span className="bg-[#C5A059] text-[#0A0D14] text-[10px] font-black rounded-full px-1.5 py-0.2 font-mono">
-                  {activeFilterCount}
-                </span>
-              )}
-            </button>
+              <div className="lg:hidden relative flex-1">
+                <Search className="w-3.5 h-3.5 text-neutral-400 absolute left-3 top-3 pointer-events-none" />
+                <input
+                  type="text"
+                  placeholder="Search..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full bg-[#0A0D14] border border-[#1C2438] focus:border-[#C5A059] rounded-none pl-8 pr-7 py-2 text-xs text-white focus:outline-none"
+                />
+              </div>
+
+              {/* Product Count (Desktop) */}
+              <div className="hidden lg:block text-xs font-mono text-neutral-400">
+                Showing <strong className="text-white">{filteredProducts.length}</strong> items
+              </div>
+            </div>
 
             {/* Sort Selector */}
-            <div className="relative flex-1 sm:flex-none min-w-[170px]">
+            <div className="relative min-w-[180px]">
               <div className="relative">
-                <ArrowUpDown className="w-3.5 h-3.5 text-neutral-400 absolute left-3 top-3.5 pointer-events-none" />
                 <select
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value as typeof sortBy)}
                   aria-label="Sort products"
-                  className="w-full h-11 bg-[#0E131F] border border-[#1C2438] focus:border-[#C5A059] rounded-none pl-8 pr-8 text-xs font-bold text-white uppercase tracking-wider appearance-none focus:outline-none cursor-pointer"
+                  className="w-full h-10 bg-[#0A0D14] border border-[#1C2438] focus:border-[#C5A059] rounded-none pl-3 pr-8 text-xs font-bold text-white uppercase tracking-wider appearance-none focus:outline-none cursor-pointer"
                 >
                   <option value="featured">Featured Drops</option>
                   <option value="price-asc">Price: Low to High</option>
                   <option value="price-desc">Price: High to Low</option>
                   <option value="name">Name: A to Z</option>
                 </select>
-                <ChevronDown className="w-4 h-4 text-neutral-400 absolute right-3 top-3.5 pointer-events-none" />
+                <ChevronDown className="w-4 h-4 text-neutral-400 absolute right-3 top-3 pointer-events-none" />
               </div>
             </div>
           </div>
-        </div>
 
-        {/* 4. Horizontal Category Scroll Bar (Mobile & Desktop) */}
-        <div className="flex items-center gap-2 overflow-x-auto w-full pb-2 pt-0.5 scrollbar-none -mx-3 px-3 sm:mx-0 sm:px-0">
-          {categories.map((cat) => {
-            const isSelected = selectedCategory === cat.id;
-            return (
-              <button
-                key={cat.id}
-                type="button"
-                onClick={() => handleCategoryChange(cat.id)}
-                className={`min-h-[40px] px-3.5 sm:px-4 py-2 rounded-none text-xs font-bold uppercase tracking-wider whitespace-nowrap transition-colors border active:scale-95 ${
-                  isSelected
-                    ? "bg-[#C5A059] text-[#0A0D14] border-[#C5A059] font-black"
-                    : "bg-[#0B101D] text-neutral-300 hover:text-white hover:bg-[#12192B] border-[#1C253B] hover:border-[#C5A059]/40"
-                }`}
-              >
-                {cat.label}
-              </button>
-            );
-          })}
-        </div>
-
-        {/* 5. Desktop Secondary Filter Row: Leagues & Price Range */}
-        <div className="hidden lg:flex items-center justify-between gap-4 pt-2 border-t border-[#1C2438]">
-          {/* League pills */}
-          <div className="flex items-center gap-2">
-            <span className="text-[11px] font-bold uppercase tracking-wider text-neutral-500 font-jersey mr-1">
-              League:
-            </span>
-            {leagues.map((lg) => {
-              const isActive = selectedLeague === lg;
-              return (
-                <button
-                  key={lg}
-                  type="button"
-                  onClick={() => setSelectedLeague(lg)}
-                  className={`text-[11px] font-bold uppercase px-2.5 py-1 transition border ${
-                    isActive
-                      ? "bg-[#0B132B] border-[#C5A059] text-[#DFB76C]"
-                      : "bg-[#0A0D14] border-[#1C2438] text-neutral-400 hover:text-white"
-                  }`}
-                >
-                  {lg === "all" ? "All Leagues" : lg}
-                </button>
-              );
-            })}
-          </div>
-
-          {/* Price Range Pills */}
-          <div className="flex items-center gap-2">
-            <span className="text-[11px] font-bold uppercase tracking-wider text-neutral-500 font-jersey mr-1">
-              Price:
-            </span>
-            {[
-              { id: "all", label: "All" },
-              { id: "under-1200", label: "< ₹1,200" },
-              { id: "1200-1400", label: "₹1,200 - ₹1,400" },
-              { id: "above-1400", label: "> ₹1,400" },
-            ].map((p) => {
-              const isActive = priceFilter === p.id;
-              return (
-                <button
-                  key={p.id}
-                  type="button"
-                  onClick={() => setPriceFilter(p.id as typeof priceFilter)}
-                  className={`text-[11px] font-bold uppercase px-2.5 py-1 transition border ${
-                    isActive
-                      ? "bg-[#0B132B] border-[#C5A059] text-[#DFB76C]"
-                      : "bg-[#0A0D14] border-[#1C2438] text-neutral-400 hover:text-white"
-                  }`}
-                >
-                  {p.label}
-                </button>
-              );
-            })}
-          </div>
-        </div>
-      </div>
-
-      {/* 6. Active Filter Chips Display */}
-      {activeFilterCount > 0 && (
-        <div className="flex flex-wrap items-center gap-2 mb-6 text-xs">
-          <span className="text-neutral-500 text-[11px] uppercase font-bold tracking-wider font-mono">
-            Active Filters:
-          </span>
-
-          {selectedCategory !== "all" && (
-            <span className="inline-flex items-center gap-1.5 bg-[#0B132B] border border-[#C5A059]/40 text-[#DFB76C] px-2.5 py-1 uppercase font-bold text-[11px]">
-              <span>Category: {selectedCategory.replace("-", " ")}</span>
-              <button
-                type="button"
-                onClick={() => handleCategoryChange("all")}
-                className="hover:text-white"
-              >
-                <X className="w-3 h-3" />
-              </button>
-            </span>
-          )}
-
-          {selectedLeague !== "all" && (
-            <span className="inline-flex items-center gap-1.5 bg-[#0B132B] border border-[#C5A059]/40 text-[#DFB76C] px-2.5 py-1 uppercase font-bold text-[11px]">
-              <span>League: {selectedLeague}</span>
-              <button
-                type="button"
-                onClick={() => setSelectedLeague("all")}
-                className="hover:text-white"
-              >
-                <X className="w-3 h-3" />
-              </button>
-            </span>
-          )}
-
-          {priceFilter !== "all" && (
-            <span className="inline-flex items-center gap-1.5 bg-[#0B132B] border border-[#C5A059]/40 text-[#DFB76C] px-2.5 py-1 uppercase font-bold text-[11px]">
-              <span>
-                Price:{" "}
-                {priceFilter === "under-1200"
-                  ? "Under ₹1,200"
-                  : priceFilter === "1200-1400"
-                  ? "₹1,200 - ₹1,400"
-                  : "Above ₹1,400"}
+          {/* Active Filter Badges */}
+          {activeFilterCount > 0 && (
+            <div className="flex flex-wrap items-center gap-2 text-xs">
+              <span className="text-neutral-500 text-[11px] uppercase font-bold tracking-wider font-mono">
+                Active:
               </span>
-              <button
-                type="button"
-                onClick={() => setPriceFilter("all")}
-                className="hover:text-white"
-              >
-                <X className="w-3 h-3" />
-              </button>
-            </span>
-          )}
 
-          {searchQuery && (
-            <span className="inline-flex items-center gap-1.5 bg-[#0B132B] border border-[#C5A059]/40 text-[#DFB76C] px-2.5 py-1 font-bold text-[11px]">
-              <span>Query: &quot;{searchQuery}&quot;</span>
-              <button
-                type="button"
-                onClick={() => setSearchQuery("")}
-                className="hover:text-white"
-              >
-                <X className="w-3 h-3" />
-              </button>
-            </span>
-          )}
-
-          <button
-            type="button"
-            onClick={resetFilters}
-            className="text-neutral-400 hover:text-white underline text-[11px] ml-2"
-          >
-            Clear all
-          </button>
-        </div>
-      )}
-
-      {/* 7. Product Grid - Responsive 2 to 4 columns */}
-      {filteredProducts.length === 0 ? (
-        <div className="py-20 text-center bg-[#0E131F] border border-[#1C2438] p-8 space-y-4">
-          <div className="w-12 h-12 rounded-none bg-[#0B132B] border border-[#1C2438] mx-auto flex items-center justify-center text-[#DFB76C]">
-            <Search className="w-6 h-6" />
-          </div>
-          <div>
-            <h3 className="text-xl font-black uppercase text-white font-jersey">
-              No matching kits in the vault
-            </h3>
-            <p className="text-xs text-neutral-400 mt-1 max-w-sm mx-auto">
-              We couldn&apos;t find any jerseys matching your active filters. Try searching a different keyword or resetting your filters.
-            </p>
-          </div>
-          <button
-            type="button"
-            onClick={resetFilters}
-            className="bg-[#C5A059] hover:bg-[#DFB76C] text-[#0A0D14] text-xs font-black uppercase px-6 py-3 rounded-none transition active:scale-95"
-          >
-            Reset All Filters
-          </button>
-        </div>
-      ) : (
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6 lg:gap-8">
-          {filteredProducts.map((product) => {
-            const discount = Math.round(
-              ((product.compare_at_price - product.price) / product.compare_at_price) * 100
-            );
-
-            return (
-              <Link
-                key={product.id}
-                href={`/products/${product.id}`}
-                className="group block active:scale-[0.98] transition-transform select-none"
-              >
-                {/* Product Image Frame */}
-                <div className="relative aspect-[3/4] w-full overflow-hidden bg-[#0A0D14] border border-[#1C2438] group-hover:border-[#C5A059]/60 transition-colors">
-                  <Image
-                    src={product.image_url}
-                    alt={product.title}
-                    fill
-                    sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-                    className="object-cover object-center group-hover:scale-105 transition-transform duration-500"
-                  />
-
-                  {/* Badge */}
-                  {product.badge && (
-                    <div className="absolute top-2 left-2 bg-[#0B132B]/90 border border-[#C5A059]/40 text-[#DFB76C] text-[9px] sm:text-[10px] font-bold uppercase px-2 py-0.5 tracking-wider backdrop-blur-sm">
-                      {product.badge}
-                    </div>
-                  )}
-
-                  {/* Version tag */}
-                  <div className="absolute bottom-2 left-2 bg-[#0A0D14]/85 border border-[#1C2438] text-neutral-300 text-[9px] uppercase px-1.5 py-0.5 font-mono">
-                    {product.version_type || "Fan Edition"}
-                  </div>
-
-                  {/* Desktop Quick Add Button Overlay */}
+              {selectedCategory !== "all" && (
+                <span className="inline-flex items-center gap-1.5 bg-[#0B132B] border border-[#C5A059]/40 text-[#DFB76C] px-2.5 py-1 uppercase font-bold text-[11px]">
+                  <span>Category: {selectedCategory.replace("-", " ")}</span>
                   <button
                     type="button"
-                    onClick={(e) => handleQuickAdd(e, product)}
-                    className="hidden sm:flex absolute bottom-2 right-2 w-9 h-9 items-center justify-center bg-[#C5A059] hover:bg-[#DFB76C] text-[#0A0D14] opacity-0 group-hover:opacity-100 transition-opacity shadow-lg"
-                    aria-label={`Quick add ${product.title}`}
-                    title="Quick add to bag"
+                    onClick={() => handleCategoryChange("all")}
+                    className="hover:text-white"
                   >
-                    <ShoppingBag className="w-4 h-4" />
+                    <X className="w-3 h-3" />
                   </button>
-                </div>
+                </span>
+              )}
 
-                {/* Product Metadata */}
-                <div className="mt-2.5 sm:mt-3">
-                  <div className="text-[10px] text-neutral-400 font-mono uppercase tracking-wider truncate">
-                    {product.team} • {product.season}
-                  </div>
-                  <h3 className="text-xs sm:text-sm font-bold text-white line-clamp-1 leading-snug group-hover:text-[#DFB76C] transition-colors mt-0.5">
-                    {product.title}
-                  </h3>
-                  <div className="mt-1 flex items-baseline gap-2">
-                    <span className="text-sm sm:text-base font-black text-white font-jersey">
-                      ₹{product.price.toLocaleString("en-IN")}
-                    </span>
-                    {product.compare_at_price > product.price && (
-                      <span className="text-[11px] sm:text-xs text-neutral-500 line-through">
-                        ₹{product.compare_at_price.toLocaleString("en-IN")}
-                      </span>
-                    )}
-                    {discount > 0 && (
-                      <span className="text-[10px] text-[#DFB76C] font-mono font-bold hidden sm:inline">
-                        -{discount}%
-                      </span>
-                    )}
-                  </div>
-                </div>
-              </Link>
-            );
-          })}
-        </div>
-      )}
+              {selectedLeague !== "all" && (
+                <span className="inline-flex items-center gap-1.5 bg-[#0B132B] border border-[#C5A059]/40 text-[#DFB76C] px-2.5 py-1 uppercase font-bold text-[11px]">
+                  <span>League: {selectedLeague}</span>
+                  <button
+                    type="button"
+                    onClick={() => setSelectedLeague("all")}
+                    className="hover:text-white"
+                  >
+                    <X className="w-3 h-3" />
+                  </button>
+                </span>
+              )}
 
-      {/* 8. Mobile Slide-Over Filter Drawer */}
+              {priceFilter !== "all" && (
+                <span className="inline-flex items-center gap-1.5 bg-[#0B132B] border border-[#C5A059]/40 text-[#DFB76C] px-2.5 py-1 uppercase font-bold text-[11px]">
+                  <span>
+                    Price:{" "}
+                    {priceFilter === "under-1200"
+                      ? "Under ₹1,200"
+                      : priceFilter === "1200-1400"
+                      ? "₹1,200 - ₹1,400"
+                      : "Above ₹1,400"}
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => setPriceFilter("all")}
+                    className="hover:text-white"
+                  >
+                    <X className="w-3 h-3" />
+                  </button>
+                </span>
+              )}
+
+              {searchQuery && (
+                <span className="inline-flex items-center gap-1.5 bg-[#0B132B] border border-[#C5A059]/40 text-[#DFB76C] px-2.5 py-1 font-bold text-[11px]">
+                  <span>Query: &quot;{searchQuery}&quot;</span>
+                  <button
+                    type="button"
+                    onClick={() => setSearchQuery("")}
+                    className="hover:text-white"
+                  >
+                    <X className="w-3 h-3" />
+                  </button>
+                </span>
+              )}
+
+              <button
+                type="button"
+                onClick={resetFilters}
+                className="text-neutral-400 hover:text-white underline text-[11px] ml-1"
+              >
+                Clear all
+              </button>
+            </div>
+          )}
+
+          {/* Product Grid */}
+          {filteredProducts.length === 0 ? (
+            <div className="py-20 text-center bg-[#0E131F] border border-[#1C2438] p-8 space-y-4">
+              <div className="w-12 h-12 rounded-none bg-[#0B132B] border border-[#1C2438] mx-auto flex items-center justify-center text-[#DFB76C]">
+                <Search className="w-6 h-6" />
+              </div>
+              <div>
+                <h3 className="text-xl font-black uppercase text-white font-jersey">
+                  No matching kits in the vault
+                </h3>
+                <p className="text-xs text-neutral-400 mt-1 max-w-sm mx-auto">
+                  We couldn&apos;t find any jerseys matching your active filters. Try resetting your filters.
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={resetFilters}
+                className="bg-[#C5A059] hover:bg-[#DFB76C] text-[#0A0D14] text-xs font-black uppercase px-6 py-3 rounded-none transition active:scale-95"
+              >
+                Reset All Filters
+              </button>
+            </div>
+          ) : (
+            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-3.5 sm:gap-6">
+              {filteredProducts.map((product) => {
+                const discount = Math.round(
+                  ((product.compare_at_price - product.price) / product.compare_at_price) * 100
+                );
+
+                return (
+                  <Link
+                    key={product.id}
+                    href={`/products/${product.id}`}
+                    className="group block active:scale-[0.98] transition-transform select-none"
+                  >
+                    {/* Product Image Frame */}
+                    <div className="relative aspect-[3/4] w-full overflow-hidden bg-[#0A0D14] border border-[#1C2438] group-hover:border-[#C5A059]/60 transition-colors">
+                      <Image
+                        src={product.image_url}
+                        alt={product.title}
+                        fill
+                        sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 33vw"
+                        className="object-cover object-center group-hover:scale-105 transition-transform duration-500"
+                      />
+
+                      {/* Version tag */}
+                      <div className="absolute bottom-2 left-2 bg-[#0A0D14]/85 border border-[#1C2438] text-neutral-300 text-[9px] uppercase px-1.5 py-0.5 font-mono">
+                        {product.version_type || "Fan Edition"}
+                      </div>
+
+                      {/* Quick Add Button Overlay */}
+                      <button
+                        type="button"
+                        onClick={(e) => handleQuickAdd(e, product)}
+                        className="hidden sm:flex absolute bottom-2 right-2 w-9 h-9 items-center justify-center bg-[#C5A059] hover:bg-[#DFB76C] text-[#0A0D14] opacity-0 group-hover:opacity-100 transition-opacity shadow-lg"
+                        aria-label={`Quick add ${product.title}`}
+                        title="Quick add to bag"
+                      >
+                        <ShoppingBag className="w-4 h-4" />
+                      </button>
+                    </div>
+
+                    {/* Product Metadata */}
+                    <div className="mt-2.5 sm:mt-3">
+                      <div className="text-[10px] text-neutral-400 font-mono uppercase tracking-wider truncate">
+                        {product.team} • {product.season}
+                      </div>
+                      <h3 className="text-xs sm:text-sm font-bold text-white line-clamp-1 leading-snug group-hover:text-[#DFB76C] transition-colors mt-0.5">
+                        {product.title}
+                      </h3>
+                      <div className="mt-1 flex items-baseline gap-2">
+                        <span className="text-sm sm:text-base font-black text-white font-jersey">
+                          ₹{product.price.toLocaleString("en-IN")}
+                        </span>
+                        {product.compare_at_price > product.price && (
+                          <span className="text-[11px] sm:text-xs text-neutral-500 line-through">
+                            ₹{product.compare_at_price.toLocaleString("en-IN")}
+                          </span>
+                        )}
+                        {discount > 0 && (
+                          <span className="text-[10px] text-[#DFB76C] font-mono font-bold hidden sm:inline">
+                            -{discount}%
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  </Link>
+                );
+              })}
+            </div>
+          )}
+        </main>
+      </div>
+
+      {/* ===================== MOBILE SLIDE-OVER FILTER DRAWER ===================== */}
       {mobileFilterOpen && (
         <div className="fixed inset-0 z-50 flex lg:hidden animate-in fade-in duration-200">
           <div

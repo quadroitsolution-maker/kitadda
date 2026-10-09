@@ -4,61 +4,76 @@ import React, { useState, useEffect, useCallback, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
-interface Slide {
-  id: number;
-  badge: string;
-  headline: string;
-  description: string;
-  ctaLink: string;
-  imageUrl: string;
-}
+import { HeroSlide } from "@/types";
 
-const SLIDES: Slide[] = [
+const FALLBACK_SLIDES: HeroSlide[] = [
   {
-    id: 1,
+    id: "slide-1",
     badge: "2024/25 SEASON",
     headline: "Current Season Kits",
     description: "Player & Fan Version master grade drops.",
-    ctaLink: "#latest-drops",
-    imageUrl: "https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&w=1920&q=85",
+    cta_link: "#latest-drops",
+    image_url: "https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&w=1920&q=85",
+    order_index: 0,
+    is_active: true,
   },
   {
-    id: 2,
+    id: "slide-2",
     badge: "MATCH GEAR",
     headline: "Anti-Slip Grip Socks",
     description: "High-traction silicone lock-in.",
-    ctaLink: "#latest-drops",
-    imageUrl: "https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&w=1920&q=85",
+    cta_link: "#latest-drops",
+    image_url: "https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&w=1920&q=85",
+    order_index: 1,
+    is_active: true,
   },
   {
-    id: 3,
+    id: "slide-3",
     badge: "INTERNATIONAL",
     headline: "World Cup Editions",
     description: "Official national team jerseys.",
-    ctaLink: "#latest-drops",
-    imageUrl: "https://images.unsplash.com/photo-1517466787929-bc90951d0974?auto=format&fit=crop&w=1920&q=85",
+    cta_link: "#latest-drops",
+    image_url: "https://images.unsplash.com/photo-1517466787929-bc90951d0974?auto=format&fit=crop&w=1920&q=85",
+    order_index: 2,
+    is_active: true,
   },
 ];
 
 export const HeroCarousel: React.FC = () => {
+  const [slides, setSlides] = useState<HeroSlide[]>(FALLBACK_SLIDES);
   const [currentSlide, setCurrentSlide] = useState(0);
   const touchStartX = useRef<number | null>(null);
   const touchEndX = useRef<number | null>(null);
 
-  const nextSlide = useCallback(() => {
-    setCurrentSlide((prev) => (prev + 1) % SLIDES.length);
+  // Fetch dynamic slides from backend
+  useEffect(() => {
+    fetch("/api/sliders")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success && Array.isArray(data.slides) && data.slides.length > 0) {
+          setSlides(data.slides);
+        }
+      })
+      .catch((err) => console.warn("Could not fetch dynamic sliders, using fallback:", err));
   }, []);
+
+  const totalSlides = slides.length || 1;
+
+  const nextSlide = useCallback(() => {
+    setCurrentSlide((prev) => (prev + 1) % totalSlides);
+  }, [totalSlides]);
 
   const prevSlide = useCallback(() => {
-    setCurrentSlide((prev) => (prev - 1 + SLIDES.length) % SLIDES.length);
-  }, []);
+    setCurrentSlide((prev) => (prev - 1 + totalSlides) % totalSlides);
+  }, [totalSlides]);
 
   useEffect(() => {
+    if (totalSlides <= 1) return;
     const timer = setInterval(() => {
       nextSlide();
     }, 5500);
     return () => clearInterval(timer);
-  }, [nextSlide]);
+  }, [nextSlide, totalSlides]);
 
   // Touch Swipe Handlers for mobile phones
   const handleTouchStart = (e: React.TouchEvent) => {
@@ -94,12 +109,12 @@ export const HeroCarousel: React.FC = () => {
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
     >
-      {SLIDES.map((slide, idx) => {
+      {slides.map((slide, idx) => {
         const isActive = idx === currentSlide;
         return (
           <Link
             key={slide.id}
-            href={slide.ctaLink}
+            href={slide.cta_link || "#latest-drops"}
             className={`absolute inset-0 transition-opacity duration-700 ease-in-out cursor-pointer block ${
               isActive ? "opacity-100 z-10" : "opacity-0 z-0 pointer-events-none"
             }`}
@@ -107,7 +122,7 @@ export const HeroCarousel: React.FC = () => {
             {/* Background Image with Clean Minimal Overlays */}
             <div className="absolute inset-0">
               <Image
-                src={slide.imageUrl}
+                src={slide.image_url}
                 alt={slide.headline}
                 fill
                 priority={idx === 0}
@@ -121,9 +136,11 @@ export const HeroCarousel: React.FC = () => {
             <div className="relative max-w-7xl mx-auto h-full flex flex-col justify-center px-4 sm:px-6 lg:px-8 z-20">
               <div className="max-w-xl space-y-2 sm:space-y-3">
                 {/* Badge */}
-                <div className="inline-flex items-center px-2.5 py-0.5 rounded-none border border-[#C5A059]/40 bg-[#0B132B]/90 text-[#DFB76C] text-[10px] sm:text-[11px] font-bold tracking-widest uppercase">
-                  <span>{slide.badge}</span>
-                </div>
+                {slide.badge && (
+                  <div className="inline-flex items-center px-2.5 py-0.5 rounded-none border border-[#C5A059]/40 bg-[#0B132B]/90 text-[#DFB76C] text-[10px] sm:text-[11px] font-bold tracking-widest uppercase">
+                    <span>{slide.badge}</span>
+                  </div>
+                )}
 
                 {/* Main Headline */}
                 <h1 className="text-2xl sm:text-5xl lg:text-6xl font-black text-white uppercase tracking-tight leading-tight sm:leading-none font-jersey drop-shadow-sm">
@@ -131,9 +148,11 @@ export const HeroCarousel: React.FC = () => {
                 </h1>
 
                 {/* Description */}
-                <p className="text-xs sm:text-sm text-neutral-300 font-normal max-w-sm sm:max-w-none">
-                  {slide.description}
-                </p>
+                {slide.description && (
+                  <p className="text-xs sm:text-sm text-neutral-300 font-normal max-w-sm sm:max-w-none">
+                    {slide.description}
+                  </p>
+                )}
 
                 {/* Mobile tap prompt */}
                 <div className="pt-2 sm:hidden flex items-center gap-1.5 text-[11px] text-[#DFB76C] font-bold uppercase tracking-wider font-jersey">
@@ -147,25 +166,28 @@ export const HeroCarousel: React.FC = () => {
       })}
 
       {/* Slide Indicator Bars - Enhanced 44px tap zone on mobile */}
-      <div className="absolute bottom-4 sm:bottom-5 left-1/2 -translate-x-1/2 z-30 flex items-center gap-1 pointer-events-auto">
-        {SLIDES.map((_, idx) => (
-          <button
-            key={idx}
-            type="button"
-            onClick={() => setCurrentSlide(idx)}
-            aria-label={`Go to slide ${idx + 1}`}
-            className="p-2 flex items-center justify-center focus:outline-none"
-          >
-            <div
-              className={`transition-all duration-300 rounded-none h-1 ${
-                idx === currentSlide
-                  ? "w-7 sm:w-8 bg-[#C5A059]"
-                  : "w-3 sm:w-4 bg-white/25 hover:bg-white/50"
-              }`}
-            />
-          </button>
-        ))}
-      </div>
+      {slides.length > 1 && (
+        <div className="absolute bottom-4 sm:bottom-5 left-1/2 -translate-x-1/2 z-30 flex items-center gap-1 pointer-events-auto">
+          {slides.map((_, idx) => (
+            <button
+              key={idx}
+              type="button"
+              onClick={() => setCurrentSlide(idx)}
+              aria-label={`Go to slide ${idx + 1}`}
+              className="p-2 flex items-center justify-center focus:outline-none"
+            >
+              <div
+                className={`transition-all duration-300 rounded-none h-1 ${
+                  idx === currentSlide
+                    ? "w-7 sm:w-8 bg-[#C5A059]"
+                    : "w-3 sm:w-4 bg-white/25 hover:bg-white/50"
+                }`}
+              />
+            </button>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
+

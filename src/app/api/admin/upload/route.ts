@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { promises as fs } from "fs";
 import path from "path";
+import { getServiceSupabase } from "@/lib/supabase";
+import { getAdminSession } from "@/lib/auth";
 
 // Allowed mime types for image uploads
 const ALLOWED_MIME_TYPES = new Set([
@@ -14,9 +16,15 @@ const ALLOWED_MIME_TYPES = new Set([
 ]);
 
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
+const BUCKET_NAME = "products";
 
 export async function POST(req: NextRequest) {
   try {
+    const session = await getAdminSession(req);
+    if (!session) {
+      return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
+    }
+
     const formData = await req.formData();
     
     // Support either single 'file' or multiple 'files'
@@ -38,10 +46,6 @@ export async function POST(req: NextRequest) {
         { status: 400 }
       );
     }
-
-    // Ensure public/uploads directory exists
-    const uploadsDir = path.join(process.cwd(), "public", "uploads");
-    await fs.mkdir(uploadsDir, { recursive: true });
 
     const uploadedUrls: string[] = [];
 
@@ -71,21 +75,51 @@ export async function POST(req: NextRequest) {
         else ext = "jpg";
       }
 
-      // Create unique filename
+      // Create clean filename
       const cleanBase = path.basename(file.name, path.extname(file.name))
         .toLowerCase()
         .replace(/[^a-z0-9_-]/g, "-")
         .slice(0, 30);
       const uniqueSuffix = `${Date.now()}-${Math.random().toString(36).substring(2, 7)}`;
       const filename = `${cleanBase || "kit"}-${uniqueSuffix}.${ext}`;
-      const filePath = path.join(uploadsDir, filename);
 
-      // Convert to buffer and save
       const arrayBuffer = await file.arrayBuffer();
       const buffer = Buffer.from(arrayBuffer);
-      await fs.writeFile(filePath, buffer);
 
-      const publicUrl = `/uploads/${filename}`;
+      let publicUrl = "";
+
+      // 1. Try uploading to Supabase Storage
+      try {
+        const supabase = getServiceSupabase();
+        const { error: uploadError } = await supabase.storage
+          .from(BUCKET_NAME)
+          .upload(filename, buffer, {
+            contentType: file.type || "image/jpeg",
+            upsert: true,
+          });
+
+        if (!uploadError) {
+          const { data: publicUrlData } = supabase.storage
+            .from(BUCKET_NAME)
+            .getPublicUrl(filename);
+
+          if (publicUrlData?.publicUrl) {
+            publicUrl = publicUrlData.publicUrl;
+          }
+        }
+      } catch (storageErr) {
+        console.warn("Supabase Storage upload fallback to local disk:", storageErr);
+      }
+
+      // 2. Fallback to local disk if Supabase Storage failed
+      if (!publicUrl) {
+        const uploadsDir = path.join(process.cwd(), "public", "uploads");
+        await fs.mkdir(uploadsDir, { recursive: true });
+        const filePath = path.join(uploadsDir, filename);
+        await fs.writeFile(filePath, buffer);
+        publicUrl = `/uploads/${filename}`;
+      }
+
       uploadedUrls.push(publicUrl);
     }
 

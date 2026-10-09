@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import crypto from "crypto";
 import { getServiceSupabase } from "@/lib/supabase";
-import { createOrder } from "@/lib/db";
+import { createOrder, getCouponByCode, calculateCouponDiscount, incrementCouponUsage } from "@/lib/db";
 import { CartItem } from "@/types";
 
 export async function POST(req: NextRequest) {
@@ -14,6 +14,7 @@ export async function POST(req: NextRequest) {
       items,
       shipping_address,
       payment_method,
+      coupon_code,
     } = body;
 
     const keySecret = process.env.RAZORPAY_KEY_SECRET;
@@ -33,21 +34,43 @@ export async function POST(req: NextRequest) {
       }
     }
 
+    const subtotal = items.reduce(
+      (acc: number, item: { unit_price: number; quantity: number }) => acc + item.unit_price * item.quantity,
+      0
+    );
+
+    let shippingFee = subtotal >= 999 ? 0 : 99;
+    let couponDiscount = 0;
+
+    if (coupon_code) {
+      const coupon = await getCouponByCode(coupon_code);
+      if (coupon) {
+        const discResult = calculateCouponDiscount(coupon, subtotal, shippingFee);
+        if (discResult.isValid) {
+          couponDiscount = discResult.discount;
+          shippingFee = discResult.finalShipping;
+        }
+      }
+    }
+
+    const totalAmount = Math.max(0, subtotal - couponDiscount + shippingFee);
+
+    // Increment coupon usage count asynchronously if valid coupon was applied
+    if (coupon_code) {
+      incrementCouponUsage(coupon_code).catch((err) =>
+        console.warn("Failed to increment coupon usage:", err)
+      );
+    }
+
     // Insert order into Supabase
     try {
       const supabase = getServiceSupabase();
-      const subtotal = items.reduce(
-        (acc: number, item: { unit_price: number; quantity: number }) => acc + item.unit_price * item.quantity,
-        0
-      );
-      const totalAmount = subtotal + (subtotal >= 1499 ? 0 : 99);
-
       const { data: orderData, error: orderError } = await supabase
         .from("orders")
         .insert({
           total_amount: totalAmount,
-          payment_status: payment_method === "cod" ? "pending" : "paid",
-          payment_method: payment_method || "razorpay",
+          payment_status: "paid",
+          payment_method: "razorpay",
           razorpay_order_id: razorpay_order_id || null,
           razorpay_payment_id: razorpay_payment_id || null,
           razorpay_signature: razorpay_signature || null,
@@ -81,16 +104,10 @@ export async function POST(req: NextRequest) {
 
     // Persist order in local working backend database & decrement inventory
     try {
-      const subtotal = items.reduce(
-        (acc: number, item: { unit_price: number; quantity: number }) => acc + item.unit_price * item.quantity,
-        0
-      );
-      const totalAmount = subtotal + (subtotal >= 1499 ? 0 : 99);
-
       await createOrder({
         total_amount: totalAmount,
-        payment_status: payment_method === "cod" ? "pending" : "paid",
-        payment_method: payment_method || "razorpay",
+        payment_status: "paid",
+        payment_method: "razorpay",
         razorpay_order_id: razorpay_order_id || null,
         razorpay_payment_id: razorpay_payment_id || null,
         razorpay_signature: razorpay_signature || null,
@@ -105,7 +122,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({
       success: true,
       message: "Order placed successfully",
-      order_id: razorpay_order_id || `COD_${Date.now()}`,
+      order_id: razorpay_order_id || `ORD_${Date.now()}`,
     });
   } catch (error) {
     console.error("Verification error:", error);

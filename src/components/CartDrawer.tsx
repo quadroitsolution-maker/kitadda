@@ -24,9 +24,44 @@ export const CartDrawer: React.FC = () => {
     freeShippingThreshold,
     shippingRemaining,
     setIsCheckoutOpen,
+    appliedCoupon,
+    couponDiscount,
+    applyCoupon,
+    removeCoupon,
+    effectiveShippingFee,
+    grandTotal,
   } = useCart();
 
+  const [couponInput, setCouponInput] = React.useState("");
+  const [couponLoading, setCouponLoading] = React.useState(false);
+  const [couponError, setCouponError] = React.useState("");
+  const [couponSuccess, setCouponSuccess] = React.useState("");
+
   if (!isCartOpen) return null;
+
+  const handleApplyCoupon = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!couponInput.trim()) return;
+
+    setCouponLoading(true);
+    setCouponError("");
+    setCouponSuccess("");
+
+    const res = await applyCoupon(couponInput);
+    setCouponLoading(false);
+    if (res.success) {
+      setCouponSuccess(res.message);
+      setCouponInput("");
+    } else {
+      setCouponError(res.message);
+    }
+  };
+
+  const handleRemoveCoupon = () => {
+    removeCoupon();
+    setCouponSuccess("");
+    setCouponError("");
+  };
 
   const handleProceedToCheckout = () => {
     setIsCartOpen(false);
@@ -161,23 +196,6 @@ export const CartDrawer: React.FC = () => {
                         <span>•</span>
                         <span className="text-neutral-300">{item.version}</span>
                       </div>
-
-                      {/* Customization Details */}
-                      {(item.custom_name || item.custom_number || item.patches) && (
-                        <div className="mt-1.5 p-1.5 rounded-none bg-[#0E131F] border border-[#1C2438] text-[10px] space-y-0.5">
-                          {(item.custom_name || item.custom_number) && (
-                            <div className="text-[#DFB76C] font-bold font-jersey">
-                              PRINT: {item.custom_name || "--"} #{item.custom_number || "--"}
-                            </div>
-                          )}
-                          {item.patches && (
-                            <div className="text-neutral-300 flex items-center gap-1">
-                              <span className="w-1.5 h-1.5 rounded-none bg-[#C5A059]" />
-                              <span>Sleeve Patches (+₹{item.patch_fee})</span>
-                            </div>
-                          )}
-                        </div>
-                      )}
                     </div>
 
                     {/* Stepper & Price */}
@@ -219,6 +237,61 @@ export const CartDrawer: React.FC = () => {
           {/* Drawer Footer */}
           {items.length > 0 && (
             <div className="p-4 sm:p-5 border-t border-[#1C2438] bg-[#0E131F] space-y-3 pb-[max(1rem,env(safe-area-inset-bottom))]">
+              {/* Coupon / Promo Code Section */}
+              <div className="border border-[#1C2438] bg-[#0A0D14] p-2.5">
+                {appliedCoupon ? (
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <span className="bg-[#DFB76C]/10 text-[#DFB76C] border border-[#C5A059]/40 text-[11px] font-black uppercase px-2 py-0.5 font-mono">
+                        {appliedCoupon.code}
+                      </span>
+                      <span className="text-[11px] text-emerald-400 font-bold">
+                        {appliedCoupon.discount_type === "free_shipping"
+                          ? "FREE Express Shipping applied"
+                          : `-₹${couponDiscount} discount applied`}
+                      </span>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={handleRemoveCoupon}
+                      className="text-[10px] uppercase font-bold text-neutral-400 hover:text-red-400 transition underline ml-2"
+                    >
+                      Remove
+                    </button>
+                  </div>
+                ) : (
+                  <form onSubmit={handleApplyCoupon} className="space-y-1.5">
+                    <div className="flex gap-2">
+                      <input
+                        type="text"
+                        placeholder="Enter Promo / Coupon Code"
+                        value={couponInput}
+                        onChange={(e) => {
+                          setCouponInput(e.target.value.toUpperCase());
+                          setCouponError("");
+                          setCouponSuccess("");
+                        }}
+                        className="flex-1 bg-[#0E131F] border border-[#1C2438] focus:border-[#C5A059] px-2.5 py-1.5 text-xs text-white placeholder-neutral-500 font-mono uppercase focus:outline-none"
+                      />
+                      <button
+                        type="submit"
+                        disabled={couponLoading || !couponInput.trim()}
+                        className="bg-[#C5A059] hover:bg-[#DFB76C] disabled:opacity-50 text-[#0A0D14] px-3.5 py-1.5 text-xs font-black uppercase transition shrink-0"
+                      >
+                        {couponLoading ? "..." : "Apply"}
+                      </button>
+                    </div>
+                    {couponError && (
+                      <p className="text-[10px] text-red-400 font-medium">{couponError}</p>
+                    )}
+                    {couponSuccess && (
+                      <p className="text-[10px] text-emerald-400 font-medium">{couponSuccess}</p>
+                    )}
+                  </form>
+                )}
+              </div>
+
+              {/* Price Breakdown */}
               <div className="space-y-1.5 text-xs">
                 <div className="flex justify-between text-neutral-400">
                   <span>Subtotal</span>
@@ -226,16 +299,22 @@ export const CartDrawer: React.FC = () => {
                     ₹{subtotal.toLocaleString("en-IN")}
                   </span>
                 </div>
+                {couponDiscount > 0 && (
+                  <div className="flex justify-between text-emerald-400">
+                    <span>Coupon Discount ({appliedCoupon?.code})</span>
+                    <span className="font-bold">-₹{couponDiscount.toLocaleString("en-IN")}</span>
+                  </div>
+                )}
                 <div className="flex justify-between text-neutral-400">
                   <span>Estimated Shipping</span>
                   <span className="text-[#DFB76C] font-bold">
-                    {subtotal >= freeShippingThreshold ? "FREE" : "₹99"}
+                    {effectiveShippingFee === 0 ? "FREE" : `₹${effectiveShippingFee}`}
                   </span>
                 </div>
                 <div className="flex justify-between text-sm font-black text-white pt-2 border-t border-[#1C2438] font-jersey">
                   <span>Estimated Total</span>
                   <span className="text-[#DFB76C] text-base">
-                    ₹{(subtotal + (subtotal >= freeShippingThreshold ? 0 : 99)).toLocaleString("en-IN")}
+                    ₹{grandTotal.toLocaleString("en-IN")}
                   </span>
                 </div>
               </div>
@@ -253,7 +332,7 @@ export const CartDrawer: React.FC = () => {
 
               <div className="flex items-center justify-center gap-2 text-[10px] text-neutral-400">
                 <ShieldCheck className="w-3.5 h-3.5 text-[#DFB76C]" />
-                <span>100% Encrypted • UPI / Cards / COD</span>
+                <span>100% Encrypted • 100% Prepaid (UPI / Cards / NetBanking)</span>
               </div>
             </div>
           )}

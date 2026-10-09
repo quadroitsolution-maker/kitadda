@@ -17,8 +17,16 @@
   body {
     background-color: #0A0D14;
     color: #F1F4F9;
-    font-family: var(--font-geist-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-family: var(--font-plus-jakarta), var(--font-geist-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     overflow-x: hidden;
+    letter-spacing: -0.01em;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    letter-spacing: -0.025em;
+    font-weight: 800;
   }
 }
 
@@ -53,11 +61,45 @@
   animation-play-state: paused;
 }
 
-/* Jersey print preview font simulation */
-.font-jersey {
-  font-family: Impact, "Arial Black", sans-serif;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
+@keyframes trustLoop {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-33.333333%); }
+}
+
+.animate-trust-loop {
+  display: flex;
+  width: max-content;
+  animation: trustLoop 28s linear infinite;
+  will-change: transform;
+}
+
+.animate-trust-loop:hover {
+  animation-play-state: paused;
+}
+
+@keyframes revealUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+    filter: blur(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0px);
+  }
+}
+
+.animate-reveal-up {
+  animation: revealUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Professional Modern Typography for Display & Headlines */
+.font-jersey,
+.font-display {
+  font-family: var(--font-plus-jakarta), var(--font-geist-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-weight: 800;
+  letter-spacing: -0.025em;
 }
 
 /* Mobile & Touch Optimizations */
@@ -103,3 +145,10 @@ html {
   bottom: env(safe-area-inset-bottom);
 }
 
+/* Cute Rotating Football Custom Cursor for Shopping & Product Sections */
+@media (pointer: fine) {
+  .cursor-football,
+  .cursor-football * {
+    cursor: none !important;
+  }
+}

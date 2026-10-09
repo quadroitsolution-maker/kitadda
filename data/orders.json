@@ -1,1 +1,98 @@
-[]
+[
+  {
+    "id": "e7424f30-37c1-4778-8937-bcd550322175",
+    "user_id": null,
+    "total_amount": 1448,
+    "payment_status": "paid",
+    "payment_method": "razorpay",
+    "razorpay_order_id": "order_supabase_live_01",
+    "razorpay_payment_id": "pay_live_01",
+    "razorpay_signature": null,
+    "shipping_address": {
+      "city": "Delhi",
+      "phone": "9811223344",
+      "state": "Delhi",
+      "pincode": "110001",
+      "fullName": "Rahul Sharma",
+      "addressLine": "45, MG Road"
+    },
+    "status": "shipped",
+    "items": [
+      {
+        "cart_item_id": "5b5cd59e-4523-48fe-82ff-d0af1fa41bc7",
+        "product": {
+          "id": "rm-home-2425",
+          "title": "Real Madrid 2024/25 Home Master Grade Kit",
+          "description": "",
+          "price": 1349,
+          "compare_at_price": 2023.5,
+          "category": "fan-version",
+          "image_url": "https://images.unsplash.com/photo-1577223625816-7546f13df25d?auto=format&fit=crop&w=800&q=80",
+          "gallery": [],
+          "stock_status": "in_stock",
+          "team": "",
+          "league": "",
+          "season": "2024/25"
+        },
+        "size": "M",
+        "version": "Fan Version",
+        "custom_name": "MBAPPE",
+        "custom_number": "9",
+        "patches": true,
+        "patch_fee": 150,
+        "unit_price": 1349,
+        "quantity": 1
+      }
+    ],
+    "created_at": "2026-10-08T15:03:51.003807+00:00",
+    "updated_at": "2026-10-09T17:44:35.318Z"
+  },
+  {
+    "id": "05527796-f374-4d28-a348-3cb886a52c04",
+    "user_id": null,
+    "total_amount": 1448,
+    "payment_status": "paid",
+    "payment_method": "razorpay",
+    "razorpay_order_id": "order_supabase_live_01",
+    "razorpay_payment_id": "pay_live_01",
+    "razorpay_signature": null,
+    "shipping_address": {
+      "city": "Delhi",
+      "phone": "9811223344",
+      "state": "Delhi",
+      "pincode": "110001",
+      "fullName": "Rahul Sharma",
+      "addressLine": "45, MG Road"
+    },
+    "status": "processing",
+    "items": [
+      {
+        "cart_item_id": "1fe84edd-1b88-48ca-9ea0-5dafa86c7308",
+        "product": {
+          "id": "rm-home-2425",
+          "title": "Real Madrid 2024/25 Home Master Grade Kit",
+          "description": "",
+          "price": 1349,
+          "compare_at_price": 2023.5,
+          "category": "fan-version",
+          "image_url": "https://images.unsplash.com/photo-1577223625816-7546f13df25d?auto=format&fit=crop&w=800&q=80",
+          "gallery": [],
+          "stock_status": "in_stock",
+          "team": "",
+          "league": "",
+          "season": "2024/25"
+        },
+        "size": "M",
+        "version": "Fan Version",
+        "custom_name": "MBAPPE",
+        "custom_number": "9",
+        "patches": true,
+        "patch_fee": 150,
+        "unit_price": 1349,
+        "quantity": 1
+      }
+    ],
+    "created_at": "2026-10-08T15:03:49.259924+00:00",
+    "updated_at": "2026-10-08T15:03:49.259924+00:00"
+  }
+]

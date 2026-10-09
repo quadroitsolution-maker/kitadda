@@ -1,87 +1,25 @@
 [
   {
-    "id": "arjan-cock",
-    "sku": "KA-776961",
-    "title": "Arjan Cock",
-    "description": "",
-    "price": 1199,
-    "compare_at_price": 2199,
-    "category": "fan-version",
-    "image_url": "/uploads/screenshot-2026-09-28-015910-1791177803039-tvksu.png",
-    "gallery": [
-      "/uploads/screenshot-2026-09-28-015910-1791177803039-tvksu.png"
-    ],
-    "stock_status": "in_stock",
-    "stock_quantity": 25,
-    "team": "Official Kit",
-    "league": "Club",
-    "season": "2024/25",
-    "badge": "NEW DROP",
-    "is_featured": false,
-    "version_type": "Fan Version",
-    "sizes": [
-      "S",
-      "M",
-      "L",
-      "XL",
-      "XXL"
-    ],
-    "created_at": "2026-10-05T05:23:27.921Z",
-    "updated_at": "2026-10-05T13:53:25.559Z"
-  },
-  {
-    "id": "brazil-2026-copa-kit",
-    "sku": "KA-186219",
-    "title": "Barcelona Home kit 25/26",
-    "description": "",
-    "price": 1299,
-    "compare_at_price": 2199,
-    "category": "fan-version",
-    "image_url": "/uploads/whatsapp-image-2026-06-25-at-2-1791124933209-ymu5u.jpeg",
-    "gallery": [
-      "https://images.unsplash.com/photo-1543326727-cf6c39e8f84c?auto=format&fit=crop&w=800&q=80"
-    ],
-    "stock_status": "in_stock",
-    "stock_quantity": 25,
-    "team": "Brazil",
-    "league": "Club",
-    "season": "2024/25",
-    "badge": "NEW DROP",
-    "is_featured": false,
-    "version_type": "Fan Version",
-    "sizes": [
-      "S",
-      "M",
-      "L",
-      "XL",
-      "XXL"
-    ],
-    "created_at": "2026-10-03T17:57:57.693Z",
-    "updated_at": "2026-10-05T13:53:22.489Z",
-    "galleryInput": "https://images.unsplash.com/photo-1543326727-cf6c39e8f84c?auto=format&fit=crop&w=800&q=80"
-  },
-  {
     "id": "rm-home-2425",
-    "title": "mridul cock",
-    "description": "Official 24/25 Los Blancos home shirt. Breathable fabric with houndstooth texture.",
+    "sku": "KA-rm-hom",
+    "title": "Real Madrid 2024/25 Home Master Grade Kit",
+    "description": "The iconic all-white Los Blancos home jersey featuring high-breathability houndstooth textured fabric, heat-applied crest, and golden detailing.",
     "price": 1199,
     "compare_at_price": 2199,
-    "category": "fan-version",
+    "category": "club",
+    "image_url": "https://images.unsplash.com/photo-1577223625816-7546f13df25d?auto=format&fit=crop&w=800&q=80",
+    "gallery": [
+      "https://images.unsplash.com/photo-1577223625816-7546f13df25d?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1517466787929-bc90951d0974?auto=format&fit=crop&w=800&q=80"
+    ],
+    "stock_status": "in_stock",
+    "stock_quantity": 14,
     "team": "Real Madrid",
     "league": "La Liga",
     "season": "2024/25",
     "badge": "BESTSELLER",
     "is_featured": true,
     "version_type": "Fan Version",
-    "stock_status": "in_stock",
-    "image_url": "https://images.unsplash.com/photo-1577223625816-7546f13df25d?auto=format&fit=crop&w=800&q=80",
-    "gallery": [
-      "https://images.unsplash.com/photo-1577223625816-7546f13df25d?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1517466787929-bc90951d0974?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&w=800&q=80"
-    ],
-    "sku": "KA-REA-001",
-    "stock_quantity": 25,
     "sizes": [
       "S",
       "M",
@@ -89,31 +27,29 @@
       "XL",
       "XXL"
     ],
-    "created_at": "2026-10-03T17:55:42.685Z",
-    "updated_at": "2026-10-05T13:53:32.426Z",
-    "galleryInput": "https://images.unsplash.com/photo-1577223625816-7546f13df25d?auto=format&fit=crop&w=800&q=80, https://images.unsplash.com/photo-1517466787929-bc90951d0974?auto=format&fit=crop&w=800&q=80, https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&w=800&q=80"
+    "created_at": "2026-10-08T15:03:15.983427+00:00",
+    "updated_at": "2026-10-08T15:03:48.437Z"
   },
   {
     "id": "arsenal-away-2425",
-    "title": "Arsenal 2024/25 Away Player Version",
-    "description": "Labrum London heritage edition. Lightweight athletic cut with laser-cut ventilation.",
-    "price": 1399,
-    "compare_at_price": 2499,
-    "category": "player-version",
+    "sku": "KA-arsena",
+    "title": "Arsenal 24/25 African Heritage Away Kit",
+    "description": "Designed in collaboration with Labrum London celebrating pan-African heritage with bold red and green accents on black base.",
+    "price": 1249,
+    "compare_at_price": 2299,
+    "category": "club",
+    "image_url": "https://images.unsplash.com/photo-1522778119026-d647f0596c20?auto=format&fit=crop&w=800&q=80",
+    "gallery": [
+      "https://images.unsplash.com/photo-1522778119026-d647f0596c20?auto=format&fit=crop&w=800&q=80"
+    ],
+    "stock_status": "in_stock",
+    "stock_quantity": 15,
     "team": "Arsenal",
     "league": "Premier League",
     "season": "2024/25",
-    "badge": "PLAYER GRADE",
+    "badge": "HOT DROP",
     "is_featured": true,
     "version_type": "Player Version",
-    "stock_status": "in_stock",
-    "image_url": "https://images.unsplash.com/photo-1522778119026-d647f0596c20?auto=format&fit=crop&w=800&q=80",
-    "gallery": [
-      "https://images.unsplash.com/photo-1522778119026-d647f0596c20?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&w=800&q=80"
-    ],
-    "sku": "KA-ARS-002",
-    "stock_quantity": 25,
     "sizes": [
       "S",
       "M",
@@ -121,30 +57,29 @@
       "XL",
       "XXL"
     ],
-    "created_at": "2026-10-03T16:55:42.685Z",
-    "updated_at": "2026-10-03T17:55:42.685Z"
+    "created_at": "2026-10-08T15:03:15.983427+00:00",
+    "updated_at": "2026-10-08T15:03:15.983427+00:00"
   },
   {
     "id": "barca-anniv-2425",
-    "title": "FC Barcelona 125th Anniversary Jersey",
-    "description": "Commemorative half-and-half Blaugrana split with gold detailing.",
+    "sku": "KA-barca-",
+    "title": "FC Barcelona 125th Anniversary Home Kit",
+    "description": "Half-and-half classic Blaugrana split commemorating 125 glorious years of Catalan football majesty.",
     "price": 1199,
     "compare_at_price": 2199,
-    "category": "fan-version",
+    "category": "club",
+    "image_url": "https://images.unsplash.com/photo-1518091043644-c1d4457512c6?auto=format&fit=crop&w=800&q=80",
+    "gallery": [
+      "https://images.unsplash.com/photo-1518091043644-c1d4457512c6?auto=format&fit=crop&w=800&q=80"
+    ],
+    "stock_status": "in_stock",
+    "stock_quantity": 15,
     "team": "FC Barcelona",
     "league": "La Liga",
     "season": "2024/25",
-    "badge": "125 YEARS",
+    "badge": "125TH ANNIV",
     "is_featured": true,
     "version_type": "Fan Version",
-    "stock_status": "in_stock",
-    "image_url": "https://images.unsplash.com/photo-1518091043644-c1d4457512c6?auto=format&fit=crop&w=800&q=80",
-    "gallery": [
-      "https://images.unsplash.com/photo-1518091043644-c1d4457512c6?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&w=800&q=80"
-    ],
-    "sku": "KA-FCB-003",
-    "stock_quantity": 25,
     "sizes": [
       "S",
       "M",
@@ -152,60 +87,59 @@
       "XL",
       "XXL"
     ],
-    "created_at": "2026-10-03T15:55:42.685Z",
-    "updated_at": "2026-10-03T17:55:42.685Z"
+    "created_at": "2026-10-08T15:03:15.983427+00:00",
+    "updated_at": "2026-10-08T15:03:15.983427+00:00"
+  },
+  {
+    "id": "arg-wc-three-stars",
+    "sku": "KA-arg-wc",
+    "title": "Argentina 3-Stars World Champions Home Kit",
+    "description": "The historic Albiceleste shirt with the third gold star and central FIFA World Champions 2022 golden crest.",
+    "price": 1299,
+    "compare_at_price": 2499,
+    "category": "international",
+    "image_url": "https://images.unsplash.com/photo-1543326727-cf6c39e8f84c?auto=format&fit=crop&w=800&q=80",
+    "gallery": [
+      "https://images.unsplash.com/photo-1543326727-cf6c39e8f84c?auto=format&fit=crop&w=800&q=80"
+    ],
+    "stock_status": "in_stock",
+    "stock_quantity": 15,
+    "team": "Argentina",
+    "league": "International",
+    "season": "2024",
+    "badge": "3-STARS GOLD",
+    "is_featured": true,
+    "version_type": "Player Version",
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "created_at": "2026-10-08T15:03:15.983427+00:00",
+    "updated_at": "2026-10-08T15:03:15.983427+00:00"
   },
   {
     "id": "mancity-fourth-oasis",
-    "title": "Man City 24/25 Player Version (Oasis Collab)",
-    "description": "Noel Gallagher design celebrating 30 years of Definitely Maybe. Athletic match fit.",
-    "price": 1399,
-    "compare_at_price": 2499,
-    "category": "player-version",
-    "team": "Manchester City",
-    "league": "Premier League",
-    "season": "2024/25",
-    "badge": "LIMITED DROP",
-    "is_featured": true,
-    "version_type": "Player Version",
-    "stock_status": "in_stock",
+    "sku": "KA-mancit",
+    "title": "Man City Definitely City 4th Kit (Oasis Collab)",
+    "description": "Designed in collaboration with Noel Gallagher to celebrate 30 years of Definitely Maybe.",
+    "price": 1349,
+    "compare_at_price": 2399,
+    "category": "club",
     "image_url": "https://images.unsplash.com/photo-1511886929837-354d827aae26?auto=format&fit=crop&w=800&q=80",
     "gallery": [
       "https://images.unsplash.com/photo-1511886929837-354d827aae26?auto=format&fit=crop&w=800&q=80"
     ],
-    "sku": "KA-MAN-004",
-    "stock_quantity": 25,
-    "sizes": [
-      "S",
-      "M",
-      "L",
-      "XL",
-      "XXL"
-    ],
-    "created_at": "2026-10-03T14:55:42.685Z",
-    "updated_at": "2026-10-03T17:55:42.685Z"
-  },
-  {
-    "id": "arg-wc-three-stars",
-    "title": "Argentina 3-Stars World Champions Home Kit",
-    "description": "Official Albiceleste jersey with the 3rd gold star and FIFA World Champions crest.",
-    "price": 1299,
-    "compare_at_price": 2399,
-    "category": "world-cup",
-    "team": "Argentina",
-    "league": "World Cup",
-    "season": "Tournament",
-    "badge": "3-STARS",
+    "stock_status": "in_stock",
+    "stock_quantity": 15,
+    "team": "Manchester City",
+    "league": "Premier League",
+    "season": "2024/25",
+    "badge": "OASIS SPECIAL",
     "is_featured": true,
     "version_type": "Player Version",
-    "stock_status": "in_stock",
-    "image_url": "https://images.unsplash.com/photo-1543326727-cf6c39e8f84c?auto=format&fit=crop&w=800&q=80",
-    "gallery": [
-      "https://images.unsplash.com/photo-1543326727-cf6c39e8f84c?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1577223625816-7546f13df25d?auto=format&fit=crop&w=800&q=80"
-    ],
-    "sku": "KA-ARG-005",
-    "stock_quantity": 25,
     "sizes": [
       "S",
       "M",
@@ -213,29 +147,29 @@
       "XL",
       "XXL"
     ],
-    "created_at": "2026-10-03T13:55:42.685Z",
-    "updated_at": "2026-10-03T17:55:42.685Z"
+    "created_at": "2026-10-08T15:03:15.983427+00:00",
+    "updated_at": "2026-10-08T15:03:15.983427+00:00"
   },
   {
-    "id": "portugal-wc-away",
-    "title": "Portugal National Team Away Kit",
-    "description": "Azulejo tile mosaic inspired national team jersey. High breathability dri-fit.",
-    "price": 1249,
-    "compare_at_price": 2299,
-    "category": "world-cup",
-    "team": "Portugal",
-    "league": "World Cup",
-    "season": "Tournament",
-    "badge": "NATIONAL",
-    "is_featured": true,
-    "version_type": "Fan Version",
-    "stock_status": "in_stock",
+    "id": "milan-retro-0607",
+    "sku": "KA-milan-",
+    "title": "AC Milan 2006/07 UCL Final Athens Retro Kit",
+    "description": "The fabled white away jersey worn on that historic night in Athens when Kaká and Inzaghi lifted the Champions League trophy.",
+    "price": 1399,
+    "compare_at_price": 2599,
+    "category": "retro",
     "image_url": "https://images.unsplash.com/photo-1579952363873-27f3bade9f55?auto=format&fit=crop&w=800&q=80",
     "gallery": [
       "https://images.unsplash.com/photo-1579952363873-27f3bade9f55?auto=format&fit=crop&w=800&q=80"
     ],
-    "sku": "KA-POR-006",
-    "stock_quantity": 25,
+    "stock_status": "low_stock",
+    "stock_quantity": 15,
+    "team": "AC Milan",
+    "league": "Serie A / Retro",
+    "season": "2006/07",
+    "badge": "RETRO VAULT",
+    "is_featured": true,
+    "version_type": "Fan Version",
     "sizes": [
       "S",
       "M",
@@ -243,29 +177,29 @@
       "XL",
       "XXL"
     ],
-    "created_at": "2026-10-03T12:55:42.685Z",
-    "updated_at": "2026-10-03T17:55:42.685Z"
+    "created_at": "2026-10-08T15:03:15.983427+00:00",
+    "updated_at": "2026-10-08T15:03:15.983427+00:00"
   },
   {
-    "id": "pro-grip-socks-white",
-    "title": "Kit Adda Anti-Slip Pro Grip Socks (White)",
-    "description": "High-traction silicone grip pads. Eliminates boot slip and prevents blisters.",
-    "price": 349,
-    "compare_at_price": 699,
-    "category": "accessories",
-    "team": "Kit Adda Gear",
-    "league": "Accessories",
-    "season": "Essential",
-    "badge": "GRIP TECH",
-    "is_featured": true,
-    "version_type": "Fan Version",
-    "stock_status": "in_stock",
-    "image_url": "https://images.unsplash.com/photo-1586350977771-b3b0abd50c82?auto=format&fit=crop&w=800&q=80",
+    "id": "manu-retro-0708",
+    "sku": "KA-manu-r",
+    "title": "Manchester United 2007/08 Double Winning Retro",
+    "description": "The iconic red shirt with back white stripe worn by Cristiano Ronaldo during their Moscow double triumph.",
+    "price": 1399,
+    "compare_at_price": 2699,
+    "category": "retro",
+    "image_url": "https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&w=800&q=80",
     "gallery": [
-      "https://images.unsplash.com/photo-1586350977771-b3b0abd50c82?auto=format&fit=crop&w=800&q=80"
+      "https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&w=800&q=80"
     ],
-    "sku": "KA-KIT-007",
-    "stock_quantity": 25,
+    "stock_status": "in_stock",
+    "stock_quantity": 15,
+    "team": "Manchester United",
+    "league": "Premier League / Retro",
+    "season": "2007/08",
+    "badge": "RONALDO VAULT",
+    "is_featured": true,
+    "version_type": "Fan Version",
     "sizes": [
       "S",
       "M",
@@ -273,29 +207,29 @@
       "XL",
       "XXL"
     ],
-    "created_at": "2026-10-03T11:55:42.685Z",
-    "updated_at": "2026-10-03T17:55:42.685Z"
+    "created_at": "2026-10-08T15:03:15.983427+00:00",
+    "updated_at": "2026-10-08T15:03:15.983427+00:00"
   },
   {
-    "id": "pro-grip-socks-black",
-    "title": "Kit Adda Anti-Slip Pro Grip Socks (Black)",
-    "description": "Reinforced elastic compression arch with rubberised non-slip grip pads.",
-    "price": 349,
-    "compare_at_price": 699,
-    "category": "accessories",
-    "team": "Kit Adda Gear",
-    "league": "Accessories",
-    "season": "Essential",
-    "badge": "GRIP TECH",
-    "is_featured": true,
-    "version_type": "Fan Version",
-    "stock_status": "in_stock",
+    "id": "psg-windbreaker-2425",
+    "sku": "KA-psg-wi",
+    "title": "PSG x Jordan Anthem Windbreaker Jacket",
+    "description": "Streetwear-meets-football technical water-resistant windbreaker jacket featuring iridescent Paris crest.",
+    "price": 1899,
+    "compare_at_price": 3499,
+    "category": "jackets",
     "image_url": "https://images.unsplash.com/photo-1551028719-00167b16eac5?auto=format&fit=crop&w=800&q=80",
     "gallery": [
       "https://images.unsplash.com/photo-1551028719-00167b16eac5?auto=format&fit=crop&w=800&q=80"
     ],
-    "sku": "KA-KIT-008",
-    "stock_quantity": 25,
+    "stock_status": "in_stock",
+    "stock_quantity": 15,
+    "team": "Paris Saint-Germain",
+    "league": "Ligue 1",
+    "season": "2024/25",
+    "badge": "STREETWEAR",
+    "is_featured": true,
+    "version_type": "Fan Version",
     "sizes": [
       "S",
       "M",
@@ -303,7 +237,7 @@
       "XL",
       "XXL"
     ],
-    "created_at": "2026-10-03T10:55:42.685Z",
-    "updated_at": "2026-10-03T17:55:42.685Z"
+    "created_at": "2026-10-08T15:03:15.983427+00:00",
+    "updated_at": "2026-10-08T15:03:15.983427+00:00"
   }
 ]

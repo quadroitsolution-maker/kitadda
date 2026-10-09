@@ -4,8 +4,9 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useCart } from "@/context/CartContext";
-import { Home, Sparkles, Search, ShoppingBag } from "lucide-react";
+import { Home, Shirt, Search, ShoppingBag } from "lucide-react";
 import { WhatsAppIcon } from "@/components/Icons";
+import { siteConfig } from "@/config/site";
 
 export const MobileBottomNav: React.FC = () => {
   const pathname = usePathname();
@@ -61,7 +62,7 @@ export const MobileBottomNav: React.FC = () => {
             pathname === "/products" ? "text-[#DFB76C]" : "text-neutral-400 hover:text-white"
           }`}
         >
-          <Sparkles className="w-4 h-4 mb-0.5" />
+          <Shirt className="w-4 h-4 mb-0.5" />
           <span className="text-[10px] font-bold uppercase tracking-wider font-jersey">
             Vault
           </span>
@@ -102,7 +103,7 @@ export const MobileBottomNav: React.FC = () => {
 
         {/* 5. WhatsApp Support */}
         <a
-          href="https://wa.me/919999999999?text=Hi%20Kit%20Adda%2C%20I%20have%20a%20query%20regarding%20a%20jersey"
+          href={siteConfig.whatsappUrl("Hi Kit Adda, I have a query regarding a jersey")}
           target="_blank"
           rel="noreferrer"
           className="flex flex-col items-center justify-center h-full text-neutral-400 hover:text-[#25D366] active:scale-95 transition-colors"

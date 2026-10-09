@@ -86,7 +86,7 @@ export interface OrderRecord {
   user_id?: string | null;
   total_amount: number;
   payment_status: PaymentStatus;
-  payment_method?: "razorpay" | "cod";
+  payment_method?: "razorpay";
   razorpay_order_id?: string | null;
   razorpay_payment_id?: string | null;
   razorpay_signature?: string | null;
@@ -96,3 +96,34 @@ export interface OrderRecord {
   created_at: string;
   updated_at?: string;
 }
+
+export interface HeroSlide {
+  id: string;
+  badge: string;
+  headline: string;
+  description: string;
+  cta_link: string;
+  image_url: string;
+  order_index: number;
+  is_active: boolean;
+  created_at?: string;
+  updated_at?: string;
+}
+
+export type CouponDiscountType = "percentage" | "fixed" | "free_shipping";
+
+export interface Coupon {
+  id: string;
+  code: string;
+  discount_type: CouponDiscountType;
+  discount_value: number; // e.g. 10 (for 10%), 100 (for ₹100), 0 (for free shipping)
+  min_order_amount?: number;
+  max_discount_amount?: number;
+  is_active: boolean;
+  description?: string;
+  expires_at?: string;
+  usage_count?: number;
+  created_at?: string;
+}
+
+

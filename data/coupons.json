@@ -1,0 +1,47 @@
+[
+  {
+    "id": "coup-1",
+    "code": "ADDA10",
+    "discount_type": "percentage",
+    "discount_value": 10,
+    "min_order_amount": 0,
+    "max_discount_amount": 500,
+    "is_active": true,
+    "description": "10% off across all kits in store",
+    "usage_count": 24,
+    "created_at": "2026-10-09T19:58:38.312Z"
+  },
+  {
+    "id": "coup-2",
+    "code": "KIT100",
+    "discount_type": "fixed",
+    "discount_value": 100,
+    "min_order_amount": 999,
+    "is_active": true,
+    "description": "Flat ₹100 instant discount on orders above ₹999",
+    "usage_count": 18,
+    "created_at": "2026-10-09T19:58:38.312Z"
+  },
+  {
+    "id": "coup-3",
+    "code": "FREESHIP",
+    "discount_type": "free_shipping",
+    "discount_value": 0,
+    "min_order_amount": 0,
+    "is_active": true,
+    "description": "Free express shipping on your entire cart",
+    "usage_count": 31,
+    "created_at": "2026-10-09T19:58:38.312Z"
+  },
+  {
+    "id": "coup-4",
+    "code": "WELCOME50",
+    "discount_type": "fixed",
+    "discount_value": 50,
+    "min_order_amount": 499,
+    "is_active": true,
+    "description": "Flat ₹50 off on first order",
+    "usage_count": 42,
+    "created_at": "2026-10-09T19:58:38.312Z"
+  }
+]

@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS public.products (
     description TEXT,
     price NUMERIC(10, 2) NOT NULL CHECK (price >= 0),
     compare_at_price NUMERIC(10, 2) CHECK (compare_at_price >= price),
-    category TEXT NOT NULL CHECK (category IN ('club', 'retro', 'international', 'jackets', 'accessories')),
+    category TEXT NOT NULL CHECK (category IN ('club', 'retro', 'international', 'jackets', 'accessories', 'player-version', 'fan-version', 'world-cup')),
     image_url TEXT NOT NULL,
     gallery TEXT[] DEFAULT ARRAY[]::TEXT[],
     stock_status TEXT NOT NULL DEFAULT 'in_stock' CHECK (stock_status IN ('in_stock', 'low_stock', 'out_of_stock')),

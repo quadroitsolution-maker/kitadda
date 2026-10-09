@@ -16,6 +16,7 @@ import {
   ChevronRight
 } from "lucide-react";
 import { InstagramIcon, WhatsAppIcon } from "@/components/Icons";
+import { siteConfig } from "@/config/site";
 
 export const Header: React.FC = () => {
   const router = useRouter();
@@ -82,9 +83,9 @@ export const Header: React.FC = () => {
     <>
       {/* Top Banner - Clean, Minimal Announcement with Mobile Sizing */}
       <div className="bg-[#0B132B] text-[#DFB76C] text-[10px] sm:text-[11px] font-semibold py-1.5 px-3 sm:px-4 text-center tracking-wider border-b border-[#1C2438] flex items-center justify-center gap-1.5">
-        <span>FREE ALL-INDIA SHIPPING ON ₹1499+</span>
+        <span>FREE PAN-INDIA SHIPPING ON ₹999+</span>
         <span className="opacity-50">•</span>
-        <span>COD AVAILABLE</span>
+        <span>PREPAID ORDERS ONLY (NO COD)</span>
       </div>
 
       {/* Main Header */}
@@ -205,7 +206,7 @@ export const Header: React.FC = () => {
 
               {/* Free shipping highlight */}
               <div className="mt-4 p-3 bg-[#0E131F] border border-[#1C2438] text-[11px] text-[#DFB76C] font-semibold">
-                ⚽ FREE All-India Shipping on orders ₹1499+
+                ⚽ FREE All-India Shipping on orders ₹999+
               </div>
 
               {/* Categories */}
@@ -237,7 +238,7 @@ export const Header: React.FC = () => {
                   Quick Support
                 </div>
                 <a
-                  href="https://wa.me/919999999999?text=Hi%20Kit%20Adda%2C%20I%20have%20a%20query%20regarding%20a%20jersey"
+                  href={siteConfig.whatsappUrl("Hi Kit Adda, I have a query regarding a jersey")}
                   target="_blank"
                   rel="noreferrer"
                   className="flex items-center gap-3 p-3 bg-[#0B132B] border border-[#1C2438] text-white hover:text-[#25D366] text-xs font-bold uppercase tracking-wider transition"
@@ -246,7 +247,7 @@ export const Header: React.FC = () => {
                   <span>WhatsApp Chat Support</span>
                 </a>
                 <a
-                  href="https://instagram.com"
+                  href={siteConfig.instagramUrl}
                   target="_blank"
                   rel="noreferrer"
                   className="flex items-center gap-3 p-3 bg-[#0E131F] border border-[#1C2438] text-white hover:text-[#DFB76C] text-xs font-bold uppercase tracking-wider transition"

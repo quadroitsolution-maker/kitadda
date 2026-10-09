@@ -1,0 +1,26 @@
+[
+  {
+    "id": "slide-1",
+    "badge": "2024/25 SEASON",
+    "headline": "Current Season Kits",
+    "description": "Player & Fan Version master grade drops.",
+    "cta_link": "#latest-drops",
+    "image_url": "https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&w=1920&q=85",
+    "order_index": 0,
+    "is_active": true,
+    "created_at": "2026-10-09T20:04:03.139045+00:00",
+    "updated_at": "2026-10-09T20:04:03.139045+00:00"
+  },
+  {
+    "id": "slide-3",
+    "badge": "INTERNATIONAL",
+    "headline": "World Cup Editions",
+    "description": "Official national team jerseys.",
+    "cta_link": "#latest-drops",
+    "image_url": "https://images.unsplash.com/photo-1517466787929-bc90951d0974?auto=format&fit=crop&w=1920&q=85",
+    "order_index": 2,
+    "is_active": true,
+    "created_at": "2026-10-09T20:04:03.139045+00:00",
+    "updated_at": "2026-10-09T20:04:03.139045+00:00"
+  }
+]

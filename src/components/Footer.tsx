@@ -1,20 +1,17 @@
 "use client";
 
-import React from "react";
-import Image from "next/image";
+import React, { useState } from "react";
 import Link from "next/link";
-import { 
-  Flame, 
-  MessageCircle
-} from "lucide-react";
+import { ArrowRight, Check } from "lucide-react";
+import { siteConfig } from "@/config/site";
 
-const InstagramIcon: React.FC<{ className?: string }> = ({ className = "w-4 h-4" }) => (
+const InstagramIcon: React.FC<{ className?: string }> = ({ className = "w-5 h-5" }) => (
   <svg
     className={className}
     viewBox="0 0 24 24"
     fill="none"
     stroke="currentColor"
-    strokeWidth="2"
+    strokeWidth="1.75"
     strokeLinecap="round"
     strokeLinejoin="round"
   >
@@ -25,161 +22,177 @@ const InstagramIcon: React.FC<{ className?: string }> = ({ className = "w-4 h-4"
 );
 
 export const Footer: React.FC = () => {
-  return (
-    <footer className="bg-[#07090E] border-t border-[#1C2438] text-neutral-400 text-xs mt-16 sm:mt-20 pb-28 lg:pb-0">
-      {/* Community Banner */}
-      <div className="border-b border-[#1C2438] py-8 sm:py-10 bg-[#0E131F]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6">
-          <div className="flex items-center gap-4 text-center md:text-left">
-            <div className="w-12 h-12 rounded-none bg-[#0B132B] border border-[#1C2438] flex items-center justify-center text-[#DFB76C] shrink-0">
-              <Flame className="w-6 h-6" />
-            </div>
-            <div>
-              <h3 className="text-lg font-black uppercase text-white font-jersey">
-                JOIN THE KIT ADDA CULT
-              </h3>
-              <p className="text-xs text-neutral-400 max-w-md">
-                Over 25,000+ football freaks across India wear our kits. Tag us on Instagram <strong className="text-[#DFB76C]">@kit.adda</strong> to get featured in our matchday feed.
-              </p>
-            </div>
-          </div>
-          <div className="flex flex-col sm:flex-row items-center gap-2.5 sm:gap-3 w-full sm:w-auto">
-            <a
-              href="https://instagram.com"
-              target="_blank"
-              rel="noreferrer"
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-[#0B132B] hover:bg-[#162035] text-[#DFB76C] border border-[#C5A059]/40 font-bold uppercase px-5 py-3 sm:py-2.5 rounded-none transition text-xs active:scale-95"
-            >
-              <InstagramIcon className="w-4 h-4" />
-              <span>Follow @kit.adda</span>
-            </a>
-            <a
-              href="https://wa.me/919999999999"
-              target="_blank"
-              rel="noreferrer"
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-[#0E131F] border border-[#1C2438] hover:border-[#DFB76C]/60 text-white font-bold uppercase px-4 py-3 sm:py-2.5 rounded-none transition text-xs active:scale-95"
-            >
-              <MessageCircle className="w-4 h-4 text-[#DFB76C]" />
-              <span>WhatsApp Us</span>
-            </a>
-          </div>
-        </div>
-      </div>
+  const [email, setEmail] = useState("");
+  const [subscribed, setSubscribed] = useState(false);
 
-      {/* Main Footer Links */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 grid grid-cols-2 md:grid-cols-4 gap-8">
-        <div>
-          <div className="flex items-center gap-3 mb-4">
-            <div className="relative w-12 h-12 rounded-full overflow-hidden border border-[#C5A059]/40 shrink-0">
-              <Image
-                src="/logo.jpg"
-                alt="Kit Adda"
-                fill
-                sizes="48px"
-                className="object-cover object-center"
-              />
-            </div>
+  const handleSubscribe = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (email.trim()) {
+      setSubscribed(true);
+      setTimeout(() => {
+        setEmail("");
+      }, 3000);
+    }
+  };
+
+  return (
+    <footer className="bg-[#0A0D14] border-t border-[#1C2438] text-neutral-300 text-sm mt-16 sm:mt-24 pb-28 lg:pb-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-10 lg:gap-16">
+          {/* Column 1: Policies (Left) */}
+          <div className="md:col-span-3 space-y-4">
+            <h4 className="text-xs font-bold uppercase tracking-wider text-[#DFB76C]">
+              POLICIES
+            </h4>
+            <ul className="space-y-3 text-sm text-neutral-400">
+              <li>
+                <Link
+                  href="/privacy-policy"
+                  className="hover:text-white transition-colors"
+                >
+                  Privacy Policy
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/terms-and-conditions"
+                  className="hover:text-white transition-colors"
+                >
+                  Terms and Conditions
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/shipping-and-returns"
+                  className="hover:text-white transition-colors"
+                >
+                  Shipping &amp; Return Policy
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href={siteConfig.whatsappUrl("Hi Kit Adda team, I want to track my order.")}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="hover:text-white transition-colors"
+                >
+                  Track on WhatsApp
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Column 2: Collections & Quick Links */}
+          <div className="md:col-span-3 space-y-4">
+            <h4 className="text-xs font-bold uppercase tracking-wider text-[#DFB76C]">
+              VAULT
+            </h4>
+            <ul className="space-y-3 text-sm text-neutral-400">
+              <li>
+                <Link
+                  href="/products?category=player-version"
+                  className="hover:text-white transition-colors"
+                >
+                  Player Version Kits
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/products?category=fan-version"
+                  className="hover:text-white transition-colors"
+                >
+                  Fan Version Kits
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/products?category=accessories"
+                  className="hover:text-white transition-colors"
+                >
+                  Anti-Slip Grip Socks
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/admin"
+                  className="hover:text-white transition-colors text-neutral-500"
+                >
+                  Store Manager
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Column 3: Brand & Newsletter Signup (Right) */}
+          <div className="md:col-span-6 space-y-6">
+            {/* Brand Mark */}
             <div>
-              <div className="text-xl font-black uppercase text-white font-jersey tracking-tight">
+              <div className="text-2xl sm:text-3xl font-black uppercase tracking-tight text-white font-jersey">
                 KIT<span className="text-[#C5A059]">ADDA</span>
               </div>
-              <div className="text-[10px] uppercase tracking-widest text-[#DFB76C] font-bold">
-                WEAR THE GAME
-              </div>
+            </div>
+
+            {/* Newsletter Title */}
+            <div className="space-y-3">
+              <h3 className="text-base sm:text-lg font-bold uppercase tracking-tight text-white font-jersey">
+                STAY IN THE LOOP WITH OUR WEEKLY DROPS
+              </h3>
+
+              {/* Minimal Newsletter Input */}
+              <form onSubmit={handleSubscribe} className="relative max-w-md">
+                <input
+                  type="email"
+                  required
+                  placeholder="Enter your email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="w-full bg-[#121622] border border-[#1C2438] focus:border-[#C5A059] rounded-none px-4 py-3.5 pr-14 text-sm text-white placeholder-neutral-500 focus:outline-none transition"
+                />
+                <button
+                  type="submit"
+                  aria-label="Subscribe to weekly newsletter"
+                  className="absolute right-2 top-2 bottom-2 w-9 h-9 rounded-full bg-[#C5A059] hover:bg-[#DFB76C] text-[#0A0D14] flex items-center justify-center transition active:scale-95"
+                >
+                  {subscribed ? (
+                    <Check className="w-4 h-4 text-[#0A0D14]" />
+                  ) : (
+                    <ArrowRight className="w-4 h-4 text-[#0A0D14]" />
+                  )}
+                </button>
+              </form>
+              {subscribed && (
+                <p className="text-xs text-[#DFB76C] font-semibold">
+                  ✓ You&apos;re on the VIP drops list.
+                </p>
+              )}
+            </div>
+
+            {/* Social Link */}
+            <div className="pt-2">
+              <a
+                href={siteConfig.instagramUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center justify-center text-neutral-400 hover:text-white transition-colors"
+                aria-label="Follow Kit Adda on Instagram"
+              >
+                <InstagramIcon className="w-5 h-5" />
+              </a>
             </div>
           </div>
-          <p className="text-xs text-neutral-400 leading-relaxed mb-4">
-            India&apos;s ultimate football jersey hangout. Curating Master Grade official fan &amp; player version kits, iconic retro holy grails, and football culture merch.
-          </p>
-          <div className="text-[11px] text-neutral-500">
-            Based in India 🇮🇳 • Shipping Pan-India
-          </div>
         </div>
 
-        <div>
-          <div className="text-xs font-black uppercase text-white tracking-wider mb-4">
-            Collections
+        {/* Bottom Copyright Bar */}
+        <div className="mt-14 pt-8 border-t border-[#1C2438] flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-neutral-500">
+          <div>
+            © {new Date().getFullYear()} Kit Adda. All rights reserved.
           </div>
-          <ul className="space-y-2.5">
-            <li>
-              <Link href="/#latest-drops" className="hover:text-[#DFB76C] transition">
-                Current Season Player Jerseys
-              </Link>
-            </li>
-            <li>
-              <Link href="/#latest-drops" className="hover:text-[#DFB76C] transition">
-                Current Season Fan Jerseys
-              </Link>
-            </li>
-            <li>
-              <Link href="/#latest-drops" className="hover:text-[#DFB76C] transition">
-                Anti-Slip Pro Grip Socks
-              </Link>
-            </li>
-            <li>
-              <Link href="/#latest-drops" className="hover:text-[#DFB76C] transition">
-                World Cup Tournament Kits
-              </Link>
-            </li>
-          </ul>
-        </div>
-
-        <div>
-          <div className="text-xs font-black uppercase text-white tracking-wider mb-4">
-            Help &amp; Support
-          </div>
-          <ul className="space-y-2.5">
-            <li>
-              <Link href="/#size-guide" className="hover:text-[#DFB76C] transition">
-                Size Guide &amp; Fit Chart
-              </Link>
-            </li>
-            <li>
-              <Link href="/#shipping-policy" className="hover:text-[#DFB76C] transition">
-                Shipping &amp; Delivery Timeline
-              </Link>
-            </li>
-            <li>
-              <Link href="/#return-policy" className="hover:text-[#DFB76C] transition">
-                7-Day Replacement Policy
-              </Link>
-            </li>
-            <li>
-              <Link href="https://wa.me/919999999999" target="_blank" className="hover:text-[#DFB76C] transition">
-                Track Order on WhatsApp
-              </Link>
-            </li>
-            <li>
-              <Link href="mailto:support@kitadda.com" className="hover:text-[#DFB76C] transition">
-                Contact: support@kitadda.com
-              </Link>
-            </li>
-            <li>
-              <Link href="/admin" className="hover:text-[#DFB76C] transition text-[#DFB76C]/90 font-bold">
-                ⚡ Store Manager (Admin)
-              </Link>
-            </li>
-          </ul>
-        </div>
-
-        <div>
-          <div className="text-xs font-black uppercase text-white tracking-wider mb-4">
-            Payment &amp; Trust
-          </div>
-          <p className="text-xs text-neutral-400 mb-3 leading-relaxed">
-            100% secure checkout via Razorpay. We accept UPI (Google Pay, PhonePe, Paytm), Debit/Credit Cards, Net Banking &amp; Cash On Delivery.
-          </p>
-          <div className="flex flex-wrap gap-2 text-[10px] font-bold text-[#DFB76C]">
-            <span className="bg-[#0B132B] border border-[#1C2438] px-2 py-1 rounded-none">UPI / GPay</span>
-            <span className="bg-[#0B132B] border border-[#1C2438] px-2 py-1 rounded-none">Cards</span>
-            <span className="bg-[#0B132B] border border-[#1C2438] px-2 py-1 rounded-none">Net Banking</span>
-            <span className="bg-[#0B132B] border border-[#1C2438] px-2 py-1 rounded-none">Cash on Delivery</span>
+          <div className="flex items-center gap-6">
+            <span>Prepaid Orders Only</span>
+            <span>•</span>
+            <span>Pan-India Delivery</span>
           </div>
         </div>
-      </div>
-
-      <div className="border-t border-[#1C2438] py-6 text-center text-neutral-500 text-[11px]">
-        © {new Date().getFullYear()} Kit Adda (@kit.adda). All rights reserved. Curated for football culture across India.
       </div>
     </footer>
   );

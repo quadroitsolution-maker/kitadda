@@ -9,13 +9,26 @@ import { AllProductsView } from "@/components/AllProductsView";
 import { getProducts } from "@/lib/db";
 import { PRODUCTS } from "@/data/products";
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://kitadda.com";
+
 export const metadata: Metadata = {
   title: "All Football Kits & Vault Drops | Kit Adda (@kit.adda)",
   description: "Browse our complete vault of master-grade football jerseys, player & fan versions, grip socks, and national team grails. Filter by category, league, and price.",
+  alternates: {
+    canonical: `${siteUrl}/products`,
+  },
   openGraph: {
+    type: "website",
+    url: `${siteUrl}/products`,
     title: "All Football Kits - Kit Adda Official Vault",
-    description: "Master Grade football jerseys with custom heat-pressed printing across India.",
-    images: [{ url: "/logo.jpg" }],
+    description: "Browse our complete catalog of Master Grade football jerseys and performance gear across India.",
+    images: [{ url: "/logo.jpg", width: 800, height: 800, alt: "Kit Adda Vault" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "All Football Kits | Kit Adda Official Vault",
+    description: "Browse Master Grade football jerseys, player and fan versions, and retro club drops.",
+    images: ["/logo.jpg"],
   },
 };
 
@@ -50,7 +63,7 @@ export default async function ProductsPage() {
       {/* 4. Sliding Cart Drawer */}
       <CartDrawer />
 
-      {/* 5. 1-Click Razorpay & COD Checkout Modal */}
+      {/* 5. 1-Click Razorpay Prepaid Checkout Modal */}
       <CheckoutModal />
 
       {/* 6. Sticky Mobile Bottom Nav */}

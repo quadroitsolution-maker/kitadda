@@ -5,7 +5,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { Product } from "@/types";
 import { useCart } from "@/context/CartContext";
-import { CustomizationForm } from "@/components/CustomizationForm";
 import {
   ShieldCheck,
   Truck,
@@ -68,16 +67,6 @@ export const ProductDetailsView: React.FC<ProductDetailsViewProps> = ({ product 
     touchEndX.current = null;
   };
 
-  // Customization state
-  const patchFee = 150;
-  const [customization, setCustomization] = useState({
-    playerName: "",
-    playerNumber: "",
-    addPatches: false,
-    patchType: "UCL Starball & Respect Badge",
-    totalPrice: product.price,
-  });
-
   // Accordion active state
   const [openAccordion, setOpenAccordion] = useState<string | null>("size-guide");
 
@@ -89,17 +78,17 @@ export const ProductDetailsView: React.FC<ProductDetailsViewProps> = ({ product 
     ((product.compare_at_price - product.price) / product.compare_at_price) * 100
   );
 
-  const finalUnitPrice = customization.totalPrice;
+  const finalUnitPrice = product.price;
 
   const handleAddToCart = () => {
     addToCart({
       product,
       size: selectedSize,
       version: selectedVersion,
-      custom_name: customization.playerName,
-      custom_number: customization.playerNumber,
-      patches: customization.addPatches,
-      patch_fee: customization.addPatches ? patchFee : 0,
+      custom_name: "",
+      custom_number: "",
+      patches: false,
+      patch_fee: 0,
       unit_price: finalUnitPrice,
       quantity,
     });
@@ -112,7 +101,7 @@ export const ProductDetailsView: React.FC<ProductDetailsViewProps> = ({ product 
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-12 pb-32 lg:pb-16">
+    <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-12 pb-32 lg:pb-16 cursor-football">
       {/* Breadcrumbs */}
       <nav className="flex items-center space-x-2 text-xs text-neutral-400 mb-4 sm:mb-6 overflow-x-auto scrollbar-none pb-1">
         <Link href="/" className="hover:text-[#DFB76C] transition shrink-0">
@@ -238,20 +227,9 @@ export const ProductDetailsView: React.FC<ProductDetailsViewProps> = ({ product 
                   )}
                 </div>
                 <div className="text-[10px] sm:text-[11px] text-neutral-400 mt-1">
-                  Inclusive of all taxes • Free express shipping on ₹1499+
+                  Inclusive of all taxes • Free express shipping on ₹999+
                 </div>
               </div>
-
-              {customization.addPatches && (
-                <div className="text-right">
-                  <span className="text-[9px] sm:text-[10px] text-[#DFB76C] font-bold block uppercase font-mono">
-                    Patches Added
-                  </span>
-                  <span className="text-xs text-neutral-400 font-medium">
-                    +₹{patchFee}
-                  </span>
-                </div>
-              )}
             </div>
           </div>
 
@@ -325,13 +303,6 @@ export const ProductDetailsView: React.FC<ProductDetailsViewProps> = ({ product 
               <span>Only 4 units left in size {selectedSize} • High demand</span>
             </div>
           </div>
-
-          {/* Customization Form Component */}
-          <CustomizationForm
-            basePrice={product.price}
-            patchFee={patchFee}
-            onCustomizationChange={setCustomization}
-          />
 
           {/* Quantity & Desktop Action Buttons */}
           <div className="space-y-3 pt-2">
@@ -481,7 +452,7 @@ export const ProductDetailsView: React.FC<ProductDetailsViewProps> = ({ product 
               >
                 <div className="flex items-center gap-2">
                   <Truck className="w-4 h-4 text-[#DFB76C]" />
-                  <span>Shipping &amp; Delivery Policy</span>
+                  <span>Shipping &amp; Delivery Timelines</span>
                 </div>
                 <ChevronDown
                   className={`w-4 h-4 transition-transform duration-200 ${
@@ -492,13 +463,16 @@ export const ProductDetailsView: React.FC<ProductDetailsViewProps> = ({ product 
               {openAccordion === "shipping-policy" && (
                 <div className="p-4 pt-0 border-t border-[#1C2438] text-xs text-neutral-300 space-y-2">
                   <p>
-                    • <strong className="text-white">Dispatch Time:</strong> Orders without customization are dispatched within 24-48 hours. Custom printed jerseys take an additional 24 hours for heat-press setting.
+                    • <strong className="text-white">Delhi NCR Delivery:</strong> Arrives within <strong className="text-[#DFB76C]">2 to 3 days</strong>.
                   </p>
                   <p>
-                    • <strong className="text-white">Delivery Partner:</strong> Shipped via Bluedart, Delhivery, or Xpressbees with live SMS &amp; WhatsApp tracking link sent directly to your phone.
+                    • <strong className="text-white">Pan-India Delivery:</strong> Arrives within <strong className="text-[#DFB76C]">3 to 6 days</strong> across all states &amp; cities.
                   </p>
                   <p>
-                    • <strong className="text-white">Timeline:</strong> Metros (Mumbai, Delhi, Bangalore, Kolkata) arrive in 2-3 business days. Rest of India in 3-5 days.
+                    • <strong className="text-white">Prepaid Orders Only:</strong> 100% secure online checkout via Razorpay (UPI, GPay, PhonePe, Cards, NetBanking).
+                  </p>
+                  <p>
+                    • <strong className="text-white">Live Tracking:</strong> Real-time tracking link sent via WhatsApp &amp; SMS as soon as your package is dispatched.
                   </p>
                 </div>
               )}
@@ -524,11 +498,19 @@ export const ProductDetailsView: React.FC<ProductDetailsViewProps> = ({ product 
               {openAccordion === "return-policy" && (
                 <div className="p-4 pt-0 border-t border-[#1C2438] text-xs text-neutral-300 space-y-2">
                   <p>
-                    • <strong className="text-white">7-Day Replacement:</strong> We offer a 7-day hassle-free replacement for sizing issues on uncustomized kits in original unworn condition with tags.
+                    • <strong className="text-white">No Returns or Exchanges:</strong> Due to limited edition collector items, we do not accept general returns or sizing changes.
                   </p>
                   <p>
-                    • <strong className="text-white">Customized Printing:</strong> Shirts printed with personalized player name and number cannot be exchanged or returned unless there is a physical manufacturing defect.
+                    • <strong className="text-white">Replacement for Damaged / Wrong Items:</strong> If your kit arrives damaged or wrong, we will promptly replace it.
                   </p>
+                  <p>
+                    • <strong className="text-[#DFB76C]">Mandatory Unboxing Video:</strong> A continuous, unedited video from start to finish showing the courier seal opening is required for all claims.
+                  </p>
+                  <div className="pt-2">
+                    <Link href="/shipping-and-returns" className="text-xs font-bold text-[#DFB76C] hover:underline flex items-center gap-1">
+                      <span>View Full Shipping &amp; Return Policy Page →</span>
+                    </Link>
+                  </div>
                 </div>
               )}
             </div>

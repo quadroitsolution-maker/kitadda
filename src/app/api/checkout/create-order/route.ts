@@ -1,10 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import crypto from "crypto";
+import { getCouponByCode, calculateCouponDiscount } from "@/lib/db";
 
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { items, shipping_address } = body;
+    const { items, shipping_address, coupon_code } = body;
 
     if (!items || items.length === 0) {
       return NextResponse.json({ error: "Cart is empty" }, { status: 400 });
@@ -22,9 +23,22 @@ export async function POST(req: NextRequest) {
       0
     );
 
-    // Free shipping threshold above 1499
-    const shippingFee = subtotal >= 1499 ? 0 : 99;
-    const totalAmount = subtotal + shippingFee;
+    // Standard free shipping threshold above 999
+    let shippingFee = subtotal >= 999 ? 0 : 99;
+    let couponDiscount = 0;
+
+    if (coupon_code) {
+      const coupon = await getCouponByCode(coupon_code);
+      if (coupon) {
+        const discResult = calculateCouponDiscount(coupon, subtotal, shippingFee);
+        if (discResult.isValid) {
+          couponDiscount = discResult.discount;
+          shippingFee = discResult.finalShipping;
+        }
+      }
+    }
+
+    const totalAmount = Math.max(0, subtotal - couponDiscount + shippingFee);
     const amountInPaise = Math.round(totalAmount * 100);
 
     const keyId = process.env.RAZORPAY_KEY_ID || process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID;
