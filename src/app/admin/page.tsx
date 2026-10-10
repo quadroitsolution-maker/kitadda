@@ -370,6 +370,7 @@ export default function AdminDashboardPage() {
       const data = await res.json();
       if (data.success) {
         showToast(`Product "${p.title}" deleted.`);
+        setProducts((prev) => prev.filter((item) => item.id !== p.id));
         fetchData();
       } else {
         showToast(data.error || "Failed to delete product", "error");

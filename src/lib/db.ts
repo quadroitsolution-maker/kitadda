@@ -45,7 +45,11 @@ export async function getProducts(options?: {
   // Try fetching from Supabase first
   try {
     const supabase = getServiceSupabase();
-    let query = supabase.from("products").select("*").order("created_at", { ascending: false });
+    let query = supabase
+      .from("products")
+      .select("*")
+      .neq("id", "deleted-product")
+      .order("created_at", { ascending: false });
 
     if (options?.category && options.category !== "all") {
       query = query.eq("category", options.category);
@@ -272,16 +276,41 @@ export async function deleteProduct(id: string): Promise<boolean> {
   const products = await getProducts();
   const filtered = products.filter((p) => p.id !== id);
 
-  if (filtered.length === products.length) {
-    return false;
-  }
-
   await fs.writeFile(PRODUCTS_FILE, JSON.stringify(filtered, null, 2), "utf-8");
 
-  // Supabase delete
+  // Supabase delete with foreign-key handling
   try {
     const supabase = getServiceSupabase();
-    await supabase.from("products").delete().eq("id", id);
+    
+    // 1. First attempt direct delete
+    const { error: directErr } = await supabase.from("products").delete().eq("id", id);
+
+    // 2. If blocked by foreign key constraint from order_items (PostgreSQL code 23503)
+    if (directErr && directErr.code === "23503") {
+      // Ensure 'deleted-product' placeholder exists
+      await supabase.from("products").upsert({
+        id: "deleted-product",
+        title: "[Deleted Product]",
+        description: "Archived placeholder for past orders",
+        price: 0,
+        category: "fan-version",
+        image_url: "https://images.unsplash.com/photo-1577223625816-7546f13df25d?auto=format&fit=crop&w=800&q=80",
+        stock_status: "out_of_stock",
+      });
+
+      // Reassign referencing order_items to 'deleted-product'
+      await supabase.from("order_items").update({ product_id: "deleted-product" }).eq("product_id", id);
+
+      // Retry product delete
+      const { error: retryErr } = await supabase.from("products").delete().eq("id", id);
+      if (retryErr) {
+        console.error("Supabase product delete retry failed:", retryErr);
+        return false;
+      }
+    } else if (directErr) {
+      console.error("Supabase product delete failed:", directErr);
+      return false;
+    }
   } catch (err) {
     console.debug("Supabase delete skipped:", err);
   }
