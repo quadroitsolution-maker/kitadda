@@ -1,7 +1,7 @@
 import crypto from "crypto";
 import { cookies } from "next/headers";
 import { NextRequest } from "next/server";
-import { supabase, getServiceSupabase } from "./supabase";
+import { supabase, getSupabase, getServiceSupabase } from "./supabase";
 
 const COOKIE_NAME = "kitadda_admin_session";
 const JWT_SECRET = process.env.ADMIN_JWT_SECRET || "kitadda_secret_jwt_admin_key_2026_987654321";
@@ -66,7 +66,8 @@ export async function authenticateAdmin(email: string, password: string): Promis
 
   // 1. Authenticate with Supabase Auth first (using public client with anon key)
   try {
-    const { data, error } = await supabase.auth.signInWithPassword({
+    const client = getSupabase();
+    const { data, error } = await client.auth.signInWithPassword({
       email: trimmedEmail,
       password: trimmedPassword,
     });
