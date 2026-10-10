@@ -597,11 +597,6 @@ export default function AdminDashboardPage() {
               )}
             </button>
           </form>
-
-          <div className="pt-4 border-t border-[#1C2438] text-center text-xs text-neutral-400 space-y-1">
-            <div>Default Admin Login:</div>
-            <div className="font-mono text-xs text-[#DFB76C]">kitadda01@gmail.com / kitadda@admin2026</div>
-          </div>
         </div>
       </div>
     );
