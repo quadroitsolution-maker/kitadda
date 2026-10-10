@@ -19,11 +19,15 @@ export async function POST(req: NextRequest) {
     }
 
     const subtotal = items.reduce(
-      (acc: number, item: { unit_price: number; quantity: number }) => acc + item.unit_price * item.quantity,
+      (acc: number, item: { unit_price?: number; quantity?: number; product?: { price?: number } }) => {
+        const price = Number(item.unit_price ?? item.product?.price ?? 0);
+        const qty = Number(item.quantity ?? 1);
+        return acc + price * qty;
+      },
       0
     );
 
-    // Standard free shipping threshold above 999
+    // Standard free shipping threshold: Free express delivery for all orders >= 999 automatically (no coupon needed)
     let shippingFee = subtotal >= 999 ? 0 : 99;
     let couponDiscount = 0;
 
@@ -38,7 +42,7 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    const totalAmount = Math.max(0, subtotal - couponDiscount + shippingFee);
+    const totalAmount = Math.max(1, subtotal - couponDiscount + shippingFee);
     const amountInPaise = Math.round(totalAmount * 100);
 
     const keyId = process.env.RAZORPAY_KEY_ID || process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID;

@@ -993,14 +993,19 @@ export function calculateCouponDiscount(
     discount = Math.min(coupon.discount_value, subtotal);
   } else if (coupon.discount_type === "free_shipping") {
     finalShipping = 0;
-    discount = shippingFee; // Discount covers the shipping
+    discount = 0; // Discount applies to shipping only, not deducted from product subtotal
   }
+
+  const message =
+    coupon.discount_type === "free_shipping" && subtotal >= 999
+      ? "Free express shipping is already unlocked for orders above ₹999!"
+      : coupon.description || `Coupon ${coupon.code} applied successfully!`;
 
   return {
     isValid: true,
     discount,
     finalShipping,
-    message: coupon.description || `Coupon ${coupon.code} applied successfully!`,
+    message,
   };
 }
 
