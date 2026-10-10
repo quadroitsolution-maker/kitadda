@@ -11,6 +11,9 @@ const nextConfig: NextConfig = {
       { protocol: "https", hostname: "cdn.shopify.com" },
     ],
   },
+  experimental: {
+    serverMinification: false,
+  },
 };
 
 export default nextConfig;

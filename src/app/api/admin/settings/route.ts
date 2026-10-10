@@ -121,17 +121,23 @@ export async function POST(req: NextRequest) {
     // Write to .env.local file
     await writeEnvFile(envMap);
 
-    // Apply to current runtime process.env
-    if (supabaseUrl) process.env.NEXT_PUBLIC_SUPABASE_URL = supabaseUrl.trim();
-    if (supabaseAnonKey) process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY = supabaseAnonKey.trim();
-    if (supabaseServiceKey) process.env.SUPABASE_SERVICE_ROLE_KEY = supabaseServiceKey.trim();
+    // Apply to current runtime process.env safely
+    const envObj = (process as unknown as { env: Record<string, string> }).env;
+    const KEY_URL = ["NEXT_PUBLIC", "SUPABASE_URL"].join("_");
+    const KEY_ANON = ["NEXT_PUBLIC", "SUPABASE_ANON_KEY"].join("_");
+    const KEY_RZP = ["NEXT_PUBLIC", "RAZORPAY_KEY_ID"].join("_");
+    const KEY_WA = ["NEXT_PUBLIC", "WHATSAPP_NUMBER"].join("_");
+
+    if (supabaseUrl) envObj[KEY_URL] = supabaseUrl.trim();
+    if (supabaseAnonKey) envObj[KEY_ANON] = supabaseAnonKey.trim();
+    if (supabaseServiceKey) envObj["SUPABASE_SERVICE_ROLE_KEY"] = supabaseServiceKey.trim();
     if (razorpayKeyId) {
-      process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID = razorpayKeyId.trim();
-      process.env.RAZORPAY_KEY_ID = razorpayKeyId.trim();
+      envObj[KEY_RZP] = razorpayKeyId.trim();
+      envObj["RAZORPAY_KEY_ID"] = razorpayKeyId.trim();
     }
-    if (razorpayKeySecret) process.env.RAZORPAY_KEY_SECRET = razorpayKeySecret.trim();
-    if (whatsappNumber) process.env.NEXT_PUBLIC_WHATSAPP_NUMBER = whatsappNumber.trim();
-    if (adminEmail) process.env.ADMIN_EMAIL = adminEmail.trim();
+    if (razorpayKeySecret) envObj["RAZORPAY_KEY_SECRET"] = razorpayKeySecret.trim();
+    if (whatsappNumber) envObj[KEY_WA] = whatsappNumber.trim();
+    if (adminEmail) envObj["ADMIN_EMAIL"] = adminEmail.trim();
 
     // Test Supabase connection if provided
     let supabaseStatus = "not_tested";
