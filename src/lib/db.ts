@@ -444,6 +444,15 @@ export async function createOrder(
   await ensureDataDir();
   const orders = await getOrders();
 
+  // Deduplication check: prevent creating multiple orders for same razorpay_order_id
+  if (newOrder.razorpay_order_id) {
+    const existing = orders.find((o) => o.razorpay_order_id === newOrder.razorpay_order_id);
+    if (existing) {
+      console.warn("Order already exists for razorpay_order_id, returning existing:", newOrder.razorpay_order_id);
+      return existing;
+    }
+  }
+
   const id = `KA-ORD-${Date.now().toString().slice(-6)}`;
   const order: OrderRecord = {
     ...newOrder,
@@ -455,6 +464,21 @@ export async function createOrder(
   // Sync to Supabase
   try {
     const supabase = getServiceSupabase();
+
+    // Check if order already exists in Supabase
+    if (order.razorpay_order_id) {
+      const { data: existingDb } = await supabase
+        .from("orders")
+        .select("id")
+        .eq("razorpay_order_id", order.razorpay_order_id)
+        .maybeSingle();
+
+      if (existingDb) {
+        console.warn("Supabase order already exists for razorpay_order_id:", order.razorpay_order_id);
+        return { ...order, id: String(existingDb.id) };
+      }
+    }
+
     const { data: dbOrder } = await supabase
       .from("orders")
       .insert({

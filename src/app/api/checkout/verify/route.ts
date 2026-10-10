@@ -67,67 +67,23 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Insert order into Supabase
-    try {
-      const supabase = getServiceSupabase();
-      const { data: orderData, error: orderError } = await supabase
-        .from("orders")
-        .insert({
-          total_amount: totalAmount,
-          payment_status: "paid",
-          payment_method: "razorpay",
-          razorpay_order_id: razorpay_order_id || null,
-          razorpay_payment_id: razorpay_payment_id || null,
-          razorpay_signature: razorpay_signature || null,
-          shipping_address,
-          status: "processing",
-        })
-        .select()
-        .single();
-
-      if (!orderError && orderData && items.length > 0) {
-        const orderItems = items.map((item: CartItem) => ({
-          order_id: orderData.id,
-          product_id: item.product.id,
-          quantity: item.quantity,
-          unit_price: item.unit_price,
-          size: item.size,
-          custom_name: item.custom_name || null,
-          custom_number: item.custom_number || null,
-          patches: item.patches || false,
-          customizations: {
-            version: item.version,
-            title: item.product.title,
-          },
-        }));
-
-        await supabase.from("order_items").insert(orderItems);
-      }
-    } catch (dbErr) {
-      console.warn("Supabase record write skipped or failed (demo mode active)", dbErr);
-    }
-
-    // Persist order in local working backend database & decrement inventory
-    try {
-      await createOrder({
-        total_amount: totalAmount,
-        payment_status: "paid",
-        payment_method: "razorpay",
-        razorpay_order_id: razorpay_order_id || null,
-        razorpay_payment_id: razorpay_payment_id || null,
-        razorpay_signature: razorpay_signature || null,
-        shipping_address,
-        status: "processing",
-        items,
-      });
-    } catch (localDbErr) {
-      console.error("Local database order creation error:", localDbErr);
-    }
+    // Record order (handles deduplication, Supabase persistence, and inventory decrement)
+    const orderRecord = await createOrder({
+      total_amount: totalAmount,
+      payment_status: "paid",
+      payment_method: payment_method || "razorpay",
+      razorpay_order_id: razorpay_order_id || null,
+      razorpay_payment_id: razorpay_payment_id || null,
+      razorpay_signature: razorpay_signature || null,
+      shipping_address,
+      status: "processing",
+      items,
+    });
 
     return NextResponse.json({
       success: true,
       message: "Order placed successfully",
-      order_id: razorpay_order_id || `ORD_${Date.now()}`,
+      order_id: orderRecord.id || razorpay_order_id || `ORD_${Date.now()}`,
     });
   } catch (error) {
     console.error("Verification error:", error);
