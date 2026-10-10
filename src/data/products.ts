@@ -172,7 +172,7 @@ export const CATEGORIES = [
     id: "fan-version",
     name: "FAN JERSEYS",
     subtitle: "Current Season Stadium Fit",
-    image: "/categories/psg-fan-jersey.jpg",
+    image: "/categories/real-madrid-fan-jersey.jpg",
     count: "Stadium Fit",
   },
   {
