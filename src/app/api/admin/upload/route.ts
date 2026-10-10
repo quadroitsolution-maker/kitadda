@@ -98,7 +98,9 @@ export async function POST(req: NextRequest) {
             upsert: true,
           });
 
-        if (!uploadError) {
+        if (uploadError) {
+          console.warn("Supabase Storage upload error:", uploadError.message);
+        } else {
           const { data: publicUrlData } = supabase.storage
             .from(BUCKET_NAME)
             .getPublicUrl(filename);
@@ -108,7 +110,7 @@ export async function POST(req: NextRequest) {
           }
         }
       } catch (storageErr) {
-        console.warn("Supabase Storage upload fallback to local disk:", storageErr);
+        console.warn("Supabase Storage upload exception:", storageErr);
       }
 
       // 2. Fallback to local disk if Supabase Storage failed
