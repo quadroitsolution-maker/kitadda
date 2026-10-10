@@ -68,8 +68,13 @@ export async function POST(req: NextRequest) {
       const rzpData = await rzpRes.json();
       if (!rzpRes.ok) {
         console.error("Razorpay order creation error:", rzpData);
+        const detailedError =
+          rzpData?.error?.description ||
+          rzpData?.error?.reason ||
+          rzpData?.message ||
+          "Failed to initialize payment gateway";
         return NextResponse.json(
-          { error: "Failed to initialize payment gateway", details: rzpData },
+          { error: detailedError, details: rzpData },
           { status: 500 }
         );
       }
