@@ -13,11 +13,11 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const adminUser = await authenticateAdmin(email, password);
+    const { user: adminUser, error: authError } = await authenticateAdmin(email, password);
 
     if (!adminUser) {
       return NextResponse.json(
-        { success: false, error: "Invalid admin credentials. Please check your email and password." },
+        { success: false, error: authError || "Invalid admin credentials. Please check your Supabase email and password." },
         { status: 401 }
       );
     }

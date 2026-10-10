@@ -57,14 +57,13 @@ export function verifyToken(token: string): AdminUser | null {
   }
 }
 
-/**
- * Check Admin Credentials against .env and Supabase Auth
- */
-export async function authenticateAdmin(email: string, password: string): Promise<AdminUser | null> {
+export async function authenticateAdmin(
+  email: string,
+  password: string
+): Promise<{ user: AdminUser | null; error?: string }> {
   const trimmedEmail = email.trim().toLowerCase();
   const trimmedPassword = password.trim();
 
-  // 1. Authenticate with Supabase Auth first (using public client with anon key)
   try {
     const client = getSupabase();
     const { data, error } = await client.auth.signInWithPassword({
@@ -74,30 +73,25 @@ export async function authenticateAdmin(email: string, password: string): Promis
 
     if (error) {
       console.warn("Supabase signInWithPassword failed:", error.message, error.status);
-    } else if (data?.user) {
+      return { user: null, error: error.message };
+    }
+
+    if (data?.user) {
       return {
-        id: data.user.id,
-        email: data.user.email || trimmedEmail,
-        role: (data.user.user_metadata?.role as "admin") || "admin",
+        user: {
+          id: data.user.id,
+          email: data.user.email || trimmedEmail,
+          role: (data.user.user_metadata?.role as "admin") || "admin",
+        },
       };
     }
+
+    return { user: null, error: "No user returned by Supabase" };
   } catch (err) {
-    console.warn("Supabase auth exception:", err);
+    const msg = err instanceof Error ? err.message : "Authentication error";
+    console.error("Supabase auth exception:", err);
+    return { user: null, error: msg };
   }
-
-  // 2. Fallback to .env configured Admin Credentials
-  const envAdminEmail = (process.env.ADMIN_EMAIL || "kitadda01@gmail.com").toLowerCase();
-  const envAdminPassword = process.env.ADMIN_PASSWORD || "kitadda@admin2026";
-
-  if (trimmedEmail === envAdminEmail && trimmedPassword === envAdminPassword) {
-    return {
-      id: "admin-env",
-      email: envAdminEmail,
-      role: "admin",
-    };
-  }
-
-  return null;
 }
 
 /**
