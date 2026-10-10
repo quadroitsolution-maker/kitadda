@@ -64,15 +64,16 @@ export async function authenticateAdmin(email: string, password: string): Promis
   const trimmedEmail = email.trim().toLowerCase();
   const trimmedPassword = password.trim();
 
-  // 1. Authenticate with Supabase Auth first
+  // 1. Authenticate with Supabase Auth first (using public client with anon key)
   try {
-    const supabase = getServiceSupabase();
     const { data, error } = await supabase.auth.signInWithPassword({
       email: trimmedEmail,
       password: trimmedPassword,
     });
 
-    if (!error && data?.user) {
+    if (error) {
+      console.warn("Supabase signInWithPassword failed:", error.message, error.status);
+    } else if (data?.user) {
       return {
         id: data.user.id,
         email: data.user.email || trimmedEmail,
@@ -80,7 +81,7 @@ export async function authenticateAdmin(email: string, password: string): Promis
       };
     }
   } catch (err) {
-    console.debug("Supabase auth check fallback:", err);
+    console.warn("Supabase auth exception:", err);
   }
 
   // 2. Fallback to .env configured Admin Credentials
