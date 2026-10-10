@@ -112,14 +112,6 @@ export const Footer: React.FC = () => {
                   Anti-Slip Grip Socks
                 </Link>
               </li>
-              <li>
-                <Link
-                  href="/admin"
-                  className="hover:text-white transition-colors text-neutral-500"
-                >
-                  Store Manager
-                </Link>
-              </li>
             </ul>
           </div>
 

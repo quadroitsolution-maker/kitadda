@@ -58,7 +58,7 @@ const CATEGORY_LABELS: Record<ProductCategory, string> = {
 export default function AdminDashboardPage() {
   // Auth state
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
-  const [adminEmail, setAdminEmail] = useState<string>("kitadda01@gmail.com");
+  const [adminEmail, setAdminEmail] = useState<string>("");
   const [adminPassword, setAdminPassword] = useState<string>("");
   const [isLoggingIn, setIsLoggingIn] = useState<boolean>(false);
   const [authError, setAuthError] = useState<string>("");
@@ -555,7 +555,7 @@ export default function AdminDashboardPage() {
                   required
                   value={adminEmail}
                   onChange={(e) => setAdminEmail(e.target.value)}
-                  placeholder="kitadda01@gmail.com"
+                  placeholder="admin@kitadda.in"
                   className="w-full bg-[#0A0D14] border border-[#1C2438] px-4 py-3 text-sm text-white placeholder-neutral-600 focus:outline-none focus:border-[#C5A059]"
                   autoFocus
                 />
