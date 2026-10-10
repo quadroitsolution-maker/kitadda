@@ -39,10 +39,10 @@ export const ProductGrid: React.FC<ProductGridProps> = ({
     ? products
     : products.filter((p) => {
         if (activeFilter === "player-version") {
-          return p.category === "player-version" || p.version_type === "Player Version";
+          return p.category === "player-version" || p.version_type === "Player Version" || p.version_type === "Both Available";
         }
         if (activeFilter === "fan-version") {
-          return p.category === "fan-version" || p.version_type === "Fan Version";
+          return p.category === "fan-version" || p.version_type === "Fan Version" || p.version_type === "Both Available";
         }
         return p.category === activeFilter;
       });

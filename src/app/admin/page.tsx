@@ -116,7 +116,7 @@ export default function AdminDashboardPage() {
     season: "2024/25",
     badge: "",
     is_featured: false,
-    version_type: "Fan Version" as "Fan Version" | "Player Version",
+    version_type: "Fan Version" as "Fan Version" | "Player Version" | "Both Available",
     sizes: ["S", "M", "L", "XL", "XXL"] as ("S" | "M" | "L" | "XL" | "XXL")[],
   });
 
@@ -1845,11 +1845,12 @@ export default function AdminDashboardPage() {
                   </label>
                   <select
                     value={formData.version_type}
-                    onChange={(e) => setFormData({ ...formData, version_type: e.target.value as "Fan Version" | "Player Version" })}
+                    onChange={(e) => setFormData({ ...formData, version_type: e.target.value as "Fan Version" | "Player Version" | "Both Available" })}
                     className="w-full bg-[#0E131F] border border-[#1C2438] px-3 py-2 text-xs text-white focus:outline-none focus:border-[#C5A059]"
                   >
                     <option value="Fan Version">Fan Version</option>
                     <option value="Player Version">Player Version</option>
+                    <option value="Both Available">Both Available</option>
                   </select>
                 </div>
 

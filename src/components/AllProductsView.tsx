@@ -107,10 +107,10 @@ export const AllProductsView: React.FC<AllProductsViewProps> = ({ initialProduct
     if (selectedCategory !== "all") {
       list = list.filter((p) => {
         if (selectedCategory === "player-version") {
-          return p.category === "player-version" || p.version_type === "Player Version";
+          return p.category === "player-version" || p.version_type === "Player Version" || p.version_type === "Both Available";
         }
         if (selectedCategory === "fan-version") {
-          return p.category === "fan-version" || p.version_type === "Fan Version";
+          return p.category === "fan-version" || p.version_type === "Fan Version" || p.version_type === "Both Available";
         }
         return p.category === selectedCategory;
       });
@@ -166,7 +166,7 @@ export const AllProductsView: React.FC<AllProductsViewProps> = ({ initialProduct
     addToCart({
       product,
       size: "L",
-      version: product.version_type || "Fan Version",
+      version: product.version_type === "Player Version" ? "Player Version" : "Fan Version",
       custom_name: "",
       custom_number: "",
       patches: false,

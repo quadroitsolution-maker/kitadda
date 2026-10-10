@@ -29,7 +29,7 @@ export interface Product {
   season: string;
   badge?: string;
   is_featured?: boolean;
-  version_type?: "Fan Version" | "Player Version";
+  version_type?: "Fan Version" | "Player Version" | "Both Available";
   sizes?: ("S" | "M" | "L" | "XL" | "XXL")[];
   created_at?: string;
   updated_at?: string;

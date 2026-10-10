@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useMemo } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Product } from "@/types";
@@ -25,12 +25,28 @@ interface ProductDetailsViewProps {
 export const ProductDetailsView: React.FC<ProductDetailsViewProps> = ({ product }) => {
   const { addToCart, setIsCartOpen, setIsCheckoutOpen } = useCart();
 
+  const isAccessories = product.category === "accessories";
+
+  const availableVersions: ("Fan Version" | "Player Version")[] = useMemo(() => {
+    if (isAccessories) return [];
+    if (product.version_type === "Both Available") {
+      return ["Fan Version", "Player Version"];
+    }
+    if (product.version_type === "Player Version" || product.category === "player-version") {
+      return ["Player Version"];
+    }
+    return ["Fan Version"];
+  }, [product.version_type, product.category, isAccessories]);
+
   const galleryImages = product.gallery && product.gallery.length > 0 ? product.gallery : [product.image_url];
   const [selectedImage, setSelectedImage] = useState(galleryImages[0]);
   const [selectedSize, setSelectedSize] = useState<"S" | "M" | "L" | "XL" | "XXL">("L");
-  const [selectedVersion, setSelectedVersion] = useState<"Fan Version" | "Player Version">(
-    product.version_type || "Fan Version"
-  );
+  const [selectedVersion, setSelectedVersion] = useState<"Fan Version" | "Player Version">(() => {
+    if (product.version_type === "Player Version" || product.category === "player-version") {
+      return "Player Version";
+    }
+    return "Fan Version";
+  });
   const [quantity, setQuantity] = useState(1);
 
   // Touch Swipe for mobile gallery
@@ -239,33 +255,49 @@ export const ProductDetailsView: React.FC<ProductDetailsViewProps> = ({ product 
           </p>
 
           {/* Version / Fit Selector */}
-          <div>
-            <div className="flex items-center justify-between mb-2">
-              <label className="text-xs font-black uppercase tracking-wider text-neutral-300 font-jersey">
-                Fit Edition
-              </label>
-              <span className="text-[10px] sm:text-[11px] text-neutral-400 font-mono">
-                {selectedVersion === "Player Version" ? "Snug Slim Athletic Fit" : "Regular Stadium Fit"}
-              </span>
+          {!isAccessories && availableVersions.length > 0 && (
+            <div>
+              <div className="flex items-center justify-between mb-2">
+                <label className="text-xs font-black uppercase tracking-wider text-neutral-300 font-jersey">
+                  Fit Edition
+                </label>
+                <span className="text-[10px] sm:text-[11px] text-neutral-400 font-mono">
+                  {selectedVersion === "Player Version" ? "Snug Slim Athletic Fit" : "Regular Stadium Fit"}
+                </span>
+              </div>
+              {availableVersions.length > 1 ? (
+                <div className="grid grid-cols-2 gap-2.5 sm:gap-3">
+                  {availableVersions.map((ver) => (
+                    <button
+                      key={ver}
+                      type="button"
+                      onClick={() => setSelectedVersion(ver)}
+                      className={`min-h-[46px] p-3 rounded-none border text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-1.5 transition active:scale-98 ${
+                        selectedVersion === ver
+                          ? "bg-[#0B132B] border-[#C5A059] text-[#DFB76C]"
+                          : "bg-[#0E131F] border-[#1C2438] text-neutral-400 hover:text-white"
+                      }`}
+                    >
+                      {selectedVersion === ver && <Check className="w-3.5 h-3.5 text-[#DFB76C]" />}
+                      <span>{ver}</span>
+                    </button>
+                  ))}
+                </div>
+              ) : (
+                <div className="bg-[#0B132B] border border-[#C5A059]/40 px-3.5 py-3 rounded-none flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <Check className="w-4 h-4 text-[#DFB76C]" />
+                    <span className="text-xs font-bold uppercase tracking-wider text-[#DFB76C] font-mono">
+                      {availableVersions[0]}
+                    </span>
+                  </div>
+                  <span className="text-[10px] font-mono text-neutral-400 uppercase tracking-widest bg-[#0E131F] border border-[#1C2438] px-2 py-0.5">
+                    Exclusive Edition
+                  </span>
+                </div>
+              )}
             </div>
-            <div className="grid grid-cols-2 gap-2.5 sm:gap-3">
-              {(["Fan Version", "Player Version"] as const).map((ver) => (
-                <button
-                  key={ver}
-                  type="button"
-                  onClick={() => setSelectedVersion(ver)}
-                  className={`min-h-[46px] p-3 rounded-none border text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-1.5 transition active:scale-98 ${
-                    selectedVersion === ver
-                      ? "bg-[#0B132B] border-[#C5A059] text-[#DFB76C]"
-                      : "bg-[#0E131F] border-[#1C2438] text-neutral-400 hover:text-white"
-                  }`}
-                >
-                  {selectedVersion === ver && <Check className="w-3.5 h-3.5 text-[#DFB76C]" />}
-                  <span>{ver}</span>
-                </button>
-              ))}
-            </div>
-          </div>
+          )}
 
           {/* Size Selector */}
           <div>
