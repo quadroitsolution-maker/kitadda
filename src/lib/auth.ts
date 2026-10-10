@@ -1,7 +1,7 @@
 import crypto from "crypto";
 import { cookies } from "next/headers";
 import { NextRequest } from "next/server";
-import { getServiceSupabase } from "./supabase";
+import { supabase, getServiceSupabase } from "./supabase";
 
 const COOKIE_NAME = "kitadda_admin_session";
 const JWT_SECRET = process.env.ADMIN_JWT_SECRET || "kitadda_secret_jwt_admin_key_2026_987654321";
