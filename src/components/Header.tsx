@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useMemo } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { useCart } from "@/context/CartContext";
 import { PRODUCTS } from "@/data/products";
 import { Product } from "@/types";
@@ -20,6 +20,7 @@ import { siteConfig } from "@/config/site";
 
 export const Header: React.FC = () => {
   const router = useRouter();
+  const pathname = usePathname();
   const { cartCount, setIsCartOpen } = useCart();
   const [mounted, setMounted] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -57,8 +58,9 @@ export const Header: React.FC = () => {
     { name: "World Cup", id: "world-cup", href: "/products?category=world-cup", badge: "Grails" },
   ];
 
-  const handleCategoryNav = (catId: string) => {
-    if (typeof window !== "undefined") {
+  const handleCategoryNav = (catId: string, href: string, e?: React.MouseEvent) => {
+    if (e && pathname === "/") {
+      e.preventDefault();
       window.dispatchEvent(new CustomEvent("kitadda:selectCategory", { detail: catId }));
     }
     setMobileMenuOpen(false);
@@ -129,7 +131,7 @@ export const Header: React.FC = () => {
                 <Link
                   key={cat.name}
                   href={cat.href}
-                  onClick={() => handleCategoryNav(cat.id)}
+                  onClick={(e) => handleCategoryNav(cat.id, cat.href, e)}
                   className="text-xs font-bold text-neutral-300 hover:text-[#DFB76C] uppercase tracking-wider transition-colors py-2"
                 >
                   {cat.name}
@@ -218,7 +220,7 @@ export const Header: React.FC = () => {
                   <Link
                     key={cat.name}
                     href={cat.href}
-                    onClick={() => handleCategoryNav(cat.id)}
+                    onClick={(e) => handleCategoryNav(cat.id, cat.href, e)}
                     className="flex items-center justify-between p-3.5 text-neutral-200 hover:text-[#DFB76C] active:bg-[#0E131F] font-bold uppercase tracking-wider text-xs border-b border-[#1C2438]/50"
                   >
                     <span>{cat.name}</span>

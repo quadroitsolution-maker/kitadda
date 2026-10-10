@@ -37,7 +37,15 @@ export const ProductGrid: React.FC<ProductGridProps> = ({
 
   const filteredProducts = activeFilter === "all"
     ? products
-    : products.filter((p) => p.category === activeFilter);
+    : products.filter((p) => {
+        if (activeFilter === "player-version") {
+          return p.category === "player-version" || p.version_type === "Player Version";
+        }
+        if (activeFilter === "fan-version") {
+          return p.category === "fan-version" || p.version_type === "Fan Version";
+        }
+        return p.category === activeFilter;
+      });
 
   return (
     <section id="latest-drops" className="py-8 sm:py-16 max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 cursor-football">

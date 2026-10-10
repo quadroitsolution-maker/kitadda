@@ -105,7 +105,15 @@ export const AllProductsView: React.FC<AllProductsViewProps> = ({ initialProduct
 
     // 1. Category filter
     if (selectedCategory !== "all") {
-      list = list.filter((p) => p.category === selectedCategory);
+      list = list.filter((p) => {
+        if (selectedCategory === "player-version") {
+          return p.category === "player-version" || p.version_type === "Player Version";
+        }
+        if (selectedCategory === "fan-version") {
+          return p.category === "fan-version" || p.version_type === "Fan Version";
+        }
+        return p.category === selectedCategory;
+      });
     }
 
     // 2. League filter
