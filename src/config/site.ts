@@ -11,6 +11,6 @@ export const siteConfig = {
   },
   supportEmail: "kitadda01@gmail.com",
   freeShippingThreshold: 999,
-  defaultShippingFee: 99,
+  defaultShippingFee: 70,
   patchFee: 150,
 };

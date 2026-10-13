@@ -2,6 +2,7 @@
 
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { CartItem } from "@/types";
+import { siteConfig } from "@/config/site";
 
 export interface AppliedCouponInfo {
   code: string;
@@ -38,8 +39,8 @@ const CartContext = createContext<CartContextType | undefined>(undefined);
 
 const STORAGE_KEY = "kitadda_cart_v1";
 const COUPON_STORAGE_KEY = "kitadda_applied_coupon_v1";
-const FREE_SHIPPING_LIMIT = 999;
-const STANDARD_SHIPPING_FEE = 99;
+const FREE_SHIPPING_LIMIT = siteConfig.freeShippingThreshold; // 999
+const STANDARD_SHIPPING_FEE = siteConfig.defaultShippingFee; // 70
 
 export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [items, setItems] = useState<CartItem[]>(() => {

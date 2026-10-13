@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import crypto from "crypto";
 import { getCouponByCode, calculateCouponDiscount } from "@/lib/db";
+import { siteConfig } from "@/config/site";
 
 export async function POST(req: NextRequest) {
   try {
@@ -28,7 +29,7 @@ export async function POST(req: NextRequest) {
     );
 
     // Standard free shipping threshold: Free express delivery for all orders >= 999 automatically (no coupon needed)
-    let shippingFee = subtotal >= 999 ? 0 : 99;
+    let shippingFee = subtotal >= siteConfig.freeShippingThreshold ? 0 : siteConfig.defaultShippingFee;
     let couponDiscount = 0;
 
     if (coupon_code) {

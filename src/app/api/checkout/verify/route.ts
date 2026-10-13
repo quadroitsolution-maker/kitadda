@@ -3,6 +3,7 @@ import crypto from "crypto";
 import { getServiceSupabase } from "@/lib/supabase";
 import { createOrder, getCouponByCode, calculateCouponDiscount, incrementCouponUsage } from "@/lib/db";
 import { CartItem } from "@/types";
+import { siteConfig } from "@/config/site";
 
 export async function POST(req: NextRequest) {
   try {
@@ -44,7 +45,7 @@ export async function POST(req: NextRequest) {
     );
 
     // Standard free shipping threshold: Free delivery for orders >= 999 without any coupon code
-    let shippingFee = subtotal >= 999 ? 0 : 99;
+    let shippingFee = subtotal >= siteConfig.freeShippingThreshold ? 0 : siteConfig.defaultShippingFee;
     let couponDiscount = 0;
 
     if (coupon_code) {
