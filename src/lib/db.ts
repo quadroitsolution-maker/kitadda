@@ -369,62 +369,66 @@ export async function getOrders(options?: {
 
     const { data, error } = await query;
 
-    if (!error && data && data.length > 0) {
-      orders = data.map((o) => {
-        // Map order_items to CartItem structure
-        const items: CartItem[] = (o.order_items || []).map((oi: {
-          id: string;
-          product_id: string;
-          quantity: number;
-          unit_price: number;
-          size: string;
-          custom_name: string | null;
-          custom_number: string | null;
-          patches: boolean;
-          customizations?: { version?: string; title?: string; product_title?: string; product_image?: string };
-        }) => ({
-          cart_item_id: oi.id,
-          product: {
-            id: oi.product_id,
-            title: oi.customizations?.product_title || oi.customizations?.title || "Football Jersey",
-            description: "",
-            price: Number(oi.unit_price),
-            compare_at_price: Number(oi.unit_price) * 1.5,
-            category: "fan-version" as const,
-            image_url: oi.customizations?.product_image || "https://images.unsplash.com/photo-1577223625816-7546f13df25d?auto=format&fit=crop&w=800&q=80",
-            gallery: [],
-            stock_status: "in_stock" as const,
-            team: "",
-            league: "",
-            season: "2024/25",
-          },
-          size: (oi.size || "M") as "S" | "M" | "L" | "XL" | "XXL",
-          version: (oi.customizations?.version || "Fan Version") as "Fan Version" | "Player Version",
-          custom_name: oi.custom_name || "",
-          custom_number: oi.custom_number || "",
-          patches: Boolean(oi.patches),
-          patch_fee: oi.patches ? 150 : 0,
-          unit_price: Number(oi.unit_price),
-          quantity: oi.quantity || 1,
-        }));
-
-        return {
-          id: String(o.id),
-          user_id: o.user_id,
-          total_amount: Number(o.total_amount),
-          payment_status: o.payment_status,
-          payment_method: o.payment_method || "razorpay",
-          razorpay_order_id: o.razorpay_order_id,
-          razorpay_payment_id: o.razorpay_payment_id,
-          razorpay_signature: o.razorpay_signature,
-          shipping_address: o.shipping_address || {},
-          status: o.status,
-          items,
-          created_at: o.created_at,
-          updated_at: o.updated_at,
-        };
-      });
+    if (!error) {
       fetchedFromSupabase = true;
+      if (data && data.length > 0) {
+        orders = data.map((o) => {
+          // Map order_items to CartItem structure
+          const items: CartItem[] = (o.order_items || []).map((oi: {
+            id: string;
+            product_id: string;
+            quantity: number;
+            unit_price: number;
+            size: string;
+            custom_name: string | null;
+            custom_number: string | null;
+            patches: boolean;
+            customizations?: { version?: string; title?: string; product_title?: string; product_image?: string };
+          }) => ({
+            cart_item_id: oi.id,
+            product: {
+              id: oi.product_id,
+              title: oi.customizations?.product_title || oi.customizations?.title || "Football Jersey",
+              description: "",
+              price: Number(oi.unit_price),
+              compare_at_price: Number(oi.unit_price) * 1.5,
+              category: "fan-version" as const,
+              image_url: oi.customizations?.product_image || "https://images.unsplash.com/photo-1577223625816-7546f13df25d?auto=format&fit=crop&w=800&q=80",
+              gallery: [],
+              stock_status: "in_stock" as const,
+              team: "",
+              league: "",
+              season: "2024/25",
+            },
+            size: (oi.size || "M") as "S" | "M" | "L" | "XL" | "XXL",
+            version: (oi.customizations?.version || "Fan Version") as "Fan Version" | "Player Version",
+            custom_name: oi.custom_name || "",
+            custom_number: oi.custom_number || "",
+            patches: Boolean(oi.patches),
+            patch_fee: oi.patches ? 150 : 0,
+            unit_price: Number(oi.unit_price),
+            quantity: oi.quantity || 1,
+          }));
+
+          return {
+            id: String(o.id),
+            user_id: o.user_id,
+            total_amount: Number(o.total_amount),
+            payment_status: o.payment_status,
+            payment_method: o.payment_method || "razorpay",
+            razorpay_order_id: o.razorpay_order_id,
+            razorpay_payment_id: o.razorpay_payment_id,
+            razorpay_signature: o.razorpay_signature,
+            shipping_address: o.shipping_address || {},
+            status: o.status,
+            items,
+            created_at: o.created_at,
+            updated_at: o.updated_at,
+          };
+        });
+      } else {
+        orders = [];
+      }
     }
   } catch (err) {
     console.debug("Supabase getOrders fallback to local:", err);
@@ -619,6 +623,33 @@ export async function updateOrderStatus(
 
   await fs.writeFile(ORDERS_FILE, JSON.stringify(orders, null, 2), "utf-8");
   return orders[index];
+}
+
+/**
+ * Delete an order permanently (removes from local JSON and Supabase)
+ */
+export async function deleteOrder(id: string): Promise<boolean> {
+  await ensureDataDir();
+  try {
+    const data = await fs.readFile(ORDERS_FILE, "utf-8");
+    const orders: OrderRecord[] = JSON.parse(data);
+    const filtered = orders.filter((o) => o.id !== id && o.razorpay_order_id !== id);
+    await fs.writeFile(ORDERS_FILE, JSON.stringify(filtered, null, 2), "utf-8");
+  } catch (err) {
+    console.debug("Local file deleteOrder error:", err);
+  }
+
+  try {
+    const supabase = getServiceSupabase();
+    // Delete referenced order items first (foreign key)
+    await supabase.from("order_items").delete().or(`order_id.eq.${id}`);
+    // Delete order row
+    await supabase.from("orders").delete().or(`id.eq.${id},razorpay_order_id.eq.${id}`);
+  } catch (err) {
+    console.debug("Supabase deleteOrder skipped:", err);
+  }
+
+  return true;
 }
 
 /**

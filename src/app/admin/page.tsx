@@ -448,6 +448,32 @@ export default function AdminDashboardPage() {
     }
   };
 
+  // Delete order permanently
+  const handleDeleteOrder = async (orderId: string) => {
+    if (!confirm(`Are you sure you want to permanently delete order #${orderId}? This cannot be undone.`)) {
+      return;
+    }
+
+    try {
+      const res = await fetch(`/api/admin/orders/${orderId}`, {
+        method: "DELETE",
+      });
+      const data = await res.json();
+      if (data.success) {
+        showToast(`Order #${orderId} deleted permanently.`);
+        setOrders((prev) => prev.filter((o) => o.id !== orderId));
+        if (selectedOrderDetails && selectedOrderDetails.id === orderId) {
+          setSelectedOrderDetails(null);
+        }
+        fetchData();
+      } else {
+        showToast(data.error || "Failed to delete order", "error");
+      }
+    } catch {
+      showToast("Failed to delete order", "error");
+    }
+  };
+
   // Filter products
   const filteredProducts = products.filter((p) => {
     const matchesSearch =
@@ -1029,6 +1055,13 @@ export default function AdminDashboardPage() {
                                     <MessageCircle className="w-4 h-4" />
                                   </a>
                                 )}
+                                <button
+                                  onClick={() => handleDeleteOrder(order.id)}
+                                  className="p-1 text-neutral-500 hover:text-red-400 hover:bg-red-950/40 transition"
+                                  title="Delete Order"
+                                >
+                                  <Trash2 className="w-3.5 h-3.5" />
+                                </button>
                               </div>
                             </td>
                           </tr>
@@ -1280,6 +1313,13 @@ export default function AdminDashboardPage() {
                                     <MessageCircle className="w-4 h-4" />
                                   </a>
                                 )}
+                                <button
+                                  onClick={() => handleDeleteOrder(o.id)}
+                                  className="p-1 text-neutral-500 hover:text-red-400 hover:bg-red-950/40 transition"
+                                  title="Delete Order Permanently"
+                                >
+                                  <Trash2 className="w-3.5 h-3.5" />
+                                </button>
                               </div>
                             </td>
                           </tr>
@@ -2066,13 +2106,24 @@ export default function AdminDashboardPage() {
 
             {/* Total Footer */}
             <div className="pt-3 border-t border-[#1C2438] flex items-center justify-between">
-              <button
-                type="button"
-                onClick={() => setSelectedOrderDetails(null)}
-                className="px-4 py-2 border border-[#1C2438] text-xs font-bold uppercase text-neutral-300 hover:text-white"
-              >
-                Close
-              </button>
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => setSelectedOrderDetails(null)}
+                  className="px-4 py-2 border border-[#1C2438] text-xs font-bold uppercase text-neutral-300 hover:text-white transition"
+                >
+                  Close
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleDeleteOrder(selectedOrderDetails.id)}
+                  className="px-3 py-2 border border-red-900/60 bg-red-950/30 text-xs font-bold uppercase text-red-400 hover:bg-red-900/50 flex items-center gap-1.5 transition"
+                  title="Delete Order Permanently"
+                >
+                  <Trash2 className="w-3.5 h-3.5" />
+                  <span>Delete Order</span>
+                </button>
+              </div>
               <div className="text-right">
                 <span className="text-xs text-neutral-400 mr-2">Grand Total:</span>
                 <span className="text-xl font-black text-[#DFB76C] font-jersey">

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { updateOrderStatus } from "@/lib/db";
+import { updateOrderStatus, deleteOrder } from "@/lib/db";
 import { OrderStatus } from "@/types";
 
 interface RouteProps {
@@ -36,6 +36,32 @@ export async function PATCH(req: NextRequest, { params }: RouteProps) {
   } catch (error) {
     console.error("Admin PATCH /api/admin/orders/[id] error:", error);
     const message = error instanceof Error ? error.message : "Failed to update order";
+    return NextResponse.json(
+      { success: false, error: message },
+      { status: 500 }
+    );
+  }
+}
+
+export async function DELETE(req: NextRequest, { params }: RouteProps) {
+  try {
+    const { id } = await params;
+    const deleted = await deleteOrder(id);
+
+    if (!deleted) {
+      return NextResponse.json(
+        { success: false, error: "Failed to delete order" },
+        { status: 500 }
+      );
+    }
+
+    return NextResponse.json({
+      success: true,
+      message: "Order deleted successfully",
+    });
+  } catch (error) {
+    console.error("Admin DELETE /api/admin/orders/[id] error:", error);
+    const message = error instanceof Error ? error.message : "Failed to delete order";
     return NextResponse.json(
       { success: false, error: message },
       { status: 500 }
