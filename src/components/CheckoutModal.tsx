@@ -502,7 +502,7 @@ export const CheckoutModal: React.FC = () => {
                             {item.product.title}
                           </h4>
                           <div className="text-[11px] text-neutral-400 font-mono mt-0.5">
-                            Size {item.size} • Qty {item.quantity}
+                            Size {item.size} • Qty {item.quantity}{item.product.category !== "accessories" ? " • Jersey only" : ""}
                           </div>
                         </div>
                         <div className="text-xs font-black text-white font-jersey">

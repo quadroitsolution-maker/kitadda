@@ -16,6 +16,7 @@ import {
   Ruler,
   ChevronLeft,
   ChevronRight,
+  Info,
 } from "lucide-react";
 
 interface ProductDetailsViewProps {
@@ -254,6 +255,17 @@ export const ProductDetailsView: React.FC<ProductDetailsViewProps> = ({ product 
             {product.description}
           </p>
 
+          {/* Package Inclusions Note for Jerseys */}
+          {!isAccessories && (
+            <div className="p-3 bg-[#0B132B]/80 border border-[#C5A059]/40 flex items-start gap-2.5">
+              <Info className="w-4 h-4 text-[#DFB76C] shrink-0 mt-0.5" />
+              <div className="text-xs text-neutral-300 leading-snug">
+                <span className="font-bold text-white uppercase tracking-wider font-mono mr-1">Please Note:</span>
+                This package includes the <strong className="text-white">Top Jersey only</strong>. <span className="text-[#DFB76C] font-semibold">Shorts are not included</span>.
+              </div>
+            </div>
+          )}
+
           {/* Version / Fit Selector */}
           {!isAccessories && availableVersions.length > 0 && (
             <div>
@@ -469,7 +481,7 @@ export const ProductDetailsView: React.FC<ProductDetailsViewProps> = ({ product 
                     </table>
                   </div>
                   <p className="mt-2.5 text-[11px] text-neutral-400">
-                    *Tip: For Player Version kits, consider sizing up by 1 size if you prefer a looser stadium fit.
+                    *Tip: For Player Version kits, consider sizing up by 1 size if you prefer a looser stadium fit. Package includes top jersey only (shorts are not included).
                   </p>
                 </div>
               )}

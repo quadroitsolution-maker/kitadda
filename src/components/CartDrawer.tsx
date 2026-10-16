@@ -195,6 +195,12 @@ export const CartDrawer: React.FC = () => {
                         </span>
                         <span>•</span>
                         <span className="text-neutral-300">{item.version}</span>
+                        {item.product.category !== "accessories" && (
+                          <>
+                            <span>•</span>
+                            <span className="text-neutral-400">Jersey only</span>
+                          </>
+                        )}
                       </div>
                     </div>
 
